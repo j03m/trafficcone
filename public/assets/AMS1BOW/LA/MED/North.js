@@ -1,0 +1,1 @@
+var AMS1BOWLAMEDNorth = { frames:9, frameWidth:62, frameHeight:52 };

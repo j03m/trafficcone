@@ -1,0 +1,1 @@
+var AMRNBOWHDMSKNorthWest = { frames:8, frameWidth:38, frameHeight:66 };

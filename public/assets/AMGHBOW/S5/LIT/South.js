@@ -1,0 +1,1 @@
+var AMGHBOWS5LITSouth = { frames:6, frameWidth:252, frameHeight:203 };

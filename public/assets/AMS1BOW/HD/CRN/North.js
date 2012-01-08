@@ -1,0 +1,1 @@
+var AMS1BOWHDCRNNorth = { frames:9, frameWidth:73, frameHeight:66 };

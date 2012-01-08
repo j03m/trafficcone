@@ -1,0 +1,1 @@
+var AMSCBOWLALITSouthWest = { frames:20, frameWidth:54, frameHeight:78 };

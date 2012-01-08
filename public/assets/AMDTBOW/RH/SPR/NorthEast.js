@@ -1,0 +1,1 @@
+var AMA1BOWRHSPRNorthEast = { frames:14, frameWidth:170, frameHeight:124 };

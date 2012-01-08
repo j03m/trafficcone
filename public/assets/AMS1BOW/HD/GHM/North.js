@@ -1,0 +1,1 @@
+var AMS1BOWHDGHMNorth = { frames:9, frameWidth:78, frameHeight:78 };

@@ -1,0 +1,1 @@
+var AMWLBOWS3LITSouth = { frames:8, frameWidth:252, frameHeight:203 };

@@ -1,0 +1,1 @@
+var AMNUBOWS8MEDEast = { frames:8, frameWidth:252, frameHeight:203 };

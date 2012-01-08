@@ -1,0 +1,1 @@
+var AMGHBOWS3LITWest = { frames:6, frameWidth:252, frameHeight:203 };

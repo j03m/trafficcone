@@ -1,0 +1,1 @@
+var AMGHBOWS1MEDSouthWest = { frames:6, frameWidth:252, frameHeight:203 };

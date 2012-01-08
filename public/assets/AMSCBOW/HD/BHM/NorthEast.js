@@ -1,0 +1,1 @@
+var AMSCBOWHDBHMNorthEast = { frames:20, frameWidth:36, frameHeight:64 };

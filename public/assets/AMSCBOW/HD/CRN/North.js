@@ -1,0 +1,1 @@
+var AMSCBOWHDCRNNorth = { frames:20, frameWidth:28, frameHeight:68 };

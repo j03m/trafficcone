@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    
+    <script type="text/javascript" src="..\tccore\jquery.min.js"></script>
+
+
+    <meta content="width=320, user-scalable=0" />
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <script type="text/javascript">
+		
+		$(document).ready(function(){
+			var path = "globe.jpg";
+			var image = new Image();
+			image.onload = function()
+			{
+					var context = $("#gamescreen")[0].getContext("2d");
+					context.drawImage(image,0,0, image.width, image.height);
+					setInterval(function(){
+												context.translate(-1,-1);
+												context.drawImage(image,0,0, image.width, image.height);
+											}, 0)		
+				
+			};
+			image.src = path;
+			
+		});
+
+    </script>
+</head>
+<body>
+<canvas id="gamescreen" width="800" height="600" style="border-style: dotted; float: left;">
+</canvas>
+</body>
+</html>

@@ -1,0 +1,1 @@
+var AMKKBOWS1HVYNorthEast = { frames:12, frameWidth:252, frameHeight:203 };

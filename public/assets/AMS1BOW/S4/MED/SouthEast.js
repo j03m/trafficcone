@@ -1,0 +1,1 @@
+var AMS1BOWS4MEDSouthEast = { frames:9, frameWidth:252, frameHeight:203 };

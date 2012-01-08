@@ -1,0 +1,1 @@
+var AMKKBOWHDBHMEast = { frames:12, frameWidth:48, frameHeight:65 };

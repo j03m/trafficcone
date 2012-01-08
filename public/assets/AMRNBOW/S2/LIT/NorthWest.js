@@ -1,0 +1,1 @@
+var AMRNBOWS2LITNorthWest = { frames:8, frameWidth:252, frameHeight:203 };

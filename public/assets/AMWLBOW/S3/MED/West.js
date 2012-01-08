@@ -1,0 +1,1 @@
+var AMWLBOWS3MEDWest = { frames:8, frameWidth:252, frameHeight:203 };

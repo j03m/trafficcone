@@ -1,0 +1,1 @@
+var AMTNBOWS2LITSouthEast = { frames:16, frameWidth:252, frameHeight:203 };

@@ -1,0 +1,1 @@
+var AMKKBOWHDGHMNorthWest = { frames:12, frameWidth:46, frameHeight:79 };

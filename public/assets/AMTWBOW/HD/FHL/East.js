@@ -1,0 +1,1 @@
+var AMTWBOWHDFHLEast = { frames:8, frameWidth:24, frameHeight:66 };

@@ -1,0 +1,1 @@
+var AMSCBOWS8LITSouth = { frames:20, frameWidth:252, frameHeight:203 };

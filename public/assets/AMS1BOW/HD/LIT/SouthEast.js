@@ -1,0 +1,1 @@
+var AMS1BOWHDLITSouthEast = { frames:9, frameWidth:77, frameHeight:67 };

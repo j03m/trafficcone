@@ -1,0 +1,1 @@
+var AMS1BOWHDMSKWest = { frames:9, frameWidth:74, frameHeight:65 };

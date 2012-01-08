@@ -1,0 +1,1 @@
+var AMS1BOWS2HVYWest = { frames:9, frameWidth:252, frameHeight:203 };

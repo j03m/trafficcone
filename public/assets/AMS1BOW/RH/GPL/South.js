@@ -1,0 +1,1 @@
+var AMS1BOWRHGPLSouth = { frames:9, frameWidth:252, frameHeight:203 };

@@ -1,0 +1,1 @@
+var AMS1BOWHDCRNWest = { frames:9, frameWidth:73, frameHeight:66 };

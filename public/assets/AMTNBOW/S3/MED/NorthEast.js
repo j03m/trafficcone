@@ -1,0 +1,1 @@
+var AMTNBOWS3MEDNorthEast = { frames:16, frameWidth:252, frameHeight:203 };
