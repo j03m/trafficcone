@@ -1,4 +1,14 @@
-
+//This chunk thanks to http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
 
 var LEFTARROW = 37 ;
 var UPARROW = 38;
@@ -20,7 +30,7 @@ var frameMessage = "";
 var Engine =
     function (mainCanvas, backgroundCanvas) {
         isapplemobile = DetectAppleMobile();
-
+		self = this;
         canvas = mainCanvas;
         context = canvas.getContext("2d");
         backCanvas = backgroundCanvas;
@@ -53,6 +63,7 @@ var Engine =
         document.ontouchend = eventHandler;
         document.ontouchmove = eventHandler;
     },
+	self,
     sceneBackDropDrawn = false,
     isapplemobile,
     behaviors = [],
@@ -555,13 +566,13 @@ var Engine =
                         if (cell.Type == GAME_WORLD_CELL_UNDERLAY) {
                             var cellSprite = cell.Sprite;
                             if (cellSprite != undefined) {
-                                //we also need to calculate the draw position of this cell's sprite. 
-                                var cellDrawPoints = gameWorldModel.placeSpriteInCenterOfWorldCell(worldCellPos.x, worldCellPos.y, cellSprite);
-                                cellSprite.setFrame(cell.Frame);                               
-                                cellSprite.prep();
-                                cellSprite.display();
-                            
-                            }
+                                                                              //we also need to calculate the draw position of this cell's sprite. 
+                                                                              var cellDrawPoints = gameWorldModel.placeSpriteInCenterOfWorldCell(worldCellPos.x, worldCellPos.y, cellSprite);
+                                                                              cellSprite.setFrame(cell.Frame);                               
+                                                                              cellSprite.prep();
+                                                                              cellSprite.display();
+                                                                          
+                                                                          }
                         }
                         else {
                             overlays.push(cell);
@@ -1206,8 +1217,9 @@ var Engine =
         play: function () {
             idleEvent = new GameEvent(gameEvents.Idle, "");
             eventHandler(TranslateUIEventToGameEvent(idleEvent));
-            intervalId = setInterval(this.gameLoop, 15);
+            //intervalId = setInterval(this.gameLoop, 15);
 
+			requestAnimFrame(self.gameLoop);
 
             if (frameDebug == true) {
                 canvas.textBaseline = "top";
@@ -1415,6 +1427,7 @@ var Engine =
             }
 
             Draw();
+			requestAnimFrame(self.gameLoop);
         },
         handleChanges: function (changes) {
             //we get an array of changes from the server
