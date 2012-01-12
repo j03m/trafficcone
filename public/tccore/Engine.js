@@ -540,7 +540,7 @@ var Engine =
         var incX = iniX;
         var incY = iniY;
         var overlays = [];
-        for (var i = 0; i <= 0; i++) {
+        for (var i = 0; i <= totalX; i++) {
             for (var ii = 0; ii <= totalY; ii++) {
 
                 //convert to world cell to get the correct sprite

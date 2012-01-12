@@ -60,9 +60,9 @@
                 }
             }
 
-            // for (var i = 0; i < 3000; i++) {
-            //                gameWorld_setCell(gameWorld, getRand(250), getRand(250), columnCell_Sprite(ga, "column" + i), 0, GAME_WORLD_CELL_OVERLAY, GAME_WORLD_CELL_BLOCK);
-            //            }
+            for (var i = 0; i < 3000; i++) {
+                             gameWorld_setCell(gameWorld, getRand(250), getRand(250), columnCell_Sprite(ga, "column" + i), 0, GAME_WORLD_CELL_OVERLAY, GAME_WORLD_CELL_BLOCK);
+                         }
 
             ga.setWorld(gameWorld);
             ga.setCamera(125, 125);
@@ -89,11 +89,11 @@
                 hero.boxSprite("#f00");
 				var i = 1;
 				
-				for (var i = 0; i<200; i++)
+				for (var i = 0; i<20; i++)
 				{
 		            var zom = zombie_Sprite(ga, "zombo" + i);
 					var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
-		            zom.setSpeed(20);
+		            zom.setSpeed(2);
 		            gameWorldModel.placeSpriteInCenterOfWorldCell(125+i, 127, zom);
 		            ga.defineSprite(zom);
 		            zom.setSound("normal", "../assets/zombie/neutral1.mp3");
