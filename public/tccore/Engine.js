@@ -1,4 +1,14 @@
-
+//This chunk thanks to http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
 
 var LEFTARROW = 37 ;
 var UPARROW = 38;
@@ -20,7 +30,7 @@ var frameMessage = "";
 var Engine =
     function (mainCanvas, backgroundCanvas) {
         isapplemobile = DetectAppleMobile();
-
+		self = this;
         canvas = mainCanvas;
         context = canvas.getContext("2d");
         backCanvas = backgroundCanvas;
@@ -53,6 +63,8 @@ var Engine =
         document.ontouchend = eventHandler;
         document.ontouchmove = eventHandler;
     },
+	self,
+	texture,
     sceneBackDropDrawn = false,
     isapplemobile,
     behaviors = [],
@@ -496,12 +508,20 @@ var Engine =
         if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             backCanvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+			if (texture != undefined)
+			{
+				drawTexture();
+			}
             draw2DWorld();
         }
         else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             backCanvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-            drawMock3DWorld();
+            if (texture != undefined)
+			{
+				drawTexture();
+			}
+			drawMock3DWorld();
         }
         else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC_GRID_TEST) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
@@ -509,6 +529,21 @@ var Engine =
             drawMock3DGrid();
         }
     },
+	drawTexture = function(){
+		var ctx = self.getMainContext();
+		var ptrn = ctx.createPattern(texture, 'repeat');
+		ctx.fillStyle = ptrn;
+		ctx.fillRect(0,0,self.getCanvasWidth(), self.getCanvasHeight())
+	},
+	setUnderlayTexture = function(image)
+	{
+		texture = new Image();
+		texture.src = image;
+	},
+	clearUnderlayTexture = function()
+	{
+		texture = undefined;
+	},
     drawMock3DWorld = function () {
         //this calculates the number of cells current visible around the origin      
         var visibleCells = gameWorldModel.getAllVisibleCells();
@@ -540,7 +575,7 @@ var Engine =
         var incX = iniX;
         var incY = iniY;
         var overlays = [];
-        for (var i = 0; i <= 0; i++) {
+        for (var i = 0; i <= totalX; i++) {
             for (var ii = 0; ii <= totalY; ii++) {
 
                 //convert to world cell to get the correct sprite
@@ -555,13 +590,13 @@ var Engine =
                         if (cell.Type == GAME_WORLD_CELL_UNDERLAY) {
                             var cellSprite = cell.Sprite;
                             if (cellSprite != undefined) {
-                                //we also need to calculate the draw position of this cell's sprite. 
-                                var cellDrawPoints = gameWorldModel.placeSpriteInCenterOfWorldCell(worldCellPos.x, worldCellPos.y, cellSprite);
-                                cellSprite.setFrame(cell.Frame);                               
-                                cellSprite.prep();
-                                cellSprite.display();
-                            
-                            }
+                                                                              //we also need to calculate the draw position of this cell's sprite. 
+                                                                              var cellDrawPoints = gameWorldModel.placeSpriteInCenterOfWorldCell(worldCellPos.x, worldCellPos.y, cellSprite);
+                                                                              cellSprite.setFrame(cell.Frame);                               
+                                                                              cellSprite.prep();
+                                                                              cellSprite.display();
+                                                                          
+                                                                          }
                         }
                         else {
                             overlays.push(cell);
@@ -1206,8 +1241,9 @@ var Engine =
         play: function () {
             idleEvent = new GameEvent(gameEvents.Idle, "");
             eventHandler(TranslateUIEventToGameEvent(idleEvent));
-            intervalId = setInterval(this.gameLoop, 15);
+            //intervalId = setInterval(this.gameLoop, 15);
 
+			requestAnimFrame(self.gameLoop);
 
             if (frameDebug == true) {
                 canvas.textBaseline = "top";
@@ -1415,6 +1451,7 @@ var Engine =
             }
 
             Draw();
+			requestAnimFrame(self.gameLoop);
         },
         handleChanges: function (changes) {
             //we get an array of changes from the server
@@ -1522,3 +1559,5 @@ Engine.prototype.getOverLayMap = this.getOverLayMap;
 Engine.prototype.getSortedSpriteArray = this.getSortedSpriteArray;
 Engine.prototype.addImage = this.addImage;
 Engine.prototype.addSound = this.addSound;
+Engine.prototype.setUnderlayTexture = this.setUnderlayTexture;
+Engine.prototype.clearUnderlayTexture = this.clearUnderlayTexture;
