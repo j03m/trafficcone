@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    
+    <script type="text/javascript" src="..\tccore\jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="..\..\FlashCanvasPro\bin\flashcanvas.js"></script><![endif]-->
+    <script type="text/javascript" src="..\tccore\NotConstants.js"></script>
+    <script type="text/javascript" src="..\tccore\browserdetect.js"></script>
+    <script type="text/javascript" src="..\tccore\GameEvent.js"></script>
+    <script type="text/javascript" src="..\tccore\Frame.js"></script>
+    <script type="text/javascript" src="..\tccore\Sprite.js"></script>
+    <script type="text/javascript" src="..\tccore\SpriteInventory.js"></script>
+    <script type="text/javascript" src="..\tccore\GameWorld.js"></script>
+    <script type="text/javascript" src="..\tccore\GameWorldModel2D.js"></script>
+    <script type="text/javascript" src="..\tccore\GameWorldModelIso.js"></script>
+    <script type="text/javascript" src="..\tccore\LoadShim.js"></script>
+    <script type="text/javascript" src="..\tccore\Loader.js"></script>
+    <script type="text/javascript" src="..\tccore\Engine.js"></script>
+    <script type="text/javascript" src="..\assets\hero\hero.js"></script>
+    <script type="text/javascript" src="..\assets\zombie\zombie.js"></script>
+    <script type="text/javascript" src="..\assets\Cells\Cells.js"></script>
+    <script type="text/javascript" src="..\assets\Cells\singleColumn.js"></script>
+    <script type="text/javascript" src="..\tccore\pathfinding\BinaryHeap.js"></script>
+    <script type="text/javascript" src="..\tccore\pathfinding\astar.js"></script>    
+    <script type="text/javascript" src="..\tccore\Vector.js"></script>
+    <script type="text/javascript" src="..\tccore\behaviors\Seeker.js"></script>
+    <script type="text/javascript" src="..\tccore\behaviors\SpriteSeeker.js"></script>
+    <script type="text/javascript" src="..\tccore\behaviors\OriginSeeker.js"></script>
+
+    <meta content="width=320, user-scalable=0" />
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <script type="text/javascript">
+        var ga;
+        var worldCells;
+        var column;
+        var zom;
+        var zom2;
+
+
+
+
+        $(document).ready(function () {
+            ga = new Engine(document.getElementById("gamescreen"), document.getElementById("backbuffer2"));
+
+            //tell the engine our gameworld will consist of a 250x250 grid of 160,79 cells
+            var gameWorld = new GameWorld(250, 250, 73, 73, GAME_WORLD_STYLE_ISOMETRIC);
+            worldCells = altarCells_Sprite(ga);
+            worldCells.setup(ga);
+            column = columnCell_Sprite(ga, "column");
+			ga.setUnderlayTexture("../assets/Cells/alter-fs-small-txt.png");
+
+            //loop through the matrix and populate it with cells
+            for (var i = 0; i < 25; i++) {
+                for (var ii = 0; ii < 25; ii++) {
+                    //set a cell using the worldCells sprite, randomly select one of the 25 frames in this sprite.
+                    gameWorld_setCell(gameWorld, i, ii, undefined, undefined, GAME_WORLD_CELL_UNDERLAY, GAME_WORLD_CELL_OPEN);
+                }
+            }
+
+            for (var i = 0; i < 50; i++) {
+                gameWorld_setCell(gameWorld, getRand(25), getRand(25), columnCell_Sprite(ga, "column" + i), 0, GAME_WORLD_CELL_OVERLAY, GAME_WORLD_CELL_BLOCK);
+            }
+
+            ga.setWorld(gameWorld);
+            ga.setCamera(12, 12);
+
+     
+
+            var zom = zombie_Sprite(ga, "zombo" + "1");
+            zom.setSpeed(2);
+            gameWorldModel.placeSpriteInCenterOfWorldCell(12, 14, zom);
+            ga.defineSprite(zom);
+            zom.setSound("normal", "../assets/zombie/neutral1.mp3");
+            zom.setSound("walking", "../assets/zombie/neutral6.mp3");
+            zom.setSound("attacking", "../assets/zombie/attack6.mp3");
+            zom.setSound("hit", "../assets/zombie/gethit1.mp3");
+            zom.setSound("headsplode", "../assets/zombie/death2.mp3");
+
+            var hero = zombie_Sprite(ga, "zombo");
+            hero.setSpeed(10);
+            hero.setSound("normal", "../assets/zombie/neutral1.mp3");
+            hero.setSound("walking", "../assets/zombie/neutral6.mp3");
+            hero.setSound("attacking", "../assets/zombie/attack6.mp3");
+            hero.setSound("hit", "../assets/zombie/gethit1.mp3");
+            hero.setSound("headsplode", "../assets/zombie/death2.mp3");
+
+            gameWorldModel.placeSpriteInCenterOfWorldCell(12, 12, hero);
+            ga.defineSprite(hero);
+
+            var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
+            var originSeeker = new OriginSeeker("walking", "normal", "attacking", 100);
+
+            ga.addEventBehavior(ga.gameEvents.MouseDown, "", hero, "walking", originSeeker, playInfinite);
+            ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
+            ga.addEventBehavior(ga.gameEvents.MouseDown, undefined, undefined, undefined, function (e) {
+                var spriteClick = ga.CheckEventPosition(e.offsetX, e.offsetY);
+
+                if (spriteClick != undefined && spriteClick.name != "zombo") {  //if not our hero
+                    //highlight the sprite
+                    spriteClick.highLight(0, 0, 0, 0, 255, 0, 0, 0);
+                    this.lastClick = spriteClick;
+                    originSeeker.setTarget(spriteClick);
+                }
+                else {
+                    originSeeker.setTarget(undefined);
+                    if (this.lastClick != undefined) {
+                        this.lastClick.unHighLight();
+                    }
+
+                }
+            }, 1);
+
+            var sprite1Health = 100;
+            var sprite2Health = 10;
+            ga.setCollisionHandler(function (sprite1, sprite2) {
+
+                if (sprite1.getSpriteType() == -2 || sprite2.getSpriteType() == -2) {
+                    return;
+                }
+
+                originSeeker.stopMove();
+                spriteSeeker.stopMove();
+                if (sprite1.getSpriteState() == "attacking") {
+                    sprite1.setWatcher("attacking", function () {
+                        sprite2Health -= 5;
+
+                        if (sprite2Health <= 0) {
+                            sprite2.setWatcher("headsplode", function () {
+                                ga.removeSprite("zombo1");
+                            }, WATCH_TYPE_LAST_FRAME);                            
+                            sprite2.setSpriteState("headsplode", undefined, true);
+                        }
+                        else {
+                            sprite2.setSpriteState("hit");
+                        }
+                        sprite1.clearWatcher("attacking");
+                    }, WATCH_TYPE_LAST_FRAME);
+                }
+
+                if (sprite2.getSpriteState() == "attacking") {
+                    sprite2.setWatcher("attacking", function () {
+
+                        sprite1Health -= 5;
+                        if (sprite1Health <= 0) {
+                            sprite1.setWatcher("headsplode", function () {
+                                ga.removeSprite("zombo");
+                            }, WATCH_TYPE_LAST_FRAME);
+                            sprite1.setSpriteState("headsplode");
+
+                        }
+                        else {
+                            sprite1.setSpriteState("hit");
+                        }
+                        sprite2.clearWatcher("attacking");
+
+                    }, WATCH_TYPE_LAST_FRAME);
+                }
+
+            });
+
+            var intervalid = setInterval(function () {
+                if (hero.isLoadComplete() && worldCells.isLoadComplete() && column.isLoadComplete()) {
+                    ga.play();
+                    clearInterval(intervalid);
+                }
+            });
+        });
+
+      
+        function getRand(max) {
+            return Math.floor(Math.random() * max);
+        }
+    </script>
+</head>
+<body>
+
+//todo: fix allow move
+
+    <canvas id="gamescreen" width="800" height="600" style="border-style: dotted; float: left;">
+        No supporty canvisimo!
+    </canvas>
+    <canvas id="backbuffer2" width="800" height="600" style="visibility:hidden; display:none;"></canvas>
+
+    <div id="frameDebug"></div>
+ 
+</body>
+</html>
