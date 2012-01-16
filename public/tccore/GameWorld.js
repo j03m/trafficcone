@@ -6,9 +6,6 @@ var GAME_WORLD_CELL_UNDERLAY = -1;
 var GAME_WORLD_CELL_OVERLAY = -2;
 var GAME_WORLD_CELL_OPEN = -3;
 
-function gameWorld_setCell(gameWorld, i, ii, sprite, frame, type, blockType, spriteId) {
-    gameWorld.Cells[i][ii] = new Cell(sprite, frame, type, blockType, i, ii, spriteId);    
-}
 
 //Server side use for node.js
 if (typeof exports !== 'undefined') {

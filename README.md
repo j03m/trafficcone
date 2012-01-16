@@ -17,7 +17,7 @@ Examples:
 
 
 ### Create a simple 2D world with 2D sprites
-The supporting example for this section can be found in public/examples/streetfighter/canvas.html. This example rips some art assets from Street Fighter 3 and shows you how to wire them together easily with some basic collision detection.
+The supporting example for this section can be found in public/examples/2D/2D.html. This example rips some art assets from Street Fighter 3 and shows you how to wire them together easily with some basic collision detection.
 
 First and foremost, Traffic Cone requires two html 5 canvases to work with. To create a basic engine, you simply create a new instance of the Engine class and supply the canvas elements ala:
 
@@ -67,8 +67,21 @@ ga.setBackDrop(backDrop);
 ```
 What I did here is I create a sprite with 1 frame and then told the game engine to use it as a backdrop.
 
-### Docs Todo;
 ### Creating an isometric game world with mock-3D sprites
+The supporting code for this section can be found public/examples/Isometric.html
+
+Creating an isometric world is similar to 2D. But, now instead of just throwing sprites onto a canvas, we're going to define a GameWorld, which in turn will give us access to a GameWorldModel which we can use to place sprites in various aspects of "world space" and have that translate seamlessly to "canvas space". To create an isometric game world:
+
+```js
+ga = new Engine(document.getElementById("gamescreen"), document.getElementById("backbuffer2"));
+
+var gameWorld = new GameWorld(250, 250, 73, 73, GAME_WORLD_STYLE_ISOMETRIC);
+```
+
+
+
+
+### Docs Todo;
 ### Creating a simple composite sprite
 ### Creating a complex composite sprite
 ### Events and Controlling Input
