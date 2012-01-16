@@ -32,7 +32,6 @@ function ready()
 
     //setup a backdrop image
     backDrop = new Sprite("backdrop");
-    
     backDrop.setSpriteType("backdrop");
     backDrop.setup(ga);
 
@@ -74,10 +73,6 @@ function ready()
     ga.defineSprite(alex);
     ga.addEventBehavior(ga.gameEvents.NPC, "", alex, "alex", npcAlexThink, playInfinite);
 
-    //todo: Loader
-    //todo: Modify game loop so that sprite z order is maintained based on y position
-    //todo: make npcs animate based on think state
-    //todo: implement collisions based on state (attack)
     //todo: implement PC health?
     checkingId = setInterval(sheetLoaded, 100);
 
@@ -200,7 +195,7 @@ var thinking = 0;
 var acting = 0;
 function npcAlexThink()
 {
-    return;
+
     //this defines how quickly alex thinks about what to do
     thinking++;
     if (thinking < ALEX_THINKS)
@@ -365,9 +360,9 @@ function defineAlexSprite()
     alex.setDownSpeed(1);
     alex.setInSpeed(1);
     alex.setOutSpeed(1);
-    alex.setTop(ga.getCanvasHeight() * .5);
-    alex.setLeft(ga.getCanvasHeight() * .7);
-    alex.setTopBorder(ga.getCanvasHeight() * .3);
+    alex.setTop(ga.getCanvasHeight() * .7);
+    alex.setLeft(ga.getCanvasWidth() * .7);
+    alex.setTopBorder(ga.getCanvasHeight() * .65);
     alex.setBottomBorder(ga.getCanvasHeight() - 5);
     alex.setLeftBorder(0);
     alex.setRightBorder(ga.getCanvasWidth() * .9);
@@ -448,9 +443,9 @@ function defineRyuSprite() {
         ryu.setInSpeed(50);
         ryu.setOutSpeed(50);
     }
-    ryu.setTop(ga.getCanvasHeight() * .5);
-    ryu.setLeft(ga.getCanvasHeight() * .2);
-    ryu.setTopBorder(ga.getCanvasHeight() * .3);
+    ryu.setTop(ga.getCanvasHeight() * .7);
+    ryu.setLeft(ga.getCanvasWidth() * .2);
+    ryu.setTopBorder(ga.getCanvasHeight() * .65);
     ryu.setBottomBorder(ga.getCanvasHeight() - 5);
     ryu.setLeftBorder(0);
     
