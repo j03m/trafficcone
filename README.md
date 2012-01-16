@@ -1,7 +1,7 @@
 Traffic Cone is an isometric tile based game engine written for html5. It makes complex animations of sprites and tiles based worlds fairly simple. 
+===
 
 Traffic Cone is currently client side only, so for multiplayer games you'll have to provide your own server. But expect to see more on this front soon, we're actively working on Traffic Cone server.
-===
 
 Features: 
 
@@ -65,19 +65,17 @@ bdImage.push(new Frame(0, 0, 512, 860, 0));
 backDrop.defineSequence("backdrop", "../../assets/londonsubway/londonSubway.png", bdImage, playInfinite);
 ga.setBackDrop(backDrop);
 ```
-What I did here is I create a sprite with 1 frame and then told the game engine to use it as a backdrop.s
+What I did here is I create a sprite with 1 frame and then told the game engine to use it as a backdrop.
 
-
-
-
-Creating an isometric game world with mock-3D sprites
-Creating a simple composite sprite
-Creating a complex composite sprite
-Events and Controlling Input
-Custom draw routines
-Frame level alerting
-Collision detection
-Path Finding and Behaviors
+### Docs Todo;
+### Creating an isometric game world with mock-3D sprites
+### Creating a simple composite sprite
+### Creating a complex composite sprite
+### Events and Controlling Input
+### Custom draw routines
+### Frame level alerting
+### Collision detection
+### Path Finding and Behaviors
 
 
 ===
