@@ -66,19 +66,19 @@
                 hero.boxSprite("#f00");
 				var i = 1;
 				
-				for (var i = 0; i<5; i++)
+				for (var i = 0; i<25; i++)
 				{
 		            var zom = zombie_Sprite(ga, "zombo" + i);
 					var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
 		            zom.setSpeed(2);
-		            gameWorldModel.placeSpriteInCenterOfWorldCell(25+i, 27, zom);
+		            gameWorldModel.placeSpriteInCenterOfWorldCell((worldSize/2)+i, worldSize/2, zom);
 		            ga.defineSprite(zom);
 		            zom.setSound("normal", "../assets/zombie/neutral1.mp3");
 		            zom.setSound("walking", "../assets/zombie/neutral6.mp3");
 		            zom.setSound("attacking", "../assets/zombie/attack6.mp3");
 		            zom.setSound("hit", "../assets/zombie/gethit1.mp3");
 		            zom.setSound("headsplode", "../assets/zombie/death2.mp3");
-	                //ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
+	                ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
 				}
 
 
@@ -87,7 +87,7 @@
 	            var intervalid = setInterval(function () {
 	                if (hero != undefined && hero.isLoadComplete() && worldCells.isLoadComplete() && column.isLoadComplete()) {
 	                    hero.setInnerDrawRectOverride(80, 100);
-	                    gameWorldModel.placeSpriteInCenterOfWorldCell(25, 25, hero);                    
+	                    gameWorldModel.placeSpriteInCenterOfWorldCell(worldSize/2, worldSize/2, hero);                    
 	                    ga.defineSprite(hero);
 
 	                    var originSeeker = new OriginSeeker("WL", "NU", "A1", 100);

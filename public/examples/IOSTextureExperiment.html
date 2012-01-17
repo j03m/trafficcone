@@ -45,12 +45,12 @@
 
         $(document).ready(function () {
            	var worldSize = 50;
-			ga = MakeIsoMetricGameWorld(worldSize);
+			ga = MakeIsoMetricGameWorld(worldSize, true);
 	 
 
             var zom = zombie_Sprite(ga, "zombo" + "1");
             zom.setSpeed(2);
-            gameWorldModel.placeSpriteInCenterOfWorldCell(12, 14, zom);
+            gameWorldModel.placeSpriteInCenterOfWorldCell(worldSize/2, (worldSize/2)+2, zom);
             ga.defineSprite(zom);
             zom.setSound("normal", "../assets/zombie/neutral1.mp3");
             zom.setSound("walking", "../assets/zombie/neutral6.mp3");
@@ -66,7 +66,7 @@
             hero.setSound("hit", "../assets/zombie/gethit1.mp3");
             hero.setSound("headsplode", "../assets/zombie/death2.mp3");
 
-            gameWorldModel.placeSpriteInCenterOfWorldCell(12, 12, hero);
+            gameWorldModel.placeSpriteInCenterOfWorldCell(worldSize/2, worldSize/2, hero);
             ga.defineSprite(hero);
 
             var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
