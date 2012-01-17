@@ -80,12 +80,15 @@ var gameWorld = new GameWorld(250, 250, 73, 73, GAME_WORLD_STYLE_ISOMETRIC);
 After this you can populate the cells of your game world with various sprites. You can also tell the gameWorld what sort of rendering style these sprites have and if they are open. For example GAME_WORLD_CELL_UNDERLAY means the cell is always rendered under character aka "the floor" whereas GAME_WORLD_CELL_OVERLAY means the cell will appear over characters like a pillar or ceiling. In addition, cells can be available for characters to move into aka GAME_WORLD_CELL_OPEN vs closed off via GAME_WORLD_CELL_BLOCK. Let's look at the code from Helpers.js where we have a function MakeIsoMetricWorld().
 
 First, let's make the sprites we need. We use one sprite sheet to represent all of the floor "tiles". See Cells.js for details. Then, we create a sprite that will look like a column. 
+
 ```js
 worldCells = altarCells_Sprite(ga);
 worldCells.setup(ga);
 column = columnCell_Sprite(ga, "column");
 ```
+
 Let's loop through the world and set each tile to a random floor tile from our sprite sheet:
+
 ```js
 for (var i = 0; i < worldSize; i++) {
     for (var ii = 0; ii < worldSize; ii++) {
@@ -95,6 +98,7 @@ for (var i = 0; i < worldSize; i++) {
 }
 ```
 Nice, but a completely open world with no obstacles is hardly any fun. Let's add some columns to random cells:
+
 ```js
 for (var i = 0; i < columns; i++) {
 	var xx = getRand(worldSize);
