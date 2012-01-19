@@ -287,8 +287,6 @@ Coming soon see: examples/CompositeSprite.html
 ### License:
 
    Traffic Cone is released under the MIT License.
-   
-    * Remove the rights to "sublicense, and/or sell copies of the Software".
   
   	Copyright (c) 2010, Joe Mordetsky, http://github.com/j03m
 
