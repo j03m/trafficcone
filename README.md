@@ -271,18 +271,5 @@ The idea behind this is that the json blobs would be stored on the server and re
    modifications:
    
     * Remove the rights to "sublicense, and/or sell copies of the Software".
-    * Permit to use "free of charge" only for non-profit use.
-    * Add conditions for commercial use.
-   
-   As a result, Traffic Cone is available free of charge for non-profit
-   use. If you use Traffic Cone for commercial purposes, however, you
-   are required to purchase a commercial license. This commercial license
-   includes the following rights:
-   
-    * The licensee can use Traffic Cone as many times as needed.
-    * The licensee can download the latest version of Traffic Cone as
-      many times as needed.
-   
-   Commericial licenses are currently available at no charge to select early adopters. 
    
    Please contact us on Github. http://www.github.com/j03m for details.
