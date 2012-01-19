@@ -1,4 +1,4 @@
-Traffic Cone is a 2D and isometric tile based game engine written for html5. It makes complex animations of sprites and tiles based worlds fairly simple. 
+Traffic Cone is a 2d and 2.5d (isometric) tile based game engine written for html5. It makes complex animations of sprites and tiles based worlds fairly simple. 
 ===
 
 Traffic Cone is currently client side only, so for multiplayer games you'll have to provide your own server. But expect to see more on this front soon, we're actively working on Traffic Cone server.
