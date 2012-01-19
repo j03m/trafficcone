@@ -281,6 +281,8 @@ Coming soon see: examples/2D or examples/Isometric.html
 Coming soon see: examples/Isometric.html
 ### Special sprite generators
 Coming soon see: examples/CompositeSprite.html
+### Slimming things down for mobile
+Coming soon see: examples/IOSTextureExperiments.html - swaps out bg tiles for one textured background. Speeds up animations when moving the entire background is an issue.
 
 ===
 
