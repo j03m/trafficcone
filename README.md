@@ -112,7 +112,144 @@ Last, we need to tell our Engine about the gameworld so it knows what to render,
 ga.setWorld(gameWorld);
 ga.setCamera(worldSize/2, worldSize/2);
 ```
+Once we have a world set up we can add some isometric sprites to the mix. For example from many of our examples we use our demo zombie isometric sprite:
+```js
+var zom = zombie_Sprite(ga, "zombie1");
+```
 
+This zombie function wraps a call to our SpriteInventory class which is an abstraction around some of the sprite creation methods we reviewed earlier. It is important because it demonstrates how an isometric sprite differs from a 2d sprite. For an isometric sprite, we don't just "flip" a sprite when it changes direction as we saw in our 2d demo. In the 2D demo, each sprite had a series of animation representing a given state. When we wanted to change the sprites direction, we simply inverted the sprite.
+
+However, for our isometric demos, each direction a sprite supports can have it's own animation. So, in this case create a hierarchy of sorts:
+
+	State - a set of animations representings the state of the sprite, ie the action the sprite is currently taking.
+		Direction - an animation for a given state, in a given direction
+			Frame - a frame of a given direction animation.
+			
+We accomplish this by supply additional parameters to the defineSequence function:
+
+```js
+ sprite.defineSequence(name, imagePath + imageName, sequence, state, undefined, undefined, direction);
+```
+Where the "direction" parameter indicates that a given sequence should be attached to a given direction. Directions are specified via:
+
+```js 
+var SPRITE_DIRECTION_UNDEFINED = "0";
+var SPRITE_DIRECTION_NORTH = "-1";
+var SPRITE_DIRECTION_NORTH_EAST = "-2";
+var SPRITE_DIRECTION_EAST = "-3";
+var SPRITE_DIRECTION_SOUTH_EAST = "-4";
+var SPRITE_DIRECTION_SOUTH = "-5";
+var SPRITE_DIRECTION_SOUTH_WEST = "-6";
+var SPRITE_DIRECTION_WEST = "-7";
+var SPRITE_DIRECTION_NORTH_WEST = "-8";
+```
+
+All 2D animations internally leverage SPRITE_DIRECTION_UNDEFINED by default. Most of the complexity outlined here can be avoided by creating a json sprite definition and then invoking the global TCSpriteFactory method as demonstrated in our sample zombie sprite file public/assets/zombie/zombie.js. Here we can see:
+
+```js
+function zombie_Sprite(ga, name, loadCallBack) {
+    var template = TCSpriteInventory["de558a04-b5df-4af4-b196-4393d732bb84"];
+    var zombie = TCSpriteFactory(template, name, ga, loadCallBack);           
+    return zombie;
+}
+```
+Here we can see grab a template def from TCSpriteInventory using a guid and then pass that template to TCSpriteFactory generating our zombie sprite. Previous to this call we set up a json definition which defines the sprite:
+
+```js
+//zombie
+TCSpriteInventory["de558a04-b5df-4af4-b196-4393d732bb84"] = {
+    usage: USAGE_NPC,
+    prefix: "zombie",
+    speed: 3, //todo: Sprites should have attributes like strength, speed, weight etc
+    imagePath: DOMAIN_PREFIX + "assets/zombie/",
+    audioPath: DOMAIN_PREFIX + "assets/zombie/",
+    behavior:
+	{
+	    seek: "hero",
+	    foundState: "attacking",
+	    moveState: "walking",
+	    leftGap: 10,
+	    topGap: 10,
+	    moveInterval: 100,
+	    definition: DOMAIN_PREFIX + "tccore/behaviors/SpriteSeeker.js",
+	    constructor: "SpriteSeeker(behavior.moveState, behavior.foundState)",
+	    eventType: "NPC",
+	    startState: "normal"
+	},
+    states:
+	{
+	    normal:
+		{
+		    name: "normal",
+		    columnRange: { start: 0, end: 3 },
+		    playState: -1,
+		    sound: "neutral1.mp3",
+		    speed: 200
+		},
+	    walking:
+		{
+		    name: "walking",
+		    columnRange: { start: 4, end: 11 },
+		    playState: -1,
+		    sound: "neutral6.mp3",
+		    speed: 200
+		},
+	    attacking:
+		{
+		    name: "attacking",
+		    columnRange: { start: 12, end: 21 },
+		    playState: 1,
+		    sound: "attack6.mp3",
+		    speed: 100
+		},
+	    hit:
+		{
+		    name: "hit",
+		    columnRange: { start: 21, end: 24 },
+		    playState: 1,
+		    sound: "gethit1.mp3",
+		    speed: 300
+		},
+	    headsplode:
+		{
+		    name: "headsplode",
+		    sound: "death2.mp3",
+		    columnRange: { start: 30, end: 37 },
+		    playState: 1,
+		    speed: 300
+		},
+	    dead:
+		{
+		    name: "dead",
+		    sound: "death2.mp3",
+		    columnRange: { start: 24, end: 29 },
+		    playState: 1,
+		    speed: 300
+		}
+	},
+    neutralState: "normal",
+    rowDirectionMap:
+	[
+		{ row: 0, direction: SPRITE_DIRECTION_WEST, imageName: "zombie_0-0-0.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_NORTH_WEST, imageName: "zombie_0-0-1.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_NORTH, imageName: "zombie_0-0-2.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_NORTH_EAST, imageName: "zombie_0-0-3.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_EAST, imageName: "zombie_0-0-4.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_SOUTH_EAST, imageName: "zombie_0-0-5.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_SOUTH, imageName: "zombie_0-0-6.png" },
+		{ row: 0, direction: SPRITE_DIRECTION_SOUTH_WEST, imageName: "zombie_0-0-7.png" }
+	],
+
+    tileHeight: 130,
+    tileWidth: 128,
+    drawWidth: 40,
+    drawHeight: 60,
+    initialDirection: SPRITE_DIRECTION_SOUTH_WEST
+};
+```
+The idea behind this is that the json blobs would be stored on the server and requested as necessary via an ajax or jsonp loader, but that isn't quite ready yet and will be part of Traffic Cone server.
+
+ 
 
 ### Docs Todo;
 ### Creating a simple composite sprite
@@ -122,6 +259,7 @@ ga.setCamera(worldSize/2, worldSize/2);
 ### Frame level alerting
 ### Collision detection
 ### Path Finding and Behaviors
+### Special sprite generators
 
 
 ===
