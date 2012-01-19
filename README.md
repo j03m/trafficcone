@@ -14,7 +14,8 @@ Features:
 
 ===
 Examples:
-
+### Running the samples
+This document is still a bit immature, but Traffic Cone comes with a set of sample that should help to illustrate some of the concepts below. They're webserver agnostic, but most of our testing has been with Nodejs using the Express framework. To run the sample, you essentially want to modify  public/tccore/NotConstants.js (because they're not) and change your DOMAIN_PREFIX value to your webserver of choice and place everything under public so that it is available via that path. If you have nodejs installed and want to get up and running quickly you can modify DOMAIN_PREFIX to http://localhost:8089/ and then install expressjs and then run node webserver.js from the root trafficcone directory. From there all examples will be available via http://localhost:8089/examples/FILENAMEHERE.html
 
 ### Create a simple 2D world with 2D sprites
 The supporting example for this section can be found in public/examples/2D/2D.html. This example rips some art assets from Street Fighter 3 and shows you how to wire them together easily with some basic collision detection.
@@ -249,16 +250,28 @@ TCSpriteInventory["de558a04-b5df-4af4-b196-4393d732bb84"] = {
 ```
 The idea behind this is that the json blobs would be stored on the server and requested as necessary via an ajax or jsonp loader, but that isn't quite ready yet and will be part of Traffic Cone server.
 
+### Inspecting and manipulating the isometric game world
+Once you have sprites you'll obviously want to place them in the game world. You'll also want to know where they on screen and what cells are currently visible to the user's canvas (the view port). Ie, there's a whole big world that we have in memory, but we're only rendering what the user can see at any point in time. To handle this complexity for you, Traffic Cone provides an isometric game world model that can be fetched via:
+
+```js
+	var gameWorldModel = ga.getWorldModel();
+```
+
+The game world model then lets you do simple things like place sprites in world/screen space without having to think of all the funky angles that come with tilting a grid into fake 3d (2.5d?) space. For example, here is some code that places one of our zombies in the cell at the very center of our world.
+
+```js
+gameWorldModel.placeSpriteInCenterOfWorldCell((worldSize/2), worldSize/2, zom);
+```
  
 
-### Docs Todo;
+### More to come - Docs Joe still needs to write: 
 ### Creating a simple composite sprite
 ### Creating a complex composite sprite
-### Events and Controlling Input
+### NPC Events and Controlling Input
 ### Custom draw routines
 ### Frame level alerting
 ### Collision detection
-### Path Finding and Behaviors
+### AI, Path Finding and Behaviors
 ### Special sprite generators
 
 
