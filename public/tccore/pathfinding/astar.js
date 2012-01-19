@@ -1,3 +1,5 @@
+//initial implementation reviewed from: https://github.com/bgrins/javascript-astar
+
 var serverUsage = false;
 if (typeof exports !== "undefined")
 {
