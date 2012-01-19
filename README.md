@@ -266,14 +266,21 @@ gameWorldModel.placeSpriteInCenterOfWorldCell((worldSize/2), worldSize/2, zom);
 
 ### More to come - Docs Joe still needs to write: 
 ### Creating a simple composite sprite
+Coming soon see: assets/hero.js
 ### Creating a complex composite sprite
+Coming soon see: examples/CompositeSprite.html
 ### NPC Events and Controlling Input
+Coming soon see: examples/2D or examples/Isometric.html
 ### Custom draw routines
+Coming soon see: examples/CompositeSprite.html
 ### Frame level alerting
+Coming soon see: examples/TrafficConeTests.html
 ### Collision detection
+Coming soon see: examples/2D or examples/Isometric.html
 ### AI, Path Finding and Behaviors
+Coming soon see: examples/Isometric.html
 ### Special sprite generators
-
+Coming soon see: examples/CompositeSprite.html
 
 ===
 
