@@ -245,7 +245,7 @@ var Engine =
             engineRef = behavior.sprite.getEngineRef();
             if (!DonePlaying(behavior)) {
                 if (behavior.actionClass != null) {
-
+				
                     if (behavior.actionClass.execute != null) {
                         behavior.actionClass.execute(innerEvent, behavior.sprite, engineRef);
                     }
@@ -332,7 +332,8 @@ var Engine =
         //if there are behaviors for this event - 
         if (eventBehaviors != null) {
             //loop through the behaviors
-            for (var i = 0; i < eventBehaviors.length; i++) {
+
+			for (var i = 0; i < eventBehaviors.length; i++) {
 
                 //get a specific behavior from the list of behaviors
                 var behavior = eventBehaviors[i];
@@ -350,7 +351,8 @@ var Engine =
                         }
                     }
                     //play the sprite animation for this behavior
-                    DoPlayAction(behavior, currentEvent.innerEvent);
+                 
+					DoPlayAction(behavior, currentEvent.innerEvent);
                 }
                 //                else {
                 //                    DoPlayAction(behavior, currentEvent.innerEvent);

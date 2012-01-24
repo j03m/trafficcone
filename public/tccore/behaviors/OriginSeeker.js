@@ -27,7 +27,7 @@ OriginSeeker.prototype.setFoundCallback = function (foundCallback) {
 }
 
 OriginSeeker.prototype.postTransExecute = function (point, sprite, engine) {
-
+	
     this.stop = false;
     var counter = 0;
     var movementState = this.movementState;
@@ -59,7 +59,7 @@ OriginSeeker.prototype.postTransExecute = function (point, sprite, engine) {
     var startCell = model.getWorldCellFromSprite(sprite);
     var path = astar.search(cells, startCell, parentObj.endCell, model, undefined);
     if (path == undefined || path.length == 0) {
-        if (this.seekSprite != undefined) {
+    	if (this.seekSprite != undefined) {
             sprite.setSpriteState(attackState);
             sprite.isoFacePoint(model.getIsoSpritePos(this.seekSprite));
         }
@@ -69,6 +69,7 @@ OriginSeeker.prototype.postTransExecute = function (point, sprite, engine) {
         clearInterval(intervalId);
         return;
     }
+	
     path = astar.smoothPath(path, sprite.getWidth(),model);
     var pathPoints = astar.pathToPoints(path, model, sprite.getUpSpeed(), model.getIsoSpritePos(sprite)); //assumes all speeds are the same        
     if (pathPoints == undefined || pathPoints.length < 0) {
