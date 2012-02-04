@@ -430,7 +430,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
     },
     this.unchain = function (file) {
-        chained[file] = undefined;
+        delete chained[file];
     },
     this.getChainedImages = function () {
         return chained;

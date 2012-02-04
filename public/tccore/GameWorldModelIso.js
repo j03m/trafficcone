@@ -314,7 +314,10 @@ GameWorldModelIso.prototype = {
 
     },
     getCellBoundaries: function (theCellX, theCellY) {
-        var aOffset = { "offsetX": (this.cellWidth * -1) / 2, "offsetY": (this.cellHeight * -1) / 2 };
+        
+		//cell points are calculated from the right of a diamond clockwise, so right, bottom, left, top
+		
+		var aOffset = { "offsetX": (this.cellWidth * -1) / 2, "offsetY": (this.cellHeight * -1) / 2 };
         var aCell = { "x": theCellX, "y": theCellY };
         var p1 = this.getScreenCoords(aCell, aOffset);
 
