@@ -1,1 +1,0 @@
-var AMSCBOWS3LITNorth = { frames:20, frameWidth:252, frameHeight:203 };

@@ -1,1 +1,0 @@
-var AMS1BOWS5HVYSouthEast = { frames:9, frameWidth:252, frameHeight:203 };

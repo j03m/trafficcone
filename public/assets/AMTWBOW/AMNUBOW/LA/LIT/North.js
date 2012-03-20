@@ -1,1 +1,0 @@
-var AMNUBOWLALITNorth = { frames:8, frameWidth:48, frameHeight:53 };

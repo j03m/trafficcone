@@ -44,19 +44,61 @@
 	      	var worldSize = 250;
 			ga = MakeIsoMetricGameWorld(worldSize);
 			var gameWorldModel = ga.getWorldModel();
-            var compositeDef = {
-                "tokenClass": "AM",
-                "weaponClass": "BOW",
-                "HD": "CAP",
-                "TR": "HVY",
-                "LG": "HVY",
-                "RA": "HVY",
-                "LA": "HVY",
-                "RH": "PIK",
-                "LH": "LBB",
-                "SH": "BUC",
-                "S1": undefined,
-                "name": "amazonGirl"
+           
+			var hash = {};
+			//neutral defs
+			hash["BOWNUHDBHMdefault"] = { frames:8, frameWidth:30, frameHeight:64 };
+			hash["BOWNUHDCAPdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			hash["BOWNUHDCRNdefault"] = { frames:8, frameWidth:20, frameHeight:66 };
+			hash["BOWNUHDFHLdefault"] = { frames:8, frameWidth:20, frameHeight:64 };
+			hash["BOWNUHDGHMdefault"] = { frames:8, frameWidth:26, frameHeight:78 };
+			hash["BOWNUHDHLMdefault"] = { frames:8, frameWidth:20, frameHeight:62 };
+			hash["BOWNUHDLITdefault"] = { frames:8, frameWidth:28, frameHeight:67 };
+			hash["BOWNUHDMSKdefault"] = { frames:8, frameWidth:33, frameHeight:65 };
+			hash["BOWNUHDSKPdefault"] = { frames:8, frameWidth:20, frameHeight:63 };
+			hash["BOWNULAHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			hash["BOWNULALITEast"] = { frames:8, frameWidth:48, frameHeight:53 };
+			hash["BOWNULAMEDEast"] = { frames:8, frameWidth:48, frameHeight:52 };
+			hash["BOWNUdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			
+			//walking defs
+			hash["BOWWLHDBHMdefault"] = { frames:8, frameWidth:28, frameHeight:65 };
+			hash["BOWWLHDCAPdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			hash["BOWWLHDCRNdefault"] = { frames:8, frameWidth:22, frameHeight:67 };
+			hash["BOWWLHDFHLdefault"] = { frames:8, frameWidth:22, frameHeight:65 };
+			hash["BOWWLHDGHMdefault"] = { frames:8, frameWidth:24, frameHeight:79 };
+			hash["BOWWLHDHLMdefault"] = { frames:8, frameWidth:22, frameHeight:63 };
+			hash["BOWWLHDLITdefault"] = { frames:8, frameWidth:28, frameHeight:68 };
+			hash["BOWWLHDMSKdefault"] = { frames:8, frameWidth:32, frameHeight:66 };
+			hash["BOWWLHDSKPdefault"] = { frames:8, frameWidth:22, frameHeight:64 };
+			hash["BOWWLLAHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			hash["BOWWLLALITdefault"] = { frames:8, frameWidth:45, frameHeight:54 };
+			hash["BOWWLLAMEDdefault"] = { frames:8, frameWidth:45, frameHeight:53 };
+			hash["BOWWLLGHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+			hash["BOWWLdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
+
+
+		 	var states = {
+		       "Neutral": "NU",
+		       "Walk": "WL"
+		    };
+
+ 			var compositeDef = {
+                characterClass: "AM",
+                movementClass: "BOW",
+                basePart: "TR",
+				TR: "HVY",
+				HD: "CAP",                
+                LG: "HVY",
+                RA: "HVY",
+                LA: "HVY",
+                RH: "PIK",
+                LH: "LBB",
+                SH: "BUC",
+                S1: undefined,
+                name: "amazonGirl",
+				actionDefs: hash,
+				states: states
             };
 
             var hero;

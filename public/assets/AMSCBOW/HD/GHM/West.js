@@ -1,1 +1,0 @@
-var AMSCBOWHDGHMWest = { frames:20, frameWidth:33, frameHeight:79 };

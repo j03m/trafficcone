@@ -1,1 +1,0 @@
-var AMGHBOWS2LITNorthWest = { frames:6, frameWidth:252, frameHeight:203 };

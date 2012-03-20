@@ -1,1 +1,0 @@
-var AMS1BOWSHKITNorth = { frames:9, frameWidth:252, frameHeight:203 };

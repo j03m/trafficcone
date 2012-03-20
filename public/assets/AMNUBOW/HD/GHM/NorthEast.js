@@ -1,1 +1,0 @@
-var AMNUBOWHDGHMNorthEast = { frames:8, frameWidth:26, frameHeight:78 };

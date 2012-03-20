@@ -1,1 +1,0 @@
-var AMTNBOWS4LITWest = { frames:16, frameWidth:252, frameHeight:203 };

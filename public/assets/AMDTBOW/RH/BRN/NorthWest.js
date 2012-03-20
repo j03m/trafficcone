@@ -1,1 +1,0 @@
-var AMA1BOWRHBRNNorthWest = { frames:14, frameWidth:218, frameHeight:154 };

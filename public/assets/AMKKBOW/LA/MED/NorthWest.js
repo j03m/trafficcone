@@ -1,1 +1,0 @@
-var AMKKBOWLAMEDNorthWest = { frames:12, frameWidth:80, frameHeight:72 };

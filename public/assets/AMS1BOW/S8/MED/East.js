@@ -1,1 +1,0 @@
-var AMS1BOWS8MEDEast = { frames:9, frameWidth:252, frameHeight:203 };

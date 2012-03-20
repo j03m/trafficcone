@@ -1,1 +1,0 @@
-var AMTNBOWS4HVYNorthEast = { frames:16, frameWidth:252, frameHeight:203 };

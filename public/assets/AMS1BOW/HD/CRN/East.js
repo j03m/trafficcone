@@ -1,1 +1,0 @@
-var AMS1BOWHDCRNEast = { frames:9, frameWidth:73, frameHeight:66 };

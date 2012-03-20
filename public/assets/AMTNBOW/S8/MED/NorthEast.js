@@ -1,1 +1,0 @@
-var AMTNBOWS8MEDNorthEast = { frames:16, frameWidth:252, frameHeight:203 };

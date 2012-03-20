@@ -1,1 +1,0 @@
-var AMS1BOWHDMSKEast = { frames:9, frameWidth:74, frameHeight:65 };

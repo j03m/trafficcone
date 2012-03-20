@@ -1,1 +1,0 @@
-var AMSCBOWHDGHMSouthWest = { frames:20, frameWidth:33, frameHeight:79 };

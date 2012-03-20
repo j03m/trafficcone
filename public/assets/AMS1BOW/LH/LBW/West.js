@@ -1,1 +1,0 @@
-var AMS1BOWLHLBWWest = { frames:9, frameWidth:252, frameHeight:203 };

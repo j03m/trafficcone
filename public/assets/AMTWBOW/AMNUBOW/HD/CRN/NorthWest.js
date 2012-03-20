@@ -1,1 +1,0 @@
-var AMNUBOWHDCRNNorthWest = { frames:8, frameWidth:20, frameHeight:66 };

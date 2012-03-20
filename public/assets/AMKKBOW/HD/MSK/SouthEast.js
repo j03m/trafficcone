@@ -1,1 +1,0 @@
-var AMKKBOWHDMSKSouthEast = { frames:12, frameWidth:52, frameHeight:66 };

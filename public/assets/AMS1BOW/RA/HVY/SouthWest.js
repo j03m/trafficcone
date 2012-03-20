@@ -1,1 +1,0 @@
-var AMS1BOWRAHVYSouthWest = { frames:9, frameWidth:252, frameHeight:203 };

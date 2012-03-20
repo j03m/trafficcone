@@ -1,1 +1,0 @@
-var AMA1BOWRHPIKSouthWest = { frames:14, frameWidth:210, frameHeight:147 };

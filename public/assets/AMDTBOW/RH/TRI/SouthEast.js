@@ -1,1 +1,0 @@
-var AMA1BOWRHTRISouthEast = { frames:14, frameWidth:184, frameHeight:122 };

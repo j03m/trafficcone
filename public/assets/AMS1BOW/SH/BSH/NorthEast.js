@@ -1,1 +1,0 @@
-var AMS1BOWSHBSHNorthEast = { frames:9, frameWidth:252, frameHeight:203 };

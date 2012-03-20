@@ -1,1 +1,0 @@
-var AMS1BOWHDCRNSouthEast = { frames:9, frameWidth:73, frameHeight:66 };

@@ -1,1 +1,0 @@
-var AMS1BOWLALITWest = { frames:9, frameWidth:62, frameHeight:53 };

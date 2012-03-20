@@ -1,1 +1,0 @@
-var AMS1BOWHDLITNorthWest = { frames:9, frameWidth:77, frameHeight:67 };

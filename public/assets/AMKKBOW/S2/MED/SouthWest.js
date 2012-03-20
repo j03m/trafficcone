@@ -1,1 +1,0 @@
-var AMKKBOWS2MEDSouthWest = { frames:12, frameWidth:252, frameHeight:203 };

@@ -1,1 +1,0 @@
-var AMS1BOWRHOPLEast = { frames:9, frameWidth:252, frameHeight:203 };

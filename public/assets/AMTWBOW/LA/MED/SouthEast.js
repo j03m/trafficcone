@@ -1,1 +1,0 @@
-var AMTWBOWLAMEDSouthEast = { frames:8, frameWidth:26, frameHeight:55 };
