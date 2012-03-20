@@ -1,1 +1,0 @@
-var AMNUBOWHDFHLSouthWest = { frames:8, frameWidth:20, frameHeight:64 };

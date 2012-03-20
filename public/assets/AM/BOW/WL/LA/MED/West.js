@@ -1,1 +1,0 @@
-var AMWLBOWLAMEDWest = { frames:8, frameWidth:45, frameHeight:53 };
