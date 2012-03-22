@@ -5,9 +5,9 @@ function MakeIsoMetricGameWorld(worldSize, texture)
 
     //tell the engine our gameworld will consist of a 250x250 grid of 73,73 cells
     var gameWorld = new GameWorld(worldSize, worldSize, 73, 73, GAME_WORLD_STYLE_ISOMETRIC);
-    worldCells = altarCells_Sprite(ga);
-    worldCells.setup(ga);
-    column = columnCell_Sprite(ga, "column");
+  	worldCells = altarCells_Sprite(ga);
+	worldCells.setup(ga);
+	column = columnCell_Sprite(ga, "column");
 
 
 	if (texture== undefined)
@@ -36,6 +36,7 @@ function MakeIsoMetricGameWorld(worldSize, texture)
 	for (var i = 0; i < columns; i++) {
 		var xx = getRand(worldSize);
 		var yy = getRand(worldSize);
+		
         gameWorld.Cells[xx][yy] = new Cell(columnCell_Sprite(ga, "column" + i),0, GAME_WORLD_CELL_OVERLAY, GAME_WORLD_CELL_BLOCK, xx, yy);
     }
 

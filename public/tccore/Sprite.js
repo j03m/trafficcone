@@ -49,8 +49,8 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     var rotator = 0;
     var tempLastPlay = "";
     var tempcount = 0;
-    var width;
-    var height;
+    var width=0;
+    var height=0;
     var spriteRight;
     var spriteBottom;
     var newRight;
@@ -122,6 +122,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     this.noAdjust = false;
     this.setFrame = setCounter,
     this.animationState = SPRITE_STATE_NONE,
+	this.sortMap = undefined,
     this.getAnimationState = function () { return this.animationState; }
     this.setAnimationState = function (state) { this.animationState = state; }
     this.getNormalState = function () { return normalState; },
@@ -288,13 +289,13 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         if (isNaN(val) || val == null || val == undefined) {
             throw arguments.callee.toString() + " parameter is nonnumeric!";
         }
-        width = val;
+        height = val;
     },
     this.setWidth = function (val) {
         if (isNaN(val) || val == null || val == undefined) {
             throw arguments.callee.toString() + " parameter is nonnumeric!";
         }
-        height = val;
+        width = val;
     },
     this.setInitialSpriteState = function (val) {
         if (val == null || val == undefined) {
@@ -870,7 +871,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     this.easyDefineSequence = function (sheetname, image, rows, cols, height, width, speed, playCount, anchorHor, anchorVer, direction) {
         var sequence = [];
         for (var row = 0; row < rows; row++) {
-            for (var col = 0; col < cols; col++) {
+			for (var col = 0; col < cols; col++) {
                 sequence.push(new Frame(row, col, height, width, speed));
             }
         }
@@ -904,7 +905,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         animations[direction][sheetname].anchorHorizontal = anchorHor;
         animations[direction][sheetname].anchorVertical = anchorVer;
     },
-    this.chainToSequence = function (sheetname, image, direction, spritePart, partsDef) {
+    this.chainToSequence = function (sheetname, image, direction, spritePart, partsDef, frames) {
         if (direction == undefined) {
             direction = SPRITE_DIRECTION_UNDEFINED;
         }
@@ -917,13 +918,27 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             animations[direction][sheetname].chained = [];
         }
         this.addImage(image);
-        var chainDef = { "image": sheets[image], "part": spritePart, "def": partsDef };
-        animations[direction][sheetname].chained.push(chainDef);
+        var chainDef = { "image": sheets[image], "part": spritePart, "def": partsDef, "frames": frames };
+        //animations[direction][sheetname].chained.push(chainDef);
         animations[direction][sheetname].chained[spritePart] = chainDef;
 
-
-
     },
+	this.unChainToSequence = function(sheetname, image, direction, spritePart)
+	{
+		 if (direction == undefined) {
+	            direction = SPRITE_DIRECTION_UNDEFINED;
+	        }
+
+	        if (animations[direction][sheetname] == undefined) {
+	            throw "Cannot unchain an undefined sequence.";
+	        }
+		
+			if (animations[directions][sheetname].chained[spritePart] == undefined)
+			{
+				throw "Cannot unchain " + spritePart + ". This part was never chained.";
+			}
+			delete animations[directions][sheetname].chained[spritePart];
+	},
     this.setSound = function (sheetname, sound) {
 
         this.addSound(sound);
@@ -1020,6 +1035,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     },
     this.display = function () {
 
+
         if (delegatedDrawSprite != undefined) {
             delegatedDrawSprite.setTop(this.getTop());
             delegatedDrawSprite.setLeft(this.getLeft());
@@ -1072,9 +1088,8 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         else {
 
             this.setAnimationState(SPRITE_STATE_DURING);
-
+			
             this.draw();
-
 
             //if this is the final frame, set animation state        
             if (this.isLastFrame() && animations[this.getDirection()][this.getSpriteState()].playCount != -1) {
@@ -1201,6 +1216,8 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
                 width = innerWidth;
                 height = innerHeight;
             }
+
+		
         }
 
         if (isNaN(width) || isNaN(height)) {
@@ -1233,27 +1250,48 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
         //ypos = spriteBottom - actualHeight;
         if (customDrawRoutine == undefined) {
-            if (!drawRectOverridden) {
-                animationX = animations[this.getDirection()][this.getSpriteState()].frames[counter].getFrameX();
-                animationY = animations[this.getDirection()][this.getSpriteState()].frames[counter].getFrameY();
-            }
-            else {
-                //this sprite must have padding, (which is why we override the rect.
-                //padding screws things up in the game - so to handle this we need to calculate the correct x,y of the sprite
-                //based on the height/width override settings
-                var tempX = animations[this.getDirection()][this.getSpriteState()].frames[counter].getFrameX();
-                var tempY = animations[this.getDirection()][this.getSpriteState()].frames[counter].getFrameY();
-                var tempWidth = ani.frames[counter].getFrameW();
-                var tempHeight = ani.frames[counter].getFrameH();
-                animationX = tempX + (tempWidth - innerWidth) / 2;
-                animationY = tempY + (tempHeight - innerHeight) / 2;
-            }
+            var dimensions = this.getFrameDimensions(drawRectOverridden, innerWidth, innerHeight, animations[this.getDirection()][this.getSpriteState()].frames[counter]);
+			width = dimensions.width;
+			height = dimensions.height;
+			animationX = dimensions.sourceX;
+			animationY = dimensions.sourceY;
 
         }
 
 
 
     },
+	this.getFrameDimensions = function(overRide, innerWidth, innerHeight, frame)
+	{
+		var dimensions = {};
+		if (!overRide) {
+            dimensions.sourceX = frame.getFrameX();
+            dimensions.sourceY = frame.getFrameY();
+			dimensions.width = frame.getFrameW();
+			dimensions.height = frame.getFrameH();
+        }
+        else {
+            //this sprite must have padding, (which is why we override the rect)
+            //padding screws things up in the game - so to handle this we need to calculate the correct x,y of the sprite
+            //based on the height/width override settings
+			
+	        dimensions.width = innerWidth;
+	        dimensions.height = innerHeight;
+	        
+            var tempX = frame.getFrameX();
+            var tempY = frame.getFrameY();
+            var tempWidth = frame.getFrameW();
+            var tempHeight = frame.getFrameH();
+            dimensions.sourceX = tempX + Math.floor((tempWidth - innerWidth) / 2);
+            dimensions.sourceY = tempY + Math.floor((tempHeight - innerHeight) / 2);
+	
+        
+		}
+	
+		
+		return dimensions;
+		
+	}
     this.calcRight = function () {
         if (delegatedDrawSprite != undefined) {
             actualWidth = delegatedDrawSprite.getWidth();
@@ -1356,6 +1394,10 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         this.setTop(point.y - this.getHeight());
         this.setLeft(point.x - this.getWidth() / 2);
     },
+	this.setChainSortOrder = function(sortMap)
+	{
+		this.sortMap = sortMap;
+	}
     this.draw = function () {
 
 
@@ -1440,7 +1482,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
         this.calcRight();
         this.calcBottom();
-
+	
 
         //calculate position differences and translations values if the sprite is inverted
         if (spriteXDirection == SPRITE_INVERTED || spriteYDirection == SPRITE_INVERTED) {
@@ -1484,14 +1526,16 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         }
 
         if (animations[direction][localState].sheet.width < animationX + width) {
-            //throw "The dimensions for animation: " + localState + " in sprite " + this.name + " would exceeed the width of the image.";
+            console.log("The dimensions for animation: " + localState + " in sprite " + this.name + " would exceeed the width of the image.");
             width -= (animationX + width) - animations[direction][localState].sheet.width;
         }
 
         if (animations[direction][localState].sheet.height < animationY + height) {
-            //throw "The dimensions for animation: " + localState + " in sprite " + this.name + " would exceeed the height of the image.";
+            console.log("The dimensions for animation: " + localState + " in sprite " + this.name + " would exceeed the height of the image.");
             height -= (animationY + height) - animations[direction][localState].sheet.height;
         }
+
+
 
         //todo: translate current position to the inverted position
         var tempXpos = 0;
@@ -1535,135 +1579,97 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
         //per state/direction chain
         //DRAW STEP 7: if we have state/direction chains, draw them
-        //before we draw the chains though, check if the sprite is facing north, if so draw the weapon first and skip the rest
         if (animations[direction][localState].chained != undefined) {
-            if (direction == SPRITE_DIRECTION_NORTH || direction == SPRITE_DIRECTION_NORTH_EAST || direction == SPRITE_DIRECTION_NORTH_WEST) {
+   
+			//get sort order
+	   		var sortOrder = this.sortMap[direction];
+			if (sortOrder==undefined)
+			{
+				sortOrder = this.sortMap[SPRITE_DIRECTION_UNDEFINED];
+				if (sortOrder == undefined)
+				{
+					throw "Sort order for this complex sprite could not be found.";
+				}
+				
+				if (sortOrder.length == undefined)
+				{
+					throw "Chain sort map entries for composite sprites must be an array.";		
+				}
+				
+			}
+			
+			//now that we have a sort order
+			for(var i =0; i<sortOrder.length; i++)
+			{
+				var part = sortOrder[i];
+				if (part == "base")
+				{
+					//if the part indicates "base", draw the main sheet
+					//in theory, everything should just be a chain, but I added chains
+					//after the main sheet stuff was in place. 
+					mainContext.drawImage(animations[direction][localState].sheet,
+									                              animationX,
+									                              animationY,
+									                              width,
+									                              height, tempXpos, tempYpos, actualWidth, actualHeight);
+				}
+				else
+				{
+					
+					//otherwise draw the chains
+					var chainDef = animations[direction][localState].chained[part];
+					if (chainDef == undefined)
+					{
+						throw "Composite Sprite part: " + part + " was not found. It seems your Chain Sort Map is out of whack.";
+					}
+					
+					//before we can draw a chain, we have to consider that the
+					//dimensions of a chained image can be different from the base, so we 
+					//have to calculate the source position to draw from.
+					//Todo: centralize this all in prep()
+					//account for differing frame lengths (ie, main could be 9 frames, chain could be 3)
+					var chainFrameCounter = 0;
+					if (counter>chainDef.def.frames)
+					{
+						chainFrameCounter = chainDef.def.frames;
+					}
+					else
+					{
+						chainFrameCounter = counter;
+					}
+					
+					var frame = chainDef.frames[chainFrameCounter];
+					var dimensions = this.getFrameDimensions(chainDef.def.overRide, chainDef.def.innerWidth, chainDef.def.innerHeight, frame);
+					var chainDrawPosX = tempXpos;
+					var chainDrawPosY = tempYpos;
+					
+					if (chainDef.def.offsetX != undefined)
+					{
+						chainDrawPosX +=chainDef.def.offsetX;
+					}
+					if (chainDef.def.offsetY !=undefined)
+					{
+						chainDrawPosY += chainDef.def.offsetY;
+					}
 
-
-                // var parts = ["HD", "LA", "LG", "LH","RA", "RH", "SH"];
-				// todo - why not a loop? bad joe.
-                var chainDef = animations[direction][localState].chained["LH"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                //TR
-                mainContext.drawImage(animations[direction][localState].sheet,
-                                            animationX,
-                                            animationY,
-                                            width,
-                                            height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["HD"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["LG"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["RA"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["LA"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-
-                var chainDef = animations[direction][localState].chained["RH"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-
-            }
-            else {
-
-                // var parts = ["HD", "LA", "LG", "LH","RA", "RH", "SH"];
-                //todo - why not loop man?
-                mainContext.drawImage(animations[direction][localState].sheet,
-                                            animationX,
-                                            animationY,
-                                            width,
-                                            height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["LH"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-
-                var chainDef = animations[direction][localState].chained["HD"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["LG"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["RA"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-                var chainDef = animations[direction][localState].chained["LA"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-
-                var chainDef = animations[direction][localState].chained["RH"];
-                mainContext.drawImage(chainDef.image,
-                                        animationX,
-                                        animationY,
-                                        width,
-                                        height, tempXpos, tempYpos, actualWidth, actualHeight);
-
-
-            }
-        }
-
-
-        //        for (var chainDef in animations[direction][localState].chained) {
-        //            chainDef = animations[direction][localState].chained[chainDef];
-
-
-        //            // { "image": sheets[image], "part": spritePart, "def": partsDef };
-        //            mainContext.drawImage(chainDef.image,
-        //                                    animationX,
-        //                                    animationY,
-        //                                    width,
-        //                                    height, tempXpos, tempYpos, actualWidth, actualHeight);
-        //        }
+					mainContext.drawImage(chainDef.image,
+														                  dimensions.sourceX,
+									                                      dimensions.sourceY,
+									                                      dimensions.width,
+									                                      dimensions.height, chainDrawPosX, chainDrawPosY, dimensions.width, dimensions.height);
+												
+					
+				
+					
+					// mainContext.drawImage(chainDef.image,
+					// 				                  animationX,
+					// 				                                      animationY,
+					// 				                                      width,
+					// 				                                      height, tempXpos, tempYpos, actualWidth, actualHeight);
+				}
+			}
+			
+     	}
 
         //if we are adding a highlight color (replacement of one color for another) do that
         //DRAW STEP 8: if we have state/direction chains, draw them
@@ -1847,3 +1853,5 @@ Sprite.prototype.chainToSequence = this.chainToSequence;
 Sprite.prototype.boxSprite = this.boxSprite;
 Sprite.prototype.unBoxSprite = this.unBoxSprite;
 Sprite.prototype.delegateDraw = this.delegateDraw;    
+Sprite.prototype.unChainToSequence = this.unChainToSequence;
+Sprite.prototype.setChainSortOrder = this.setChainSortOrder;

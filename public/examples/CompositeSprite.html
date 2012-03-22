@@ -34,81 +34,91 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <script type="text/javascript">
-        var ga;
+        
+		var ga;
         var worldCells;
         var column;
         var zom;
         var zom2;
+      	var hero;
+	 	var states = {
+	       "Neutral": "NU",
+	       "Walk": "WL"
+	    };
+
+		var hash = {};
+		//neutral defs
+		hash["BOWNUHDBHMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:30, frameHeight:64 };
+		hash["BOWNUHDCAPdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		hash["BOWNUHDCRNdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:66 };
+		hash["BOWNUHDFHLdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:64 };
+		hash["BOWNUHDGHMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:26, frameHeight:78 };
+		hash["BOWNUHDHLMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:62 };
+		hash["BOWNUHDLITdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:67 };
+		hash["BOWNUHDMSKdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+		hash["BOWNUHDMSKSouth"] = { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+		hash["BOWNUHDSKPdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:63 };
+		hash["BOWNULAHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		hash["BOWNULALITEast"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:48, frameHeight:53 };
+		hash["BOWNULAMEDEast"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:48, frameHeight:52 };
+		hash["BOWNUdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		
+		//walking defs
+		hash["BOWWLHDBHMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:65 };
+		hash["BOWWLHDCAPdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		hash["BOWWLHDCRNdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:67 };
+		hash["BOWWLHDFHLdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:65 };
+		hash["BOWWLHDGHMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:24, frameHeight:79 };
+		hash["BOWWLHDHLMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:63 };
+		hash["BOWWLHDLITdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:68 };
+		hash["BOWWLHDMSKdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:32, frameHeight:66 };
+		hash["BOWWLHDSKPdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:64 };
+		hash["BOWWLLAHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		hash["BOWWLLALITdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:45, frameHeight:54 };
+		hash["BOWWLLAMEDdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:45, frameHeight:53 };
+		hash["BOWWLLGHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+		hash["BOWWLdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+
+
+		var directionSort = {};
+		directionSort[SPRITE_DIRECTION_NORTH] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[SPRITE_DIRECTION_NORTH_EAST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[SPRITE_DIRECTION_NORTH_WEST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[SPRITE_DIRECTION_NORTH_WEST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[SPRITE_DIRECTION_UNDEFINED] = ["base", "LH", "HD", "LG", "RA", "LA", "RH"];
+		
+		var compositeDef = {
+            characterClass: "AM",
+            movementClass: "BOW",
+            basePart: "TR",
+			TR: "HVY",
+			HD: "CAP",                
+            LG: "HVY",
+            RA: "HVY",
+            LA: "HVY",
+            RH: "PIK",
+      		LH: "LBB",          
+			SH: "BUC",
+            S1: undefined,
+            name: "amazonGirl",
+			actionDefs: hash,
+			states: states,
+			directionSortMap: directionSort
+        };
+
 
         $(document).ready(function () {
 	      	var worldSize = 250;
 			ga = MakeIsoMetricGameWorld(worldSize);
 			var gameWorldModel = ga.getWorldModel();
            
-			var hash = {};
-			//neutral defs
-			hash["BOWNUHDBHMdefault"] = { frames:8, frameWidth:30, frameHeight:64 };
-			hash["BOWNUHDCAPdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			hash["BOWNUHDCRNdefault"] = { frames:8, frameWidth:20, frameHeight:66 };
-			hash["BOWNUHDFHLdefault"] = { frames:8, frameWidth:20, frameHeight:64 };
-			hash["BOWNUHDGHMdefault"] = { frames:8, frameWidth:26, frameHeight:78 };
-			hash["BOWNUHDHLMdefault"] = { frames:8, frameWidth:20, frameHeight:62 };
-			hash["BOWNUHDLITdefault"] = { frames:8, frameWidth:28, frameHeight:67 };
-			hash["BOWNUHDMSKdefault"] = { frames:8, frameWidth:33, frameHeight:65 };
-			hash["BOWNUHDSKPdefault"] = { frames:8, frameWidth:20, frameHeight:63 };
-			hash["BOWNULAHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			hash["BOWNULALITEast"] = { frames:8, frameWidth:48, frameHeight:53 };
-			hash["BOWNULAMEDEast"] = { frames:8, frameWidth:48, frameHeight:52 };
-			hash["BOWNUdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			
-			//walking defs
-			hash["BOWWLHDBHMdefault"] = { frames:8, frameWidth:28, frameHeight:65 };
-			hash["BOWWLHDCAPdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			hash["BOWWLHDCRNdefault"] = { frames:8, frameWidth:22, frameHeight:67 };
-			hash["BOWWLHDFHLdefault"] = { frames:8, frameWidth:22, frameHeight:65 };
-			hash["BOWWLHDGHMdefault"] = { frames:8, frameWidth:24, frameHeight:79 };
-			hash["BOWWLHDHLMdefault"] = { frames:8, frameWidth:22, frameHeight:63 };
-			hash["BOWWLHDLITdefault"] = { frames:8, frameWidth:28, frameHeight:68 };
-			hash["BOWWLHDMSKdefault"] = { frames:8, frameWidth:32, frameHeight:66 };
-			hash["BOWWLHDSKPdefault"] = { frames:8, frameWidth:22, frameHeight:64 };
-			hash["BOWWLLAHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			hash["BOWWLLALITdefault"] = { frames:8, frameWidth:45, frameHeight:54 };
-			hash["BOWWLLAMEDdefault"] = { frames:8, frameWidth:45, frameHeight:53 };
-			hash["BOWWLLGHVYdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-			hash["BOWWLdefault"] = { frames:8, frameWidth:252, frameHeight:203 };
-
-
-		 	var states = {
-		       "Neutral": "NU",
-		       "Walk": "WL"
-		    };
-
- 			var compositeDef = {
-                characterClass: "AM",
-                movementClass: "BOW",
-                basePart: "TR",
-				TR: "HVY",
-				HD: "CAP",                
-                LG: "HVY",
-                RA: "HVY",
-                LA: "HVY",
-                RH: "PIK",
-                LH: "LBB",
-                SH: "BUC",
-                S1: undefined,
-                name: "amazonGirl",
-				actionDefs: hash,
-				states: states
-            };
-
-            var hero;
-            createCompositSprite(ga, compositeDef, function (sprite) {
+            createCompositeSprite(ga, compositeDef, function (sprite) {
                 hero = sprite;
                 hero.setSpeed(6);
                 hero.boxSprite("#f00");
 				var i = 1;
 				
-				for (var i = 0; i<25; i++)
+				for (var i = 0; i<5; i++)
 				{
 		            var zom = zombie_Sprite(ga, "zombo" + i);
 					var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
@@ -123,16 +133,13 @@
 	                ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
 				}
 
-
-
-
 	            var intervalid = setInterval(function () {
-	                if (hero != undefined && hero.isLoadComplete() && worldCells.isLoadComplete() && column.isLoadComplete()) {
+	                if (hero != undefined && hero.isLoadComplete()){ //&& worldCells.isLoadComplete() && column.isLoadComplete()) {
 	                    hero.setInnerDrawRectOverride(80, 100);
 	                    gameWorldModel.placeSpriteInCenterOfWorldCell(worldSize/2, worldSize/2, hero);                    
 	                    ga.defineSprite(hero);
 
-	                    var originSeeker = new OriginSeeker("WL", "NU", "A1", 100);
+	                    var originSeeker = new OriginSeeker("WL", "NU", "NU", 100);
 
 	                    ga.addEventBehavior(ga.gameEvents.MouseDown, "", hero, "WL", originSeeker, playInfinite);
 	                    ga.play();
@@ -149,6 +156,13 @@
         function getRand(max) {
             return Math.floor(Math.random() * max);
         }
+		
+		function swap(part, value)
+		{
+			compositeDef[part] = value;
+			setupCompositeSprite(hero, compositeDef);
+			
+		}
     </script>
 </head>
 <body>
@@ -161,6 +175,50 @@
     <canvas id="backbuffer2" width="800" height="600" style="visibility:hidden; display:none;"></canvas>
 
     <div id="frameDebug"></div>
+	<div id="swapContols">
+		Head:
+		<select onChange="swap('HD',this.options[selectedIndex].value);">
+		  <option value="BHM">Skeleton Mask</option>
+		  <option value="CAP">Cap</option>
+		  <option value="CRN">Full Helm</option>
+		  <option value="FHL">Light Helm</option>
+		  <option value="LIT">Light Helm 2</option>
+		  <option value="GHM">Heavy Helm</option>
+		  <option value="HLM">Helm</option>
+		  <option value="MSK">Mask</option>
+		  <option value="SKP">Skull cap</option>	
+		</select>
+		<Br/>
+		Torso:
+		<select onChange="swap('TR',this.options[selectedIndex].value);">
+		  <option value="HVY">Heavy</option>
+		  <option value="LIT">Light</option>
+		  <option value="MED">Medium</option>
+		</select>
+		<Br/>
+		Legs:
+		<select onChange="swap('LG',this.options[selectedIndex].value);">
+		  <option value="HVY">Heavy</option>
+		  <option value="LIT">Light</option>
+		  <option value="MED">Medium</option>
+		</select>
+		<Br/>		
+		Right Arm:
+		<select onChange="swap('RA',this.options[selectedIndex].value);">
+		  <option value="HVY">Heavy</option>
+		  <option value="LIT">Light</option>
+		  <option value="MED">Medium</option>
+		</select>
+		<Br/>
+		Left Arm:
+		<select onChange="swap('LA',this.options[selectedIndex].value);">
+		  <option value="HVY">Heavy</option>
+		  <option value="LIT">Light</option>
+		  <option value="MED">Medium</option>
+		</select>
+
+		
+	</div>
  
 </body>
 </html>

@@ -7,6 +7,8 @@ var Frame = function (inRow, inCol, inSpriteHeight, inSpriteWidth, inTime, speci
     this.time = inTime;
     this.x = this.col * this.spriteWidth;
     this.y = this.row * this.spriteHeight;
+
+
     if (specificX != undefined && specificX != null) {
         this.x = specificX;        
     }

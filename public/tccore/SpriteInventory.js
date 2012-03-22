@@ -50,36 +50,39 @@ var compositeDef = {
 "s1":undefined
 };
 */
+//this.chainToSequence = function (sheetname, image, direction, spritePart, partsDef) {
+var defaultStates = {
+      "Death": "DT",
+      "Neutral": "NU",
+      "Walk": "WL",
+      "Run": "RN",
+      "GetHit": "GH",
+      "TownNeutral": "TN",
+      "TownWalk": "TW",
+      "Attack1": "A1",
+      "Attack2": "A2",
+      "Block": "BL",
+      "Cast": "SC",
+      "Throw": "TH",
+      "Kick": "KK",
+      "Skill1": "S1",
+      "Skill2": "S2",
+      "Skill3": "S3",
+      "Skill4": "S4",
+      "Skill5": "S4",
+      "Skill6": "S4",
+      "Skill7": "S4",
+      "Skill8": "S4",
+      "Dead": "DD",
+      "KnockBack": "GH"
+};
+var defaultParts = ["HD", "LA", "LG", "LH","RA", "RH", "SH", "TR"];
+var directions = ["North", "NorthEast", "East", "SouthEast", "South", "SouthWest", "West", "NorthWest"];
+var directionNum = [-1, -2, -3, -4, -5, -6, -7, -8];
 
-function createCompositSprite(engine, compositeDef, callBack) {
 
-    var defaultStates = {
-       "Death": "DT",
-       "Neutral": "NU",
-       "Walk": "WL",
-       "Run": "RN",
-       "GetHit": "GH",
-       "TownNeutral": "TN",
-       "TownWalk": "TW",
-       "Attack1": "A1",
-       "Attack2": "A2",
-       "Block": "BL",
-       "Cast": "SC",
-       "Throw": "TH",
-       "Kick": "KK",
-       "Skill1": "S1",
-       "Skill2": "S2",
-       "Skill3": "S3",
-       "Skill4": "S4",
-       "Skill5": "S4",
-       "Skill6": "S4",
-       "Skill7": "S4",
-       "Skill8": "S4",
-       "Dead": "DD",
-       "KnockBack": "GH"
-    };
-
- 	var defaultParts = ["HD", "LA", "LG", "LH","RA", "RH", "SH"];
+//TODO: all this should be namespaced into sprite
+function createCompositeSprite(engine, compositeDef, callBack) {
 
 	if (compositeDef.states == undefined)
 	{
@@ -90,9 +93,6 @@ function createCompositSprite(engine, compositeDef, callBack) {
 	{
 		compositeDef.parts = defaultParts;
 	}
-
-    var directions = ["North", "NorthEast", "East", "SouthEast", "South", "SouthWest", "West", "NorthWest"];
-    var directionNum = [-1, -2, -3, -4, -5, -6, -7, -8];
 	
 	if(compositeDef.states.Neutral == undefined)
 	{
@@ -100,52 +100,56 @@ function createCompositSprite(engine, compositeDef, callBack) {
 	}
 
     var sprite = new Sprite(compositeDef.name, compositeDef.states.Neutral, compositeDef.states.Neutral, engine);
-	sprite.setup(ga);
+	sprite.setup(engine);
+	
+	setupCompositeSprite(sprite, compositeDef);
 
+    sprite.setDirection(-4);
+    callBack(sprite);
+}
 
-    //create the initial folder
+function setupCompositeSprite(sprite, compositeDef)
+{
+	//create the initial folder
     var charClass = compositeDef.characterClass; //for example AM
 
-	//todo: frameDef is too big, need to get rid of it or break it up or something
-	  var states = compositeDef.states;
-      var parts = compositeDef.parts;
- 	  for (var state in states) {
-            var tempPath = makePath(["assets", charClass, compositeDef.movementClass, states[state]]);
-            var count = 0;
-            for (var i = 0; i < directions.length; i++) {
-                var direction = directions[i];
-                var actionTemp = state + direction;
-                var imagePath = makePath([DOMAIN_PREFIX,
-                                    		tempPath,
-                                    		compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + ".png";
-
-                var def = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], compositeDef.basePart, compositeDef[compositeDef.basePart], direction);
-
-                //function (sheetname, image, rows, cols, height, width, speed, playCount, anchor, direction) {
-                sprite.easyDefineSequence(states[state], imagePath, 1, def.frames, def.frameHeight, def.frameWidth, 100, -1, undefined, undefined, directionNum[count]);
-
-                //after def, chain all other body parts
-                for (var ii = 0; ii < parts.length; ii++) {
-
+  	var states = compositeDef.states;
+    var parts = compositeDef.parts;
+	for (var state in states) 
+	{
+		var tempPath = makePath(["assets", charClass, compositeDef.movementClass, states[state]]);
+		var count = 0;
+		for (var i = 0; i < directions.length; i++) {
+ 			var direction = directions[i];
+			var actionTemp = state + direction;
+			var imagePath = makePath([DOMAIN_PREFIX,tempPath,compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + ".png";
+			var def = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], compositeDef.basePart, compositeDef[compositeDef.basePart], direction);
+			sprite.easyDefineSequence(states[state], imagePath, def.rows, def.cols, def.frameHeight, def.frameWidth, 100, -1, undefined, undefined, directionNum[count]);
+			//after def, chain all other body parts
+			for (var ii = 0; ii < parts.length; ii++) {		
+				var part = parts[ii];
+				var partType = compositeDef[part];
+				imagePath = makePath([DOMAIN_PREFIX,tempPath,  part, partType, direction]) + ".png";
+				var subdef = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], part, partType, direction);
+				
+				//convert the definition for the chains to a sequence of frames.
+				var sequence = [];
+			
+				var chainHeight = subdef.frameHeight;
+				var chainWidth  = subdef.frameWidth;
+				for (var row = 0; row < subdef.rows; row++) {
+				    for (var col = 0; col < subdef.cols; col++) {
+				        sequence.push(new Frame(row, col, chainHeight, chainWidth, -1));
 					
-                    var part = parts[ii];
-                    if (part!= compositeDef.basePart)
-					{
-						var partType = compositeDef[part];
-	                    imagePath = makePath([DOMAIN_PREFIX,
-	                                    tempPath,  part, partType, direction]) + ".png";
-
-	                    var subdef = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], part, partType, direction);
-						sprite.chainToSequence(states[state], imagePath, directionNum[count], part, subdef);						
-					}
-                }
-
-                count++;
-            }
-
-        }
-        sprite.setDirection(-4);
-        callBack(sprite);
+				    }
+				}
+				sprite.chainToSequence(states[state], imagePath, directionNum[count], part, subdef, sequence);						
+			}
+ 			count++;
+		}
+	}
+	sprite.setChainSortOrder(compositeDef.directionSortMap);
+	return sprite;  
 }
 
 function makePath(tokens)
@@ -179,12 +183,30 @@ function getDefs(def, movementClass, action, part, type, direction)
 		//finish the subtoken
 		subToken+=defaultToken;
 		
-		if (def[token]!=undefined){ return def[token]; }
-		if (def[subToken]!=undefined){ return def[subToken]; }
+		if (def[token]!=undefined)
+		{ 
+			return checkDef(def[token]);
+		}
+		if (def[subToken]!=undefined)
+		{ 
+			return checkDef(def[subToken]);
+		}
 	}
 	
 	throw "Couldn't find a definition for: " + movementClass + " " + action + " " + part + " " + type + " " + direction;
 		
+}
+
+function checkDef(def)
+{
+		if (def.rows == undefined && def.cols == undefined)
+		{
+			throw "Chain frame defs must define rows or cols"
+		}
+		if (def.rows == undefined) { def.rows =1;}
+		if (def.cols == undefined) { def.cols =1;}
+		
+		return def;
 }
 
 //creates a sprite from a template
