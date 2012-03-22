@@ -393,10 +393,157 @@ Under the hood, we're calling the sprite.chain method and sprite.unchain methods
 In our latest sample - examples/simpleCompositeEqSwap.html we can see here that chain and unchain can be called by you on the fly to modify a sprites equipment on the fly. You'll see another weakness of simple composites here as well, there is no concept of order. So you'll see in order to layer the sprite correctly we have re-chain the shield whenever we change the base armor. Complex composites handle this for you with the trade off of having to write more code and be more diligent about our definitions. 
 
 
+### Creating a complex composite sprite
+Code supporting this section of the documentation can be seen in: examples/CompositeSprite.html
+
+Creating a composite uses a new global function called createCompositeSprite. The details around this function can be seen in SpriteInventory.js. This method accepts a reference to the engine, a "composite definition" and a call back. The obvious meat is your composite definition. 
+
+So what the heck is in this composite definition? For complex composites, the composite definition is going to define everything from the different parts of a given sprite, the different animate states it will support etc. First and foremost let's review the hierarchy of stuff a complex composite sprite will support.
+
+Prior to now, we have had the concept of a sprite, which can have many animations in many directions. Then in simple composite sprites we introduced the idea of "chained" animations so we could layer in different animations. Complex composites introduce the new concept of "parts". So for example, a sprite could have a chain of animations, but each of those animations is for a different part of the sprites body. For example, if I wanted to have a warrior character who could wear different pieces of armor on each part of his body, I could give the warrior a metal helmet, leather leggings, fingerless gloves and an chain-mail chest plate. I can support this type of thing with simple composites, but then my artists have to make sure every sprite sheet perfectly lines up. Composite sprites allow me to define each part of a given sprite and also supply independent offsets, padding rect overrides, frame lengths, widths, heights etc. As a result, you can create assets and then decouple the layout from the images and define some of that stuff in code. Complex composites also let's traffic cone find your resources on the fly so you have a common way of laying out your directory structures. 
+
+So, let's look at the composite def from the sample: 
+
+```js
+	var compositeDef = {
+        characterClass: "AM",
+        movementClass: "BOW",
+        basePart: "TR",
+		TR: "HVY",
+		HD: "CAP",                
+        LG: "HVY",
+        RA: "HVY",
+        LA: "HVY",
+        RH: "PIK",
+  		LH: "LBB",          
+		SH: "BUC",
+        S1: undefined,
+        name: "amazonGirl",
+		states: states,
+		actionDefs: hash,
+		directionSortMap: directionSort
+    };
+```
+
+Here we are telling traffic cone that our character class is "AM" and that our movement class is "BOW". These are completely arbitrary tokens and can be whatever you want. I've used AM because my character class is "amazon warrior" and she will be using a "bow". These are essentially groupings of animations. If you want them to be "Mario" and "Default" to animate the default movements for your character "Mario", feel free to use those tokens. We'll talk about where tokens become important later.
+
+After the class groupings comes the "parts" of a sprite. Each part can have a class of it's own. Parts are again, arbitrary tokens. So, here where you see "TR", "HD" etc, these are values I've used to represent my characters torso (TR) and head (HD). But they can be whatever you want. If you want to only have "body" and "shoes" for Mario, you can call them that. Next to each part token is it's "class" token. A part's class is essentially a variation of the "part" in question. So here, my character torso will be a heavy armor. So, I've specified TR:"HVY" where TR is my torso part token and HVY is my heavy armor class token. These are used to locate your sprite sheets for a given part (I'll explain that in a moment).
+
+Each composite sprite still needs a base, but a base can be any part of the sprite. Later when we specify an offset for a given part/class/direction this offset will be relative to the base. You tell traffic cone which part is your base part using the "basePart:" attribute. In our example I tell traffic cone that TR (torso) is my base and all offsets are relative to it's rect. (We'll see how to define rects for individual parts in a moment).
+
+In our example after basepart TR,HD,LG,RA,LA,RH,LH,SH,S1 are all parts token for my scheme. These are torso, head, legs, right arm, left arm, right hand, lef hand, shield, special 1. But - again, these are arbitrary, they can be whatever you want.
+
+After these tokens, there are some required attributes. First is "name", which is just your sprite name. Next is the states attribute. STates is a definition of the animations your sprite will support. For example, running, jumping, hitting, singing etc. These are arbitrary values defined by you. In my code, my sprite will simple stand there looking cool, or walk. As such the object I supply for "states" is:
+
+```js
+	var states = {
+       "Neutral": "NU",
+       "Walk": "WL"
+    };
+```
+
+Next up is the more complex "actionDefs" or action definitions supply data needed to properly a given part. Actiondefs allows you to attach a definition to a given set of movement class, state, part, part class, direction. As such, you can override any animation. In addition, it supports a special token: "default" so that you can avoid having to specify each state if they have the same settings. 
+
+For example - looking at my amazon warrior sample, let's say I want to define an override for when my character's head, where she is wearing a mask, whenever she is walking east with a bow. I would supply something like this in the actionDefs object (note: we'll talk about the value of the object we supplied in a moment):
+
+```js
+hash["BOWWLHDMSKEast"] = { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+```
+
+What I did here is provide a string: [MovementClass][State][Part][Part Class][Direction]. As such whenever traffic cone is animating this particular sequence, it will utilize these settings. Now, let's say the value for the override we supplied is the same for all of my characters "Head" animations. Omg, do I really have to provide every possible permutation? No - to avoid this fate you can simply use the "default" token. In this case our definition would become:
+
+```js
+hash["BOWWLHDdefault"] = { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+```
+
+As a result any head animation in any direction will use the same settings. Let's say all of my characters bow walking animations should use the same settings. Omg, do I really have to provide all possible part combinations? No - again to do this all we have to do is move the default token up. So our def becomes:
+
+```js
+hash["BOWWLdefault"] = { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+```
+
+Okay, so that said, let's review the values you can supply as an actionDef. These are:
+
+* offsetX - OffsetX will adjust the destination draw x position of your source image relative to your basepart rect.
+* offsetY - OffsetY will adjust your destination draw y position of your source image relative to your basepart rect.
+* overRide - indicates that innerWidth + innerHeight should be obeyed.
+* innerWidth - indicates that your sprite sheet has padding in between frames and that your source width is really this value. It will adjust your source x coordinates in proportion to the difference between your frame width + innerWidth
+* innerHeight - Same as innerWidth, but for height.
+* frames - The number of frames in the animation
+* rows - The number of rows in your sprite sheet. Horizontal sheets supply 0 for rows.
+* cols - The number of columns in your sprite sheet. Vertical sheets should supply 0 for cols.
+* frameWidth - the width each frame in your sprite sheet
+* frameHeight - the height of each frame in your sprite sheet
+
+So in our above example, we are supplying our amazon, walking with a bow default with { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 }.
+
+You can see this in action in our CompositeSprite.html sample where we define a number of states for amazon girl the amazon warrior:
+
+```js
+	var hash = {};
+	//neutral defs
+	hash["BOWNUHDBHMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:30, frameHeight:64 };
+	hash["BOWNUHDCAPdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	hash["BOWNUHDCRNdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:66 };
+	hash["BOWNUHDFHLdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:64 };
+	hash["BOWNUHDGHMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:26, frameHeight:78 };
+	hash["BOWNUHDHLMdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:62 };
+	hash["BOWNUHDLITdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:67 };
+	hash["BOWNUHDMSKdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+	hash["BOWNUHDMSKSouth"] = { offsetX: 20, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:33, frameHeight:65 };
+	hash["BOWNUHDSKPdefault"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:20, frameHeight:63 };
+	hash["BOWNULAHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	hash["BOWNULALITEast"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:48, frameHeight:53 };
+	hash["BOWNULAMEDEast"] = { offsetX: 30, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:48, frameHeight:52 };
+	hash["BOWNUdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	
+	//walking defs
+	hash["BOWWLHDBHMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:65 };
+	hash["BOWWLHDCAPdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	hash["BOWWLHDCRNdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:67 };
+	hash["BOWWLHDFHLdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:65 };
+	hash["BOWWLHDGHMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:24, frameHeight:79 };
+	hash["BOWWLHDHLMdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:63 };
+	hash["BOWWLHDLITdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:28, frameHeight:68 };
+	hash["BOWWLHDMSKdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:32, frameHeight:66 };
+	hash["BOWWLHDSKPdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:22, frameHeight:64 };
+	hash["BOWWLLAHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	hash["BOWWLLALITdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:45, frameHeight:54 };
+	hash["BOWWLLAMEDdefault"] = { offsetX: 22, offsetY: 25, overRide: false, frames:7, cols:7, frameWidth:45, frameHeight:53 };
+	hash["BOWWLLGHVYdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+	hash["BOWWLdefault"] = { overRide: true, innerWidth: 80 , innerHeight: 100, frames:7, cols:7, frameWidth:252, frameHeight:203 };
+
+```
+
+(Now, mind you, most of these are screwy, amazon girls head tends to float away in certain directions for certain parts, but that is simply because my offsets are off, I'll correct it soon. The underlying mechanics of the engine however are working as expected.)
+
+OKay, so last is the directionSortMap. As covered in simple composites, sometimes in order for the parts to look correct you have to draw them in a certain order. For example if our sprite is facing west, I have to draw her left arm after her torso or it will look like her torso is sitting on top of her arm. Ie, we need to tell traffic cone how parts should be arranged to support the correct perception of depth. We do this supplying traffic cone with an array of parts within an array of direction values. In addition, we can support a "default" order using the SPRITE_DIRECTION_UNDEFINED constant (which, isn't actually a constant, you can override these values if you want). For example:
+
+```js
+	var directionSort = {};
+	directionSort[SPRITE_DIRECTION_NORTH] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+	directionSort[SPRITE_DIRECTION_NORTH_EAST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+	directionSort[SPRITE_DIRECTION_NORTH_WEST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+	directionSort[SPRITE_DIRECTION_UNDEFINED] = ["base", "LH", "HD", "LG", "RA", "LA", "RH"];
+```
+
+Here, we tell traffic cone that north, north east and north west should draw the left hand, the base part (torso), the head, the legs, the right arm, the left arm and then the right hand in that order and every other direction should draw the base part (torso), the left hand, the head, the legs, the right arm, the left arm, the right hand.
+
+After that supply the definition to traffic cone via createCompositeSprite and it will create your sprite and notify you with the callback parameter. Once you've created the sprite you can pass a reference to the sprite and a modified composite definition to the setupCompositeSprite method to augment it. For example, in our sample we have provided some drop downs so you can swap out amazon girl's equipment. Each time a dropdown changes we call this swap function:
+
+```js
+	function swap(part, value)
+	{
+		compositeDef[part] = value;
+		setupCompositeSprite(hero, compositeDef);
+		
+	}
+```
+Here we take the part and the value we want to change and modify our composite definition. Then we pass it along with the sprite we want to change into setupCompositeSprite and thus amazon girl changes equipment.
+
+
 
 ### More to come - Docs Joe still needs to write: 
-### Creating a complex composite sprite
-Coming soon see: examples/CompositeSprite.html
 ### NPC Events and Controlling Input
 Coming soon see: examples/2D or examples/Isometric.html
 ### Custom draw routines
