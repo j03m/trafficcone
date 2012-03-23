@@ -421,7 +421,8 @@ So, let's look at the composite def from the sample:
         name: "amazonGirl",
 		states: states,
 		actionDefs: hash,
-		directionSortMap: directionSort
+		directionSortMap: directionSort,
+		imageExtension: ".png"
     };
 ```
 
@@ -540,6 +541,17 @@ After that supply the definition to traffic cone via createCompositeSprite and i
 	}
 ```
 Here we take the part and the value we want to change and modify our composite definition. Then we pass it along with the sprite we want to change into setupCompositeSprite and thus amazon girl changes equipment.
+
+Okay, but Joe - how do I get my images to traffic cone? Your code doesn't supply any images! This is because complex sprites automatically build a path to your images and grab them for you using the tokens you provided. Let's take the amazon girl sample again.
+
+When creating the sprite, traffic cone will cobble together the path to your images using the following: [Class]/[Movement Class]/[State]/[Part]/[Part Class]/Direction.[imageExtension].
+
+This highlights the last portion of the composite definition "imageExtention" which drops a .png or .jpg on the end of your images.
+
+For example this means that our amazon girl head mask animation for her neutral state, facing east would be found at http://localhost:8089/AM/BOW/NU/HD/MSK/East.png where local host is the value set for DOMAIN_PREFIX in NotConstants.js. 
+
+While this methodology mandates the directory structure for your images, it will help you keep them organized and allow you to again decouple design from development. Ie, designers can continue creating content and dropping them onto your servers and developers only need to think about the token syntax in their scripts. 
+
 
 
 

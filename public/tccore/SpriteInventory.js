@@ -122,14 +122,14 @@ function setupCompositeSprite(sprite, compositeDef)
 		for (var i = 0; i < directions.length; i++) {
  			var direction = directions[i];
 			var actionTemp = state + direction;
-			var imagePath = makePath([DOMAIN_PREFIX,tempPath,compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + ".png";
+			var imagePath = makePath([DOMAIN_PREFIX,tempPath,compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + compositeDef.imageExtension;
 			var def = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], compositeDef.basePart, compositeDef[compositeDef.basePart], direction);
 			sprite.easyDefineSequence(states[state], imagePath, def.rows, def.cols, def.frameHeight, def.frameWidth, 100, -1, undefined, undefined, directionNum[count]);
 			//after def, chain all other body parts
 			for (var ii = 0; ii < parts.length; ii++) {		
 				var part = parts[ii];
 				var partType = compositeDef[part];
-				imagePath = makePath([DOMAIN_PREFIX,tempPath,  part, partType, direction]) + ".png";
+				imagePath = makePath([DOMAIN_PREFIX,tempPath,  part, partType, direction]) + compositeDef.imageExtension;
 				var subdef = getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], part, partType, direction);
 				
 				//convert the definition for the chains to a sequence of frames.
