@@ -1,36 +1,3 @@
-var SPRITE_NORMAL = 1;
-var SPRITE_INVERTED = -1;
-
-//iso sprite directions 
-var SPRITE_DIRECTION_UNDEFINED = "0";
-var SPRITE_DIRECTION_NORTH = "-1";
-var SPRITE_DIRECTION_NORTH_EAST = "-2";
-var SPRITE_DIRECTION_EAST = "-3";
-var SPRITE_DIRECTION_SOUTH_EAST = "-4";
-var SPRITE_DIRECTION_SOUTH = "-5";
-var SPRITE_DIRECTION_SOUTH_WEST = "-6";
-var SPRITE_DIRECTION_WEST = "-7";
-var SPRITE_DIRECTION_NORTH_WEST = "-8";
-
-
-var SPRITE_STATE_NONE = -1;
-var SPRITE_STATE_START = 0;
-var SPRITE_STATE_DURING = 1;
-var SPRITE_STATE_DONE = 2;
-var SPRITE_MOVEMENT_DIRECTION_UP = 0;
-var SPRITE_MOVEMENT_DIRECTION_DOWN = -1;
-var SPRITE_MOVEMENT_DIRECTION_FORWARD = -2;
-var SPRITE_MOVEMENT_DIRECTION_BACK = -3;
-var SPRITE_MOVEMENT_DIRECTION_CENTERED = -4;
-var WATCH_TYPE_LAST_FRAME = -1;
-var WATCH_TYPE_ALL_FRAME = -2;
-var lightAction = 50;
-var fastAction = 25;
-
-
-
-
-
 var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) {
     
 
@@ -83,9 +50,9 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     var leftSpeed = 0;
     var inSpeed = 0;
     var outSpeed = 0;
-    var spriteXDirection = SPRITE_NORMAL;
-    var spriteYDirection = SPRITE_NORMAL;
-    var spriteIsoDirection = SPRITE_DIRECTION_UNDEFINED;
+    var spriteXDirection = tc.constants.SPRITE_NORMAL;
+    var spriteYDirection = tc.constants.SPRITE_NORMAL;
+    var spriteIsoDirection = tc.constants.SPRITE_DIRECTION_UNDEFINED;
     var topBorderMoveStyle = "block";
     var bottomBorderMoveStyle = "block";
     var rightBorderMoveStyle = "block";
@@ -121,7 +88,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     };
     this.noAdjust = false;
     this.setFrame = setCounter,
-    this.animationState = SPRITE_STATE_NONE,
+    this.animationState = tc.constants.SPRITE_STATE_NONE,
 	this.sortMap = undefined,
     this.getAnimationState = function () { return this.animationState; }
     this.setAnimationState = function (state) { this.animationState = state; }
@@ -193,7 +160,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         watchData[state] = new Object();
         watchData[state]["callBack"] = callBack;
         if (type == undefined) {
-            type = WATCH_TYPE_LAST_FRAME;
+            type = tc.constants.WATCH_TYPE_LAST_FRAME;
         }
         watchData[state]["type"] = type;
     },
@@ -269,7 +236,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             this.prep();
 
         }
-        else if (this.animationState == SPRITE_STATE_DONE) // if the animation has played, set it
+        else if (this.animationState == tc.constants.SPRITE_STATE_DONE) // if the animation has played, set it
         {
             setCounter(0); //otherwise reset
             this.setInitialSpriteState(val);
@@ -548,12 +515,12 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     },
     this.wireIsoArrowKeys = function (idle, forward, back, up, down) {
         engineRef.addEventBehavior(engineRef.gameEvents.Idle, "", this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, function () { this.sprite.setDirection(SPRITE_DIRECTION_EAST); this.sprite.moveRight(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, function () { this.sprite.setDirection(SPRITE_DIRECTION_WEST); this.sprite.moveLeft(); }, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_EAST); this.sprite.moveRight(); }, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_WEST); this.sprite.moveLeft(); }, playInfinite);
         engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, RIGHTARROW, this, idle, null, playInfinite);
         engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, LEFTARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, function () { this.sprite.setDirection(SPRITE_DIRECTION_NORTH); this.sprite.moveUp(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, function () { this.sprite.setDirection(SPRITE_DIRECTION_SOUTH); this.sprite.moveDown(); }, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_NORTH); this.sprite.moveUp(); }, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH); this.sprite.moveDown(); }, playInfinite);
         engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, UPARROW, this, idle, null, playInfinite);
         engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, DOWNARROW, this, idle, null, playInfinite);
     },
@@ -705,7 +672,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     },
     this.setVectorDirectional = function (vector, style) {
 
-        if (style == GAME_WORLD_STYLE_2D) {
+        if (style == tc.constants.GAME_WORLD_STYLE_2D) {
             this.setVectorDirectional2D(vector);
         }
         else {
@@ -724,11 +691,11 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
         if (left == true) {
             //invert
-            this.setSpriteXDirection(SPRITE_INVERTED);
+            this.setSpriteXDirection(tc.constants.SPRITE_INVERTED);
         }
 
         if (right == true) {
-            this.setSpriteXDirection(SPRITE_NORMAL);
+            this.setSpriteXDirection(tc.constants.SPRITE_NORMAL);
         }
 
         //we don't invert the y axis because this is mean for street fighter like 2d games
@@ -743,52 +710,52 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             if (vector.data[i].direction == "right") { right = true; }
         }
         /*    	 
-        var SPRITE_DIRECTION_NORTH = "-1";
-        var SPRITE_DIRECTION_NORTH_EAST = "-2";
-        var SPRITE_DIRECTION_EAST = "-3";
-        var SPRITE_DIRECTION_SOUTH_EAST = "-4";
-        var SPRITE_DIRECTION_SOUTH = "-5";
-        var SPRITE_DIRECTION_SOUTH_WEST = "-6";
-        var SPRITE_DIRECTION_WEST = "-7";
-        var SPRITE_DIRECTION_NORTH_WEST = "-8";
+        var tc.constants.SPRITE_DIRECTION_NORTH = "-1";
+        var tc.constants.SPRITE_DIRECTION_NORTH_EAST = "-2";
+        var tc.constants.SPRITE_DIRECTION_EAST = "-3";
+        var tc.constants.SPRITE_DIRECTION_SOUTH_EAST = "-4";
+        var tc.constants.SPRITE_DIRECTION_SOUTH = "-5";
+        var tc.constants.SPRITE_DIRECTION_SOUTH_WEST = "-6";
+        var tc.constants.SPRITE_DIRECTION_WEST = "-7";
+        var tc.constants.SPRITE_DIRECTION_NORTH_WEST = "-8";
         */
         if (up && left) {
-            this.setDirection(SPRITE_DIRECTION_NORTH_WEST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_NORTH_WEST);
             return;
         }
 
         if (up && right) {
-            this.setDirection(SPRITE_DIRECTION_NORTH_EAST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_NORTH_EAST);
             return;
         }
 
         if (down && right) {
-            this.setDirection(SPRITE_DIRECTION_SOUTH_EAST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH_EAST);
             return;
         }
 
         if (down && left) {
-            this.setDirection(SPRITE_DIRECTION_SOUTH_WEST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH_WEST);
             return;
         }
 
         if (up) {
-            this.setDirection(SPRITE_DIRECTION_NORTH);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_NORTH);
             return;
         }
 
         if (right) {
-            this.setDirection(SPRITE_DIRECTION_EAST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_EAST);
             return;
         }
 
         if (down) {
-            this.setDirection(SPRITE_DIRECTION_SOUTH);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH);
             return;
         }
 
         if (left) {
-            this.setDirection(SPRITE_DIRECTION_WEST);
+            this.setDirection(tc.constants.SPRITE_DIRECTION_WEST);
             return;
         }
 
@@ -879,7 +846,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     },
     this.defineSequence = function (sheetname, image, frames, playCount, anchorHor, anchorVer, direction) {
         if (direction == undefined) {
-            direction = SPRITE_DIRECTION_UNDEFINED;
+            direction = tc.constants.SPRITE_DIRECTION_UNDEFINED;
         }
 
         if (animations[direction] == undefined) {
@@ -895,11 +862,11 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         animations[direction][sheetname].playCount = playCount;
 
         if (anchorHor == undefined) {
-            anchorHor = SPRITE_MOVEMENT_DIRECTION_FORWARD;
+            anchorHor = tc.constants.SPRITE_MOVEMENT_DIRECTION_FORWARD;
         }
 
         if (anchorVer == undefined) {
-            anchorVer = SPRITE_MOVEMENT_DIRECTION_UP;
+            anchorVer = tc.constants.SPRITE_MOVEMENT_DIRECTION_UP;
         }
 
         animations[direction][sheetname].anchorHorizontal = anchorHor;
@@ -907,7 +874,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     },
     this.chainToSequence = function (sheetname, image, direction, spritePart, partsDef, frames) {
         if (direction == undefined) {
-            direction = SPRITE_DIRECTION_UNDEFINED;
+            direction = tc.constants.SPRITE_DIRECTION_UNDEFINED;
         }
 
         if (animations[direction][sheetname] == undefined) {
@@ -926,7 +893,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 	this.unChainToSequence = function(sheetname, image, direction, spritePart)
 	{
 		 if (direction == undefined) {
-	            direction = SPRITE_DIRECTION_UNDEFINED;
+	            direction = tc.constants.SPRITE_DIRECTION_UNDEFINED;
 	        }
 
 	        if (animations[direction][sheetname] == undefined) {
@@ -942,38 +909,38 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     this.setSound = function (sheetname, sound) {
 
         this.addSound(sound);
-        if (animations[SPRITE_DIRECTION_UNDEFINED] != undefined) {
-            animations[SPRITE_DIRECTION_UNDEFINED][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_UNDEFINED] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_UNDEFINED][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_NORTH] != undefined) {
-            animations[SPRITE_DIRECTION_NORTH][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_NORTH] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_NORTH][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_NORTH_EAST] != undefined) {
-            animations[SPRITE_DIRECTION_NORTH_EAST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_NORTH_EAST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_NORTH_EAST][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_EAST] != undefined) {
-            animations[SPRITE_DIRECTION_EAST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_EAST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_EAST][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_SOUTH_EAST] != undefined) {
-            animations[SPRITE_DIRECTION_SOUTH_EAST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_SOUTH_EAST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_SOUTH_EAST][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_SOUTH] != undefined) {
-            animations[SPRITE_DIRECTION_SOUTH][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_SOUTH] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_SOUTH][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_SOUTH_WEST] != undefined) {
-            animations[SPRITE_DIRECTION_SOUTH_WEST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_SOUTH_WEST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_SOUTH_WEST][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_WEST] != undefined) {
-            animations[SPRITE_DIRECTION_WEST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_WEST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_WEST][sheetname].sound = sounds[sound];
         }
-        if (animations[SPRITE_DIRECTION_NORTH_WEST] != undefined) {
-            animations[SPRITE_DIRECTION_NORTH_WEST][sheetname].sound = sounds[sound];
+        if (animations[tc.constants.SPRITE_DIRECTION_NORTH_WEST] != undefined) {
+            animations[tc.constants.SPRITE_DIRECTION_NORTH_WEST][sheetname].sound = sounds[sound];
         }
 
     },
     this.defineSequenceWithSound = function (sheetname, image, sound, frames, playCount, anchorHor, anchorVer, direction) {
         if (direction == undefined) {
-            direction = SPRITE_DIRECTION_UNDEFINED;
+            direction = tc.constants.SPRITE_DIRECTION_UNDEFINED;
         }
         animations[direction][sheetname] = new Object();
         this.addImage(image);
@@ -983,11 +950,11 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         animations[direction][sheetname].frames = frames;
         animations[direction][sheetname].playCount = playCount;
         if (anchorHor == undefined) {
-            anchorHor = SPRITE_MOVEMENT_DIRECTION_FORWARD;
+            anchorHor = tc.constants.SPRITE_MOVEMENT_DIRECTION_FORWARD;
         }
 
         if (anchorVer == undefined) {
-            anchorVer = SPRITE_MOVEMENT_DIRECTION_UP;
+            anchorVer = tc.constants.SPRITE_MOVEMENT_DIRECTION_UP;
         }
 
         animations[direction][sheetname].anchorHorizontal = anchorHor;
@@ -996,7 +963,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
     //detailed define
     this.defineSequenceForExistingSheet = function (sheetname, name, frames, playCount, anchorHor, anchorVer, direction) {
         if (direction == undefined) {
-            direction = SPRITE_DIRECTION_UNDEFINED;
+            direction = tc.constants.SPRITE_DIRECTION_UNDEFINED;
         }
         animations[direction][name] = new Object();
         animations[direction][name].sheet = sheets[sheetname];
@@ -1004,11 +971,11 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         animations[direction][name].playCount = playCount;
         animations[direction][name].sound = sounds[sheetname];
         if (anchorHor == undefined) {
-            anchorHor = SPRITE_MOVEMENT_DIRECTION_FORWARD;
+            anchorHor = tc.constants.SPRITE_MOVEMENT_DIRECTION_FORWARD;
         }
 
         if (anchorVer == undefined) {
-            anchorVer = SPRITE_MOVEMENT_DIRECTION_UP;
+            anchorVer = tc.constants.SPRITE_MOVEMENT_DIRECTION_UP;
         }
 
         animations[direction][sheetname].anchorHorizontal = anchorHor;
@@ -1081,30 +1048,30 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             if (shouldRun) {
                 //if so - reset the counter
                 setCounter(0);
-                this.setAnimationState(SPRITE_STATE_START);
+                this.setAnimationState(tc.constants.SPRITE_STATE_START);
                 this.draw();
             }
         }
         else {
 
-            this.setAnimationState(SPRITE_STATE_DURING);
+            this.setAnimationState(tc.constants.SPRITE_STATE_DURING);
 			
             this.draw();
 
             //if this is the final frame, set animation state        
             if (this.isLastFrame() && animations[this.getDirection()][this.getSpriteState()].playCount != -1) {
-                this.setAnimationState(SPRITE_STATE_DONE);
+                this.setAnimationState(tc.constants.SPRITE_STATE_DONE);
             }
 
             //if the sprite has a watcher set, fire.
             if (watchData[spriteState] != undefined && nextFrame) {
                 //check the type
-                if (watchData[spriteState].type == WATCH_TYPE_LAST_FRAME) {
+                if (watchData[spriteState].type == tc.constants.WATCH_TYPE_LAST_FRAME) {
                     if (this.isLastFrame()) {
                         watchData[spriteState].callBack(this);
                     }
                 }
-                else if (watchData[spriteState].type == WATCH_TYPE_ALL_FRAME) {
+                else if (watchData[spriteState].type == tc.constants.WATCH_TYPE_ALL_FRAME) {
                     watchData[spriteState].callBack(this);
                 }
                 else //watch value indicates frame to watch
@@ -1141,7 +1108,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
 
         //DRAW STEP1: clear area around the current sprite
-        //        if (this.getSpriteType() != GAME_WORLD_CELL_OVERLAY) {
+        //        if (this.getSpriteType() != tc.constants.GAME_WORLD_CELL_OVERLAY) {
         //            mainContext.clearRect(lastXpos, lastYpos, lastWidth, lastHeight);
         //        }
 
@@ -1170,7 +1137,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
 
         //DRAW STEP3: replace the piece of the background our sprite is currently over        
-        if (this.getSpriteType() != GAME_WORLD_CELL_OVERLAY) {
+        if (this.getSpriteType() != tc.constants.GAME_WORLD_CELL_OVERLAY) {
             var data = backContext.getImageData(lastXpos, lastYpos, lastWidth, lastHeight);
             mainContext.putImageData(data, lastXpos, lastYpos);
         }
@@ -1324,28 +1291,28 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             var spriteY = this.getBottom();
         }
         if (spriteX > point.x && spriteY < point.y) {
-            return SPRITE_DIRECTION_SOUTH_WEST;
+            return tc.constants.SPRITE_DIRECTION_SOUTH_WEST;
         }
         else if (spriteX > point.x && spriteY > point.y) {
-            return SPRITE_DIRECTION_NORTH_WEST;
+            return tc.constants.SPRITE_DIRECTION_NORTH_WEST;
         }
         else if (spriteX < point.x && spriteY < point.y) {
-            return SPRITE_DIRECTION_SOUTH_EAST;
+            return tc.constants.SPRITE_DIRECTION_SOUTH_EAST;
         }
         else if (spriteX < point.x && spriteY > point.y) {
-            return SPRITE_DIRECTION_NORTH_EAST;
+            return tc.constants.SPRITE_DIRECTION_NORTH_EAST;
         }
         else if (spriteY < point.y) { //south
-            return SPRITE_DIRECTION_SOUTH;
+            return tc.constants.SPRITE_DIRECTION_SOUTH;
         }
         else if (spriteY > point.y) { //north
-            return SPRITE_DIRECTION_NORTH;
+            return tc.constants.SPRITE_DIRECTION_NORTH;
         }
         else if (spriteX > point.x) { //west
-            return SPRITE_DIRECTION_WEST;
+            return tc.constants.SPRITE_DIRECTION_WEST;
         }
         else if (spriteX < point.x) { //east
-            return SPRITE_DIRECTION_EAST;
+            return tc.constants.SPRITE_DIRECTION_EAST;
         }
         else {
             return this.getDirection();
@@ -1430,36 +1397,36 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         if (actualWidth > lastWidth) //motion
         {
             //if the motion of the sprite is foward and the sprite is inverted
-            if (spriteXDirection == SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_FORWARD) //xpos must decrease by width dif
+            if (spriteXDirection == tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_FORWARD) //xpos must decrease by width dif
             {
                 xpos -= (actualWidth - lastWidth);
             }
 
             //if the sprite is not inverted and the movement is backward, we also need to reduce our xpos
-            if (spriteXDirection != SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_BACK) //xpos must decrease by width dif
+            if (spriteXDirection != tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_BACK) //xpos must decrease by width dif
             {
                 xpos -= (actualWidth - lastWidth);
             }
 
-            if (animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_CENTERED) {  //adjust the xpos 1/2 the width change
+            if (animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_CENTERED) {  //adjust the xpos 1/2 the width change
                 xpos -= (actualWidth - lastWidth) / 2;
             }
 
         }
         else if (actualWidth < lastWidth) {
-            if (spriteXDirection == SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_FORWARD) //xpos must be increased by the dif width
+            if (spriteXDirection == tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_FORWARD) //xpos must be increased by the dif width
             {
                 xpos += (lastWidth - actualWidth);
 
             }
 
             //if the sprite is not inverted and the movement is backward, we also need to reduce our xpos
-            if (spriteXDirection != SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_BACK) //xpos must decrease by width dif
+            if (spriteXDirection != tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_BACK) //xpos must decrease by width dif
             {
                 xpos += (lastWidth - actualWidth);
             }
 
-            if (animations[direction][localState].anchorHorizontal == SPRITE_MOVEMENT_DIRECTION_CENTERED) {  //adjust the xpos 1/2 the width change
+            if (animations[direction][localState].anchorHorizontal == tc.constants.SPRITE_MOVEMENT_DIRECTION_CENTERED) {  //adjust the xpos 1/2 the width change
                 xpos += (lastWidth - actualWidth) / 2;
             }
         }
@@ -1467,13 +1434,13 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 
         if (actualHeight > lastHeight) //motion
         {
-            if (spriteYDirection != SPRITE_INVERTED && animations[direction][localState].anchorVertical == SPRITE_MOVEMENT_DIRECTION_UP) //ypos must decrease by width dif
+            if (spriteYDirection != tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorVertical == tc.constants.SPRITE_MOVEMENT_DIRECTION_UP) //ypos must decrease by width dif
             {
                 ypos -= (actualHeight - lastHeight);
             }
         }
         else if (actualHeight < lastHeight) {
-            if (spriteYDirection != SPRITE_INVERTED && animations[direction][localState].anchorVertical == SPRITE_MOVEMENT_DIRECTION_UP) //ypos must be decreased by the dif width
+            if (spriteYDirection != tc.constants.SPRITE_INVERTED && animations[direction][localState].anchorVertical == tc.constants.SPRITE_MOVEMENT_DIRECTION_UP) //ypos must be decreased by the dif width
             {
                 ypos += (lastHeight - actualHeight);
             }
@@ -1485,11 +1452,11 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 	
 
         //calculate position differences and translations values if the sprite is inverted
-        if (spriteXDirection == SPRITE_INVERTED || spriteYDirection == SPRITE_INVERTED) {
-            if (spriteXDirection == SPRITE_INVERTED) {
+        if (spriteXDirection == tc.constants.SPRITE_INVERTED || spriteYDirection == tc.constants.SPRITE_INVERTED) {
+            if (spriteXDirection == tc.constants.SPRITE_INVERTED) {
                 horScale = actualWidth;
             }
-            if (spriteYDirection == SPRITE_INVERTED) {
+            if (spriteYDirection == tc.constants.SPRITE_INVERTED) {
                 verScale = actualHeight;
             }
         }
@@ -1502,7 +1469,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         //var backImage = mainContext.getImageData(xpos, ypos, actualWidth, actualHeight);
         //spriteContext.putImageData(backImage, 0, 0);
         //now do the translation to flip this sprite image (note, this is our sprite, not background sprites)
-        if (spriteXDirection == SPRITE_INVERTED || spriteYDirection == SPRITE_INVERTED) {
+        if (spriteXDirection == tc.constants.SPRITE_INVERTED || spriteYDirection == tc.constants.SPRITE_INVERTED) {
             mainContext.translate(horScale, verScale);
             mainContext.scale(spriteXDirection, spriteYDirection);
         }
@@ -1541,14 +1508,14 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         var tempXpos = 0;
         var tempYpos = 0;
 
-        if (spriteXDirection == SPRITE_INVERTED) {
+        if (spriteXDirection == tc.constants.SPRITE_INVERTED) {
             tempXpos = -xpos;
         }
         else {
             tempXpos = xpos;
         }
 
-        if (spriteYDirection == SPRITE_INVERTED) {
+        if (spriteYDirection == tc.constants.SPRITE_INVERTED) {
             tempYpos = -ypos;
         }
         else {
@@ -1585,7 +1552,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
 	   		var sortOrder = this.sortMap[direction];
 			if (sortOrder==undefined)
 			{
-				sortOrder = this.sortMap[SPRITE_DIRECTION_UNDEFINED];
+				sortOrder = this.sortMap[tc.constants.SPRITE_DIRECTION_UNDEFINED];
 				if (sortOrder == undefined)
 				{
 					throw "Sort order for this complex sprite could not be found.";

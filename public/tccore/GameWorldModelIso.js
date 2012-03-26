@@ -113,7 +113,7 @@ GameWorldModelIso.prototype = {
         return { "x": Math.round(sprite.getLeft() + sprite.getWidth() / 2), "y": Math.round(sprite.getBottom()) };
     },
     getSortCellOfSprite: function (sprite) {
-        if (sprite.getSpriteType() == GAME_WORLD_CELL_OVERLAY) {
+        if (sprite.getSpriteType() == tc.constants.GAME_WORLD_CELL_OVERLAY) {
             //treat overlays differently
             //middle of tile space
             return this.getWorldCellFromScreenCoord(sprite.getLeft() + sprite.getWidth() / 2, sprite.getBottom() - this.cellHeight / 2);

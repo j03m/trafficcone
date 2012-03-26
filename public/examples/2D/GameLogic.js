@@ -5,8 +5,8 @@ var checkingId;
 var ga;
 var backDrop;
 var alex;
-var lightAction = 100;
-var fastAction = 50;
+var tc.constants.LIGHT_ACTION = 100;
+var tc.constants.FAST_ACTION = 50;
 function sheetLoaded()
 {
 
@@ -106,7 +106,7 @@ function collisionHandler(sprite1, sprite2)
         if (valid)
         {
             //knock sprite 2 back
-            if (sprite1.getSpriteXDirection() == SPRITE_NORMAL)
+            if (sprite1.getSpriteXDirection() == tc.constants.SPRITE_NORMAL)
             {
                 sprite2.moveRight(20);
                 sprite2.setSpriteState("fall");
@@ -129,7 +129,7 @@ function collisionHandler(sprite1, sprite2)
         if (valid)
         {
             //knock sprite 2 back
-            if (sprite2.getSpriteXDirection() == SPRITE_NORMAL)
+            if (sprite2.getSpriteXDirection() == tc.constants.SPRITE_NORMAL)
             {
                 sprite1.moveRight(20);
                 sprite1.setSpriteState("fall");
@@ -240,7 +240,7 @@ function npcAlexThink()
         else
         {
             alex.setSpriteState("walkForward");
-            alex.setSpriteXDirection(SPRITE_INVERTED);
+            alex.setSpriteXDirection(tc.constants.SPRITE_INVERTED);
             alex.moveLeft();
         }
     }
@@ -256,7 +256,7 @@ function npcAlexThink()
         }
         else
         {
-            alex.setSpriteXDirection(SPRITE_NORMAL);
+            alex.setSpriteXDirection(tc.constants.SPRITE_NORMAL);
             alex.setSpriteState("walkForward");
             alex.moveRight();
         }
@@ -282,75 +282,75 @@ function defineAlexSprite()
     alex = new Sprite("alex");
     alex.setup(ga);
        
-    alex.easyDefineSequence("alex", "../../assets/alex/ALEX_STANCE.png", 3, 4, 112, 113, fastAction, playInfinite);
+    alex.easyDefineSequence("alex", "../../assets/alex/ALEX_STANCE.png", 3, 4, 112, 113, tc.constants.FAST_ACTION, playInfinite);
 
     
     var sequence = [];
-    sequence.push(new Frame(0, 0, 122, 120, lightAction)); 
-    sequence.push(new Frame(0, 1, 122, 120, lightAction));
-    sequence.push(new Frame(0, 2, 122, 120, lightAction));
-    sequence.push(new Frame(0, 3, 122, 120, lightAction));
-    sequence.push(new Frame(1, 0, 122, 120, lightAction));
-    sequence.push(new Frame(1, 1, 122, 120, lightAction));
-    sequence.push(new Frame(1, 2, 122, 120, lightAction));
-    sequence.push(new Frame(1, 3, 122, 120, lightAction));
-    sequence.push(new Frame(2, 0, 122, 120, lightAction));
-    sequence.push(new Frame(2, 1, 122, 120, lightAction));
-    sequence.push(new Frame(2, 3, 122, 120, lightAction));
-    sequence.push(new Frame(2, 3, 122, 120, lightAction));
-    sequence.push(new Frame(3, 0, 122, 120, lightAction));
-    sequence.push(new Frame(3, 1, 122, 120, lightAction));
+    sequence.push(new Frame(0, 0, 122, 120, tc.constants.LIGHT_ACTION)); 
+    sequence.push(new Frame(0, 1, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(0, 2, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(0, 3, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 0, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 1, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 2, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 3, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 0, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 1, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 3, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 3, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(3, 0, 122, 120, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(3, 1, 122, 120, tc.constants.LIGHT_ACTION));
     alex.defineSequence("walkForward", "../../assets/alex/ALEX_WALK_FORWARD.png", sequence, playInfinite);
 
     sequence = [];
-    sequence.push(new Frame(0, 0, 120, 172, fastAction));
-    sequence.push(new Frame(0, 1, 120, 172, fastAction));
-    sequence.push(new Frame(0, 2, 120, 172, fastAction));
-    sequence.push(new Frame(0, 3, 120, 172, fastAction));
-    sequence.push(new Frame(0, 4, 120, 172, fastAction));
-    sequence.push(new Frame(1, 0, 120, 172, fastAction));
-    sequence.push(new Frame(1, 1, 120, 172, fastAction));
-    sequence.push(new Frame(1, 2, 120, 172, fastAction));
-    sequence.push(new Frame(1, 3, 120, 172, fastAction));
-    sequence.push(new Frame(1, 4, 120, 172, fastAction));
-    sequence.push(new Frame(2, 0, 120, 172, fastAction));
-    sequence.push(new Frame(2, 1, 120, 172, fastAction));
-    sequence.push(new Frame(2, 3, 120, 172, fastAction));
-    sequence.push(new Frame(2, 3, 120, 172, fastAction));
-    sequence.push(new Frame(2, 4, 120, 172, fastAction));
-    sequence.push(new Frame(3, 0, 120, 172, fastAction));
-    sequence.push(new Frame(3, 1, 120, 172, fastAction));
-    sequence.push(new Frame(3, 2, 120, 172, fastAction));
-    sequence.push(new Frame(3, 3, 120, 172, fastAction));
+    sequence.push(new Frame(0, 0, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 1, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 2, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 3, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 4, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 0, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 1, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 2, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 3, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 4, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 0, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 1, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 3, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 3, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 4, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 0, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 1, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 2, 120, 172, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 3, 120, 172, tc.constants.FAST_ACTION));
     alex.defineSequence("attack", "../../assets/alex/ALEX_PUNCH.png", sequence, 1);
 
     sequence = [];    
-    sequence.push(new Frame(0, 0, 150, 218, fastAction));
-    sequence.push(new Frame(0, 1, 150, 218, fastAction));
-    sequence.push(new Frame(0, 2, 150, 218, fastAction));
-    sequence.push(new Frame(0, 3, 150, 218, fastAction));
-    sequence.push(new Frame(0, 4, 150, 218, fastAction));
-    sequence.push(new Frame(0, 5, 150, 218, fastAction));
-    sequence.push(new Frame(1, 0, 150, 218, fastAction));
-    sequence.push(new Frame(1, 1, 150, 218, fastAction));
-    sequence.push(new Frame(1, 2, 150, 218, fastAction));
-    sequence.push(new Frame(1, 3, 150, 218, fastAction));
-    sequence.push(new Frame(1, 4, 150, 218, fastAction));
-    sequence.push(new Frame(1, 5, 150, 218, fastAction));
-    sequence.push(new Frame(2, 0, 150, 218, fastAction));
-    sequence.push(new Frame(2, 1, 150, 218, fastAction));
-    sequence.push(new Frame(2, 3, 150, 218, fastAction));
-    sequence.push(new Frame(2, 3, 150, 218, fastAction));
-    sequence.push(new Frame(2, 4, 150, 218, fastAction));
-    sequence.push(new Frame(2, 5, 150, 218, fastAction));
-    sequence.push(new Frame(3, 0, 150, 218, fastAction));
-    sequence.push(new Frame(3, 1, 150, 218, fastAction));
-    sequence.push(new Frame(3, 3, 150, 218, fastAction));
-    sequence.push(new Frame(3, 3, 150, 218, fastAction));
-    sequence.push(new Frame(3, 4, 150, 218, fastAction));
-    sequence.push(new Frame(3, 5, 150, 218, fastAction));
-    sequence.push(new Frame(4, 0, 150, 218, fastAction));
-    sequence.push(new Frame(4, 1, 150, 218, fastAction));
+    sequence.push(new Frame(0, 0, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 1, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 2, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 4, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(0, 5, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 0, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 1, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 2, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 4, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(1, 5, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 0, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 1, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 4, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(2, 5, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 0, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 1, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 3, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 4, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(3, 5, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(4, 0, 150, 218, tc.constants.FAST_ACTION));
+    sequence.push(new Frame(4, 1, 150, 218, tc.constants.FAST_ACTION));
     alex.defineSequence("fall", "../../assets/alex/ALEX_FALL.png", sequence, 1);
 
     
@@ -367,7 +367,7 @@ function defineAlexSprite()
     alex.setLeftBorder(0);
     alex.setRightBorder(ga.getCanvasWidth() * .9);
     
-    alex.setSpriteXDirection(SPRITE_INVERTED);
+    alex.setSpriteXDirection(tc.constants.SPRITE_INVERTED);
 
 }
 
@@ -383,43 +383,43 @@ function defineRyuSprite() {
 
     //define a single sequence to start - 
     var sequence = [];
-    sequence.push(new Frame(0, 0, 111, 78, lightAction));
-    sequence.push(new Frame(0, 1, 111, 78, lightAction));
-    sequence.push(new Frame(0, 2, 111, 78, lightAction));
-    sequence.push(new Frame(0, 3, 111, 78, lightAction));
-    sequence.push(new Frame(1, 0, 111, 78, lightAction));
-    sequence.push(new Frame(1, 1, 111, 78, lightAction));
-    sequence.push(new Frame(1, 2, 111, 78, lightAction));
-    sequence.push(new Frame(1, 3, 111, 78, lightAction));
-    sequence.push(new Frame(2, 0, 111, 78, lightAction));
-    sequence.push(new Frame(2, 1, 111, 78, lightAction));
+    sequence.push(new Frame(0, 0, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(0, 1, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(0, 2, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(0, 3, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 0, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 1, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 2, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(1, 3, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 0, 111, 78, tc.constants.LIGHT_ACTION));
+    sequence.push(new Frame(2, 1, 111, 78, tc.constants.LIGHT_ACTION));
 
 
     var walkingForward = [];
-    walkingForward.push(new Frame(0, 0, 113, 112, fastAction));
-    walkingForward.push(new Frame(0, 1, 113, 112, fastAction));
-    walkingForward.push(new Frame(0, 2, 113, 112, fastAction));
-    walkingForward.push(new Frame(0, 3, 113, 112, fastAction));
-    walkingForward.push(new Frame(1, 0, 113, 112, fastAction));
-    walkingForward.push(new Frame(1, 1, 113, 112, fastAction));
-    walkingForward.push(new Frame(1, 2, 113, 112, fastAction));
-    walkingForward.push(new Frame(1, 3, 113, 112, fastAction));
-    walkingForward.push(new Frame(2, 0, 113, 112, fastAction));
-    walkingForward.push(new Frame(2, 1, 113, 112, fastAction));
-    walkingForward.push(new Frame(2, 2, 113, 112, fastAction));
+    walkingForward.push(new Frame(0, 0, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(0, 1, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(0, 2, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(0, 3, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(1, 0, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(1, 1, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(1, 2, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(1, 3, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(2, 0, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(2, 1, 113, 112, tc.constants.FAST_ACTION));
+    walkingForward.push(new Frame(2, 2, 113, 112, tc.constants.FAST_ACTION));
 
     var attack = [];
-    attack.push(new Frame(0, 0, 105, 127, fastAction));
-    attack.push(new Frame(0, 1, 105, 127, fastAction));
-    attack.push(new Frame(0, 2, 105, 127, fastAction));
-    attack.push(new Frame(1, 0, 105, 127, fastAction));
-    attack.push(new Frame(1, 1, 105, 127, fastAction));
-    attack.push(new Frame(1, 2, 105, 127, fastAction));
-    attack.push(new Frame(2, 0, 105, 127, fastAction));
-    attack.push(new Frame(2, 1, 105, 127, fastAction));
+    attack.push(new Frame(0, 0, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(0, 1, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(0, 2, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(1, 0, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(1, 1, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(1, 2, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(2, 0, 105, 127, tc.constants.FAST_ACTION));
+    attack.push(new Frame(2, 1, 105, 127, tc.constants.FAST_ACTION));
 
 
-    ryu.easyDefineSequence("fall", "../../assets/ryu/RYU_FALL.png", 5, 5, 120, 178, fastAction, 1);
+    ryu.easyDefineSequence("fall", "../../assets/ryu/RYU_FALL.png", 5, 5, 120, 178, tc.constants.FAST_ACTION, 1);
     ryu.defineSequence("attack", "../../assets/ryu/RYU_PUNCH1.png", attack, 1);
     ryu.defineSequence("ryu", "../../assets/ryu/RYU_STANCE.png", sequence, playInfinite);
     ryu.defineSequence("walkForward", "../../assets/ryu/RYU_WALKING.png", walkingForward, playInfinite);
@@ -528,7 +528,7 @@ function moveRight()
 
 
     //check the sprite direction -
-    if (ryu.getSpriteXDirection() == SPRITE_INVERTED)
+    if (ryu.getSpriteXDirection() == tc.constants.SPRITE_INVERTED)
     {
         //if i'm inverted (ie, I'm facing left) then I only want the 
         //walk back animation to play a few times before I invert and then play 
@@ -537,7 +537,7 @@ function moveRight()
         if (forwardSteps > STEPS_TILL_FLIP)
         {
             //invert
-            ryu.setSpriteXDirection(SPRITE_NORMAL);
+            ryu.setSpriteXDirection(tc.constants.SPRITE_NORMAL);
 
             //change the walk back animation to walk left animation to walk forward
             ga.modEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkForward", moveRight, playInfinite);
@@ -558,7 +558,7 @@ var backSteps = 0;
     }
 
     //check the sprite direction -
-    if (ryu.getSpriteXDirection() != SPRITE_INVERTED)
+    if (ryu.getSpriteXDirection() != tc.constants.SPRITE_INVERTED)
     {
         //if i'm not inverted (ie, I'm facing right) then I only want the 
         //walk back animation to play a few times before I invert and then play 
@@ -567,7 +567,7 @@ var backSteps = 0;
         if (forwardSteps > STEPS_TILL_FLIP)
         {
             //invert
-            ryu.setSpriteXDirection(SPRITE_INVERTED);
+            ryu.setSpriteXDirection(tc.constants.SPRITE_INVERTED);
 
             //change the walk back animation to walk left animation to walk forward
             ga.modEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkBack", moveRight, playInfinite);

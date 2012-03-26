@@ -370,7 +370,7 @@ var Engine =
         if (gameWorld == undefined) {
             return a["absoluteTop"]() - b["absoluteTop"]();
         }
-        else if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+        else if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
             return a["absoluteTop"]() - b["absoluteTop"]();
         }
         else { //all other styles are isometric, which means
@@ -507,7 +507,7 @@ var Engine =
             throw "Gameworld may not be undefined.";
         }
 
-        if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+        if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             backCanvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 			if (texture != undefined)
@@ -516,7 +516,7 @@ var Engine =
 			}
             draw2DWorld();
         }
-        else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC) {
+        else if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_ISOMETRIC) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             backCanvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             if (texture != undefined)
@@ -525,7 +525,7 @@ var Engine =
 			}
 			drawMock3DWorld();
         }
-        else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC_GRID_TEST) {
+        else if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_ISOMETRIC_GRID_TEST) {
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             backCanvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
             drawMock3DGrid();
@@ -589,7 +589,7 @@ var Engine =
                     //get the cell from the gameworld data
                     var cell = gameWorld.Cells[worldCellPos.x][worldCellPos.y];
                     if (cell != undefined) {
-                        if (cell.Type == GAME_WORLD_CELL_UNDERLAY) {
+                        if (cell.Type == tc.constants.GAME_WORLD_CELL_UNDERLAY) {
                             var cellSprite = cell.Sprite;
                             if (cellSprite != undefined) {
                                                                               //we also need to calculate the draw position of this cell's sprite. 
@@ -617,7 +617,7 @@ var Engine =
             var cell = overlays[i];
             var cellSprite = cell.Sprite;
             if (cellSprite != undefined) {
-                cellSprite.setSpriteType(GAME_WORLD_CELL_OVERLAY);
+                cellSprite.setSpriteType(tc.constants.GAME_WORLD_CELL_OVERLAY);
                 gameWorldModel.placeSpriteInCenterOfWorldCell(cell.x, cell.y, cellSprite);
                 cellSprite.setFrame(cell.Frame);
                 cellSprite.prep();
@@ -716,7 +716,7 @@ var Engine =
                 var worldCell = gameWorldModel.getWorldCellFromVisibleCell(incX, incY);
                 if (gameWorld.Cells[worldCell.x] != undefined) {
                     if (gameWorld.Cells[worldCell.x][worldCell.y] != undefined) {
-                        if (gameWorld.Cells[worldCell.x][worldCell.y].BlockType != GAME_WORLD_CELL_OPEN) {
+                        if (gameWorld.Cells[worldCell.x][worldCell.y].BlockType != tc.constants.GAME_WORLD_CELL_OPEN) {
                             this.drawIsoCellBorders(incX, incY, true);
                         }
                         else {
@@ -845,7 +845,7 @@ var Engine =
             var cell;
             var cell2;
             var cell3; //only used in iso
-            if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+            if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
                 //get the current cell based on the x,y of the sprite moving
 
                 if (type == "right") {
@@ -919,7 +919,7 @@ var Engine =
                 return;
             }
 
-            if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+            if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
                 cell = gameWorld.Cells[cell.x][cell.y];
             }
             else {
@@ -932,7 +932,7 @@ var Engine =
             }
 
             //if the cell does exist, check if it is an artifact
-            if (cell.BlockType == GAME_WORLD_CELL_BLOCK) {
+            if (cell.BlockType == tc.constants.GAME_WORLD_CELL_BLOCK) {
                 return false; //block
             }
 
@@ -1076,13 +1076,13 @@ var Engine =
         },
         setWorld: function (world) {
             gameWorld = world;
-            if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+            if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
                 gameWorldModel = new GameWorldModel2D(world, cameraXCell, cameraYCell, this.getCanvasWidth(), this.getCanvasHeight());
             }
-            else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC) {
+            else if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_ISOMETRIC) {
                 gameWorldModel = new GameWorldModelIso(world, cameraXCell, cameraYCell, this.getCanvasWidth(), this.getCanvasHeight());
             }
-            else if (gameWorld.Style == GAME_WORLD_STYLE_ISOMETRIC_GRID_TEST) {
+            else if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_ISOMETRIC_GRID_TEST) {
                 gameWorldModel = new GameWorldModelIso(world, cameraXCell, cameraYCell, this.getCanvasWidth(), this.getCanvasHeight());
             }
             else {
@@ -1424,7 +1424,7 @@ var Engine =
 
                 //check for collisions only if this isn't a background sprite - but we will still check for collisions with background
                 //sprites, because in some cases they'll require redraw - mock3d and isometeric
-                if (mySprite.getSpriteType() != GAME_WORLD_CELL_OVERLAY) {
+                if (mySprite.getSpriteType() != tc.constants.GAME_WORLD_CELL_OVERLAY) {
                     //check if the sprite is at a give border, if so raise a border collision event.
                     CheckBorders(mySprite);
 
@@ -1434,7 +1434,7 @@ var Engine =
                         if (mySprite.name != tempArray[ii].name) {
                             var result = CheckCollision(mySprite, tempArray[ii]);
                             if (result) {
-                                if (tempArray[ii].getSpriteType() == GAME_WORLD_CELL_OVERLAY) {
+                                if (tempArray[ii].getSpriteType() == tc.constants.GAME_WORLD_CELL_OVERLAY) {
                                     overlayRedrawArray.push(tempArray[ii]);
                                 }
 
@@ -1499,7 +1499,7 @@ var Engine =
             if (spriteEntry.definition != undefined) {
                 this.getLoader().quickLoadSprite(spriteEntry.definition, spriteEntry.invocation, spriteEntry.prefix, this, function (sprite) {
                     //use the game model to put the sprite in the correct place
-                    if (gameWorld.Style == GAME_WORLD_STYLE_2D) {
+                    if (gameWorld.Style == tc.constants.GAME_WORLD_STYLE_2D) {
                         var cellPos = gameWorldModel.getGameCellXY(change.x, change.y);
                         sprite.setTop(cellPos.y);
                         sprite.setLeft(cellPos.x);

@@ -103,14 +103,14 @@ function minotaur_Sprite(ga, name) {
     }
     var sprite = new Sprite(name, "minotaurNeutral", "minotaurNeutral");
     sprite.setup(ga);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralWest(), playInfinite, undefined, undefined, SPRITE_DIRECTION_WEST);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorthWest(), playInfinite, undefined, undefined, SPRITE_DIRECTION_NORTH_WEST);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorth(), playInfinite, undefined, undefined, SPRITE_DIRECTION_NORTH);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorthEast(), playInfinite, undefined, undefined, SPRITE_DIRECTION_NORTH_EAST);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralEast(), playInfinite, undefined, undefined, SPRITE_DIRECTION_EAST);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouthEast(), playInfinite, undefined, undefined, SPRITE_DIRECTION_SOUTH_EAST);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouth(), playInfinite, undefined, undefined, SPRITE_DIRECTION_SOUTH);
-    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouthWest(), playInfinite, undefined, undefined, SPRITE_DIRECTION_WEST);
-    sprite.setDirection(SPRITE_DIRECTION_SOUTH_EAST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralWest(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_WEST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorthWest(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_NORTH_WEST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorth(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_NORTH);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralNorthEast(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_NORTH_EAST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralEast(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_EAST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouthEast(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_SOUTH_EAST);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouth(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_SOUTH);
+    sprite.defineSequence("minotaurNeutral", "/assets/minotaur/minotaur_alpha.png", minotaurNeutralSouthWest(), playInfinite, undefined, undefined, tc.constants.SPRITE_DIRECTION_WEST);
+    sprite.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH_EAST);
     return sprite;
 }

@@ -5,7 +5,7 @@ function genLevel(width, height, numberOfRooms, minCellsBetweenDoors, gameWorld)
     for (var i = 0; i < width; i++) {
         for (var ii = 0; ii < height; ii++) {
             //set a cell using the worldCells sprite, randomly select one of the 25 frames in this sprite.
-            gameWorld_setCell(gameWorld, i, ii, undefined, 0, GAME_WORLD_CELL_UNDERLAY, GAME_WORLD_CELL_BLOCK);
+            gameWorld_setCell(gameWorld, i, ii, undefined, 0, tc.constants.GAME_WORLD_CELL_UNDERLAY, tc.constants.GAME_WORLD_CELL_BLOCK);
         }
     }
 

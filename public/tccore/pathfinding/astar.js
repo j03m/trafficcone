@@ -10,7 +10,7 @@ if (typeof exports !== "undefined")
 		return astar;
     }
 
-    var GAME_WORLD_CELL_BLOCK = worldConsts.GAME_WORLD_CELL_BLOCK;
+    var GAME_WORLD_CELL_BLOCK = tc.constants.GAME_WORLD_CELL_BLOCK;
     
     var heapFactory = require("./BinaryHeap");
 }
@@ -239,7 +239,7 @@ var astar = {
         if (astar.grid[cell.x] == undefined || astar.grid[cell.x][cell.y] == undefined) {
             return false;
         }
-        else if (astar.grid[cell.x][cell.y].BlockType == GAME_WORLD_CELL_BLOCK) {
+        else if (astar.grid[cell.x][cell.y].BlockType == tc.constants.GAME_WORLD_CELL_BLOCK) {
             return false;
         }
 
@@ -291,7 +291,7 @@ var astar = {
                 var neighbor = neighbors[i];
 
                 if (neighbor.closed == this.currentId ||
-                	neighbor.BlockType == GAME_WORLD_CELL_BLOCK
+                	neighbor.BlockType == tc.constants.GAME_WORLD_CELL_BLOCK
                 	) {
                     // not a valid node to process, skip to next neighbor
                     continue;

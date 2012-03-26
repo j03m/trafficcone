@@ -4,6 +4,7 @@
     <title></title>
     
     <script type="text/javascript" src="../tccore/jquery.min.js"></script>
+    <script type="text/javascript" src="../tccore/namespace.js"></script>
     <script type="text/javascript" src="../tccore/NotConstants.js"></script>
     <script type="text/javascript" src="../tccore/browserdetect.js"></script>
     <script type="text/javascript" src="../tccore/GameEvent.js"></script>
@@ -80,10 +81,10 @@
 
 
 		var directionSort = {};
-		directionSort[SPRITE_DIRECTION_NORTH] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
-		directionSort[SPRITE_DIRECTION_NORTH_EAST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
-		directionSort[SPRITE_DIRECTION_NORTH_WEST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
-		directionSort[SPRITE_DIRECTION_UNDEFINED] = ["base", "LH", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[tc.constants.SPRITE_DIRECTION_NORTH] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[tc.constants.SPRITE_DIRECTION_NORTH_EAST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[tc.constants.SPRITE_DIRECTION_NORTH_WEST] = ["LH", "base", "HD", "LG", "RA", "LA", "RH"];
+		directionSort[tc.constants.SPRITE_DIRECTION_UNDEFINED] = ["base", "LH", "HD", "LG", "RA", "LA", "RH"];
 		
 		var compositeDef = {
             characterClass: "AM",

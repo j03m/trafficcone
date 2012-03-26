@@ -36,21 +36,21 @@ var SpriteInventory = (function(){
 
 	//altar floor cells
 	inventory["4d603af4-1199-4749-ba97-64872d597a32"] = {
-	    definition: DOMAIN_PREFIX + "assets/Cells/Cells.js",
+	    definition: tc.constants.DOMAIN_PREFIX + "assets/Cells/Cells.js",
 	    invocation: "altarCells_Sprite",
 	    prefix: "altarCells",
-	    type: GAME_WORLD_CELL_UNDERLAY,
-	    blockType: GAME_WORLD_CELL_OPEN
+	    type: tc.constants.GAME_WORLD_CELL_UNDERLAY,
+	    blockType: tc.constants.GAME_WORLD_CELL_OPEN
 	}
 
 	//columns
 	inventory["861ccffc-f797-40e1-a9de-9246545aa5d"] = {
 	    usage: USAGE_CELL,
-	    definition: DOMAIN_PREFIX + "assets/Cells/singleColumn.js",
+	    definition: tc.constants.DOMAIN_PREFIX + "assets/Cells/singleColumn.js",
 	    invocation: "columnCell_Sprite",
 	    prefix: "columnCell",
-	    type: GAME_WORLD_CELL_OVERLAY,
-	    blockType: GAME_WORLD_CELL_BLOCK
+	    type: tc.constants.GAME_WORLD_CELL_OVERLAY,
+	    blockType: tc.constants.GAME_WORLD_CELL_BLOCK
 	}
 
 	//zombie
@@ -58,8 +58,8 @@ var SpriteInventory = (function(){
 	    usage: USAGE_NPC,
 	    prefix: "zombie",
 	    speed: 3, //todo: Sprites should have attributes like strength, speed, weight etc
-	    imagePath: DOMAIN_PREFIX + "assets/zombie/",
-	    audioPath: DOMAIN_PREFIX + "assets/zombie/",
+	    imagePath: tc.constants.DOMAIN_PREFIX + "assets/zombie/",
+	    audioPath: tc.constants.DOMAIN_PREFIX + "assets/zombie/",
 	    behavior:
 		{
 		    seek: "hero",
@@ -68,7 +68,7 @@ var SpriteInventory = (function(){
 		    leftGap: 10,
 		    topGap: 10,
 		    moveInterval: 100,
-		    definition: DOMAIN_PREFIX + "tccore/behaviors/SpriteSeeker.js",
+		    definition: tc.constants.DOMAIN_PREFIX + "tccore/behaviors/SpriteSeeker.js",
 		    constructor: "SpriteSeeker(behavior.moveState, behavior.foundState)",
 		    eventType: "NPC",
 		    startState: "normal"
@@ -127,21 +127,21 @@ var SpriteInventory = (function(){
 	    neutralState: "normal",
 	    rowDirectionMap:
 		[
-			{ row: 0, direction: SPRITE_DIRECTION_WEST, imageName: "zombie_0-0-0.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_NORTH_WEST, imageName: "zombie_0-0-1.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_NORTH, imageName: "zombie_0-0-2.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_NORTH_EAST, imageName: "zombie_0-0-3.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_EAST, imageName: "zombie_0-0-4.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_SOUTH_EAST, imageName: "zombie_0-0-5.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_SOUTH, imageName: "zombie_0-0-6.png" },
-			{ row: 0, direction: SPRITE_DIRECTION_SOUTH_WEST, imageName: "zombie_0-0-7.png" }
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_WEST, imageName: "zombie_0-0-0.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_NORTH_WEST, imageName: "zombie_0-0-1.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_NORTH, imageName: "zombie_0-0-2.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_NORTH_EAST, imageName: "zombie_0-0-3.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_EAST, imageName: "zombie_0-0-4.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_SOUTH_EAST, imageName: "zombie_0-0-5.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_SOUTH, imageName: "zombie_0-0-6.png" },
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_SOUTH_WEST, imageName: "zombie_0-0-7.png" }
 		],
 
 	    tileHeight: 130,
 	    tileWidth: 128,
 	    drawWidth: 40,
 	    drawHeight: 60,
-	    initialDirection: SPRITE_DIRECTION_SOUTH_WEST
+	    initialDirection: tc.constants.SPRITE_DIRECTION_SOUTH_WEST
 	};
 
 	//hero
@@ -149,13 +149,13 @@ var SpriteInventory = (function(){
 	    usage: USAGE_PC,
 	    prefix: "hero",
 	    speed: 2,
-	    imagePath: DOMAIN_PREFIX + "assets/hero/",
+	    imagePath: tc.constants.DOMAIN_PREFIX + "assets/hero/",
 	    behavior:
 		{
 		    foundState: "normal",
 		    moveState: "walking",
 		    moveInterval: 100,
-		    definition: DOMAIN_PREFIX + "tccore/behaviors/OriginSeeker.js",
+		    definition: tc.constants.DOMAIN_PREFIX + "tccore/behaviors/OriginSeeker.js",
 		    constructor: "OriginSeeker(behavior.moveState, behavior.foundState)",
 		    eventType: "mousedown",
 		    startState: "normal"
@@ -214,34 +214,34 @@ var SpriteInventory = (function(){
 	    neutralState: "normal",
 	    rowDirectionMap:
 		[
-			{ row: 0, direction: SPRITE_DIRECTION_WEST },
-			{ row: 1, direction: SPRITE_DIRECTION_NORTH_WEST },
-			{ row: 2, direction: SPRITE_DIRECTION_NORTH },
-			{ row: 3, direction: SPRITE_DIRECTION_NORTH_EAST },
-			{ row: 4, direction: SPRITE_DIRECTION_EAST },
-			{ row: 5, direction: SPRITE_DIRECTION_SOUTH_EAST },
-			{ row: 6, direction: SPRITE_DIRECTION_SOUTH },
-			{ row: 7, direction: SPRITE_DIRECTION_SOUTH_WEST }
+			{ row: 0, direction: tc.constants.SPRITE_DIRECTION_WEST },
+			{ row: 1, direction: tc.constants.SPRITE_DIRECTION_NORTH_WEST },
+			{ row: 2, direction: tc.constants.SPRITE_DIRECTION_NORTH },
+			{ row: 3, direction: tc.constants.SPRITE_DIRECTION_NORTH_EAST },
+			{ row: 4, direction: tc.constants.SPRITE_DIRECTION_EAST },
+			{ row: 5, direction: tc.constants.SPRITE_DIRECTION_SOUTH_EAST },
+			{ row: 6, direction: tc.constants.SPRITE_DIRECTION_SOUTH },
+			{ row: 7, direction: tc.constants.SPRITE_DIRECTION_SOUTH_WEST }
 		],
 	    tileHeight: 260,
 	    tileWidth: 267,
 	    drawWidth: 105,
 	    drawHeight: 130,
-	    initialDirection: SPRITE_DIRECTION_SOUTH_WEST,
+	    initialDirection: tc.constants.SPRITE_DIRECTION_SOUTH_WEST,
 	    chain: ["male_heavy.png", "male_longsword.png", "male_shield.png"]
 	};
 
 
 	inventory["fcd7e791-ebbf-49db-9466-41896e5da7c6"] = {
 	    usage: USAGE_NPC,
-	    definition: DOMAIN_PREFIX + "assets/werewolf/werewolf.js",
+	    definition: tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolf.js",
 	    invocation: "werewolf_Sprite",
 	    prefix: "werewolf"
 	}
 
 	inventory["f8652d7c-d850-45ca-a017-5af224a36962"] = {
 	    usage: USAGE_NPC,
-	    definition: DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirl.js",
+	    definition: tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirl.js",
 	    invocation: "ninjaGirl_Sprite",
 	    prefix: "ninjaGirl"
 	}
@@ -285,14 +285,14 @@ var SpriteInventory = (function(){
 					for (var i = 0; i < directions.length; i++) {
 			 			var direction = directions[i];
 						var actionTemp = state + direction;
-						var imagePath = SpriteInventory.makePath([DOMAIN_PREFIX,tempPath,compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + compositeDef.imageExtension;
+						var imagePath = SpriteInventory.makePath([tc.constants.DOMAIN_PREFIX,tempPath,compositeDef.basePart,compositeDef[compositeDef.basePart],direction]) + compositeDef.imageExtension;
 						var def = SpriteInventory.getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], compositeDef.basePart, compositeDef[compositeDef.basePart], direction);
 						sprite.easyDefineSequence(states[state], imagePath, def.rows, def.cols, def.frameHeight, def.frameWidth, 100, -1, undefined, undefined, directionNum[count]);
 						//after def, chain all other body parts
 						for (var ii = 0; ii < parts.length; ii++) {		
 							var part = parts[ii];
 							var partType = compositeDef[part];
-							imagePath = SpriteInventory.makePath([DOMAIN_PREFIX,tempPath,  part, partType, direction]) + compositeDef.imageExtension;
+							imagePath = SpriteInventory.makePath([tc.constants.DOMAIN_PREFIX,tempPath,  part, partType, direction]) + compositeDef.imageExtension;
 							var subdef = SpriteInventory.getDefs(compositeDef.actionDefs, compositeDef.movementClass, states[state], part, partType, direction);
 				
 							//convert the definition for the chains to a sequence of frames.
@@ -393,7 +393,7 @@ var SpriteInventory = (function(){
 			        var audioPath = spriteDef.audioPath;
 			        var initialDirection = spriteDef.initialDirection;
 
-			        if (initialDirection == undefined) { initialDirection = SPRITE_DIRECTION_UNDEFINED; }
+			        if (initialDirection == undefined) { initialDirection = tc.constants.SPRITE_DIRECTION_UNDEFINED; }
 
 			        //create a new sprite       
 			        var sprite = new Sprite(name, spriteDef.neutralState, spriteDef.neutralState, loadCallBack, engine);
