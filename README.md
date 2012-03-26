@@ -157,13 +157,13 @@ All 2D animations internally leverage SPRITE_DIRECTION_UNDEFINED by default. Mos
 
 ```js
 function zombie_Sprite(ga, name, loadCallBack) {
-    var template = TCSpriteInventory["de558a04-b5df-4af4-b196-4393d732bb84"];
-    var zombie = TCSpriteFactory(template, name, ga, loadCallBack);           
+    var template = SpriteInventory.TCSpriteInventory["de558a04-b5df-4af4-b196-4393d732bb84"];
+    var zombie = SpriteInventory.TCSpriteFactory(template, name, ga, loadCallBack);           
     return zombie;
 }
 ```
 
-Here we can see grab a template def from TCSpriteInventory using a guid and then pass that template to TCSpriteFactory generating our zombie sprite. Previous to this call we set up a json definition which defines the sprite:
+Here we can see grab a template def from SpriteInventory.TCSpriteInventory using a guid and then pass that template to SpriteInventory.TCSpriteFactory generating our zombie sprite. Previous to this call we set up a json definition which defines the sprite:
 
 ```js
 //zombie
@@ -396,7 +396,7 @@ In our latest sample - examples/simpleCompositeEqSwap.html we can see here that 
 ### Creating a complex composite sprite
 Code supporting this section of the documentation can be seen in: examples/CompositeSprite.html
 
-Creating a composite uses a new global function called createCompositeSprite. The details around this function can be seen in SpriteInventory.js. This method accepts a reference to the engine, a "composite definition" and a call back. The obvious meat is your composite definition. 
+Creating a composite uses a function called SpriteInventory.createCompositeSprite. The details around this function can be seen in SpriteInventory.js. This method accepts a reference to the engine, a "composite definition" and a call back. The obvious meat is your composite definition. 
 
 So what the heck is in this composite definition? For complex composites, the composite definition is going to define everything from the different parts of a given sprite, the different animate states it will support etc. First and foremost let's review the hierarchy of stuff a complex composite sprite will support.
 
@@ -530,13 +530,13 @@ OKay, so last is the directionSortMap. As covered in simple composites, sometime
 
 Here, we tell traffic cone that north, north east and north west should draw the left hand, the base part (torso), the head, the legs, the right arm, the left arm and then the right hand in that order and every other direction should draw the base part (torso), the left hand, the head, the legs, the right arm, the left arm, the right hand.
 
-After that supply the definition to traffic cone via createCompositeSprite and it will create your sprite and notify you with the callback parameter. Once you've created the sprite you can pass a reference to the sprite and a modified composite definition to the setupCompositeSprite method to augment it. For example, in our sample we have provided some drop downs so you can swap out amazon girl's equipment. Each time a dropdown changes we call this swap function:
+After that supply the definition to traffic cone via createCompositeSprite and it will create your sprite and notify you with the callback parameter. Once you've created the sprite you can pass a reference to the sprite and a modified composite definition to the SpriteInventory.setupCompositeSprite method to augment it. For example, in our sample we have provided some drop downs so you can swap out amazon girl's equipment. Each time a dropdown changes we call this swap function:
 
 ```js
 	function swap(part, value)
 	{
 		compositeDef[part] = value;
-		setupCompositeSprite(hero, compositeDef);
+		SpriteInventory.setupCompositeSprite(hero, compositeDef);
 		
 	}
 ```
