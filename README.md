@@ -680,7 +680,6 @@ In addition to attaching events to sprites, you can simply set global events tha
 
 Here we leave most of the parameters to addEventBehavior as undefined and capture the general event in our function param.
 
-### More to come - Docs Joe still needs to write: 
 ### Frame level alerting
 Sample: examples/TrafficConeTests.html
 
