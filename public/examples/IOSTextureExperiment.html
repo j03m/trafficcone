@@ -5,9 +5,9 @@
     
     <script type="text/javascript" src="../tccore/jquery.min.js"></script>
     <script type="text/javascript" src="../tccore/namespace.js"></script>
-    <script type="text/javascript" src="../tccore/NotConstants.js"></script>
-    <script type="text/javascript" src="../tccore/browserdetect.js"></script>
     <script type="text/javascript" src="../tccore/GameEvent.js"></script>
+    <script type="text/javascript" src="../tccore/NotConstants.js"></script>mate
+    <script type="text/javascript" src="../tccore/browserdetect.js"></script>ma
     <script type="text/javascript" src="../tccore/GameWorld.js"></script>
     <script type="text/javascript" src="../tccore/Frame.js"></script>
     <script type="text/javascript" src="../tccore/Sprite.js"></script>
@@ -71,8 +71,8 @@
             var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
             var originSeeker = new OriginSeeker("walking", "normal", "attacking", 100);
 
-            ga.addEventBehavior(ga.gameEvents.MouseDown, "", hero, "walking", originSeeker, playInfinite);
-            ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
+            ga.addEventBehavior(ga.gameEvents.MouseDown, "", hero, "walking", originSeeker, tc.constants.playInfinite);
+            ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, tc.constants.playInfinite);
             ga.addEventBehavior(ga.gameEvents.MouseDown, undefined, undefined, undefined, function (e) {
                 var spriteClick = ga.CheckEventPosition(e.offsetX, e.offsetY);
 

@@ -503,26 +503,26 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
         return true;
     },
     this.wireArrowKeys = function (idle, forward, back, up, down) {
-        engineRef.addEventBehavior(engineRef.gameEvents.Idle, "", this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, this.moveRight, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, this.moveLeft, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, RIGHTARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, LEFTARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, this.moveUp, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, this.moveDown, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, UPARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, DOWNARROW, this, idle, null, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.Idle, "", this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, this.moveRight, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, this.moveLeft, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, RIGHTARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, LEFTARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, this.moveUp, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, this.moveDown, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, UPARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, DOWNARROW, this, idle, null, tc.constants.playInfinite);
     },
     this.wireIsoArrowKeys = function (idle, forward, back, up, down) {
-        engineRef.addEventBehavior(engineRef.gameEvents.Idle, "", this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_EAST); this.sprite.moveRight(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_WEST); this.sprite.moveLeft(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, RIGHTARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, LEFTARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_NORTH); this.sprite.moveUp(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH); this.sprite.moveDown(); }, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, UPARROW, this, idle, null, playInfinite);
-        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, DOWNARROW, this, idle, null, playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.Idle, "", this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, RIGHTARROW, this, forward, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_EAST); this.sprite.moveRight(); }, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, LEFTARROW, this, back, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_WEST); this.sprite.moveLeft(); }, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, RIGHTARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, LEFTARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, UPARROW, this, up, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_NORTH); this.sprite.moveUp(); }, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyDown, DOWNARROW, this, down, function () { this.sprite.setDirection(tc.constants.SPRITE_DIRECTION_SOUTH); this.sprite.moveDown(); }, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, UPARROW, this, idle, null, tc.constants.playInfinite);
+        engineRef.addEventBehavior(engineRef.gameEvents.KeyUp, DOWNARROW, this, idle, null, tc.constants.playInfinite);
     },
     this.moveDown = function () {
 

@@ -116,7 +116,7 @@ function ninjaGirl_Sprite(ga, name, loadCallBack){
         name = "ninjaGirl"
     }
     var sprite = new Sprite(name, "ninjaGirlNeutral", "ninjaGirlNeutral", loadCallBack, ga);
-	sprite.defineSequence("ninjaGirlNeutral", tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirlNeutral.png", ninjaGirlNeutral(), playInfinite);
+	sprite.defineSequence("ninjaGirlNeutral", tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirlNeutral.png", ninjaGirlNeutral(), tc.constants.playInfinite);
 	sprite.defineSequence("ninjaGirlLightning", tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirlLightning.png", ninjaGirlLightning(), 1);
 	sprite.defineSequence("ninjaGirlHit", tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirlHit.png", ninjaGirlHit(), 1);
 	sprite.defineSequence("ninjaGirlGenerateMana", tc.constants.DOMAIN_PREFIX + "assets/ninjaGirl/ninjaGirlGenerateMana.png", ninjaGirlGenerateMana(), 1);

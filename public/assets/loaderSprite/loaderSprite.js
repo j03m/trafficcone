@@ -25,6 +25,6 @@ function loaderSprite(){
 function loaderSprite_Sprite(ga){
     var sprite = new Sprite("loaderSprite");
 	sprite.setup(ga);
-	sprite.defineSequence("loaderSprite", "/assets/loaderSprite/loaderSprite.jpg", loaderSprite(), playInfinite);
+	sprite.defineSequence("loaderSprite", "/assets/loaderSprite/loaderSprite.jpg", loaderSprite(), tc.constants.playInfinite);
 	return sprite;
 }

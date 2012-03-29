@@ -22,7 +22,7 @@ function testerHorizontal(){
 function tester_Sprite(ga){
 	var sprite = new Sprite("tester");
 	sprite.setup(ga);
-	sprite.defineSequence("tester", "/assets/tester/testerVertical.png", testerVertical(), playInfinite);
-	sprite.defineSequence("testerVertical", "/assets/tester/testerHorizontal.png", testerHorizontal(), playInfinite);
+	sprite.defineSequence("tester", "/assets/tester/testerVertical.png", testerVertical(), tc.constants.playInfinite);
+	sprite.defineSequence("testerVertical", "/assets/tester/testerHorizontal.png", testerHorizontal(), tc.constants.playInfinite);
 	return sprite;
 }

@@ -7,6 +7,6 @@ function DefaultPowerSequence(){
 function getPowerSprite(ga, spriteName){
 	var sprite = new Sprite(spriteName);
 	sprite.setup(ga);
-	sprite.defineSequence(spriteName, "/assets/powers/" + spriteName + ".gif", DefaultPowerSequence(), playInfinite);
+	sprite.defineSequence(spriteName, "/assets/powers/" + spriteName + ".gif", DefaultPowerSequence(), tc.constants.playInfinite);
 	return sprite;
 }

@@ -552,12 +552,135 @@ For example this means that our amazon girl head mask animation for her neutral 
 
 While this methodology mandates the directory structure for your images, it will help you keep them organized and allow you to again decouple design from development. Ie, designers can continue creating content and dropping them onto your servers and developers only need to think about the token syntax in their scripts. 
 
+### NPC Events and Controlling Input
+The supporting code for this section can be found in pretty much all the samples, but for we'll specifically reference: examples/2D and examples/Isometric.html.
 
+In order to set up input handlers for your characters as well as an "NPC Pulse" type of event, you will use the "addEventBehavior" method of our Engine class. The best place to see this sort of thing in action is in 2D/GameLogic.js. Here we can see the following code:
+
+```js
+ga.addEventBehavior(ga.gameEvents.Idle, "", ryu, "ryu", null, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkForward", moveRight, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyDown, LEFTARROW, ryu, "walkBack", moveLeft, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyUp, RIGHTARROW, ryu, "ryu", null, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyUp, LEFTARROW, ryu, "ryu", null, playInfinite);
+
+   ga.addEventBehavior(ga.gameEvents.TouchStart, "", ryu, "walkForward", handleTouch, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.TouchEnd, "", ryu, "ryu", null, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.TouchMove, "", ryu, "walkForward", handleTouch, 1);
+
+   ga.addEventBehavior(ga.gameEvents.MouseDown, "", ryu, "walkForward", moveToMouse, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.MouseUp, "", ryu, "ryu", resetMove, playInfinite);
+  
+   ga.addEventBehavior(ga.gameEvents.KeyDown, UPARROW, ryu, "walkForward", ryu.moveUp, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyDown, DOWNARROW, ryu, "walkBack", ryu.moveDown, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyUp, UPARROW, ryu, "ryu", null, playInfinite);
+   ga.addEventBehavior(ga.gameEvents.KeyUp, DOWNARROW, ryu, "ryu", null, playInfinite);
+
+   ga.addEventBehavior(ga.gameEvents.KeyDown, SPACEBAR, ryu, "attack", setRyuAttack, 1);
+   ga.addEventBehavior(ga.gameEvents.KeyUp, SPACEBAR, ryu, "ryu", setRyuNormal, playInfinite);
+
+```
+
+This portion of code is wiring up keyboard, and touch interfaces for the player to control the "Ryu" sprite character. The parameters to addEvenBehavior are as follows:
+
+* The event to key off of as defined in GamesEvents.js (more on this to follow)
+* An event modifier to optionally leverage
+* The sprite that will key off of the event
+* The sprite's animation that should trigger on the event
+* The function to execute when the event occurs
+* The number of times to "execute this action"
+
+Lets look at the different supported events to start:
+
+```js
+this.NPC = "NPC";
+this.Idle = "idle";
+this.KeyDown = "keydown";
+this.KeyUp = "keyup";
+this.TouchStart = "touchstart";
+this.TouchEnd = "touchend";
+this.TouchMove = "touchmove";
+this.MouseDown = "mousedown";
+this.MouseUp = "mouseup";
+this.MouseMove = "mousemove";
+this.MouseClick = "mouseclick";
+```
+
+These are pretty much synonymous with the browsers events save for the addition of NPC and "idle". 
+
+* NPC - indicates an NPC pulse has occurred and that NPCs should act in some way.
+* Idle - indicates that a player character is not currently doing anything.
+* Keydown - indicates a key press has occurred.
+* Keyup - a key up has occurred
+* TouchStart - A touch screen event has started
+* TouchMove - A touch screen drag has occurred.
+* MouseDown - A mouse down event has occurred
+* MouseUp - A mouse up event has occurred
+* MoveMove - A mouse move event has occurred.
+* MouseClick - A full mouse event has occurred.
+
+By attaching these events to a given sprite, you can cause that sprite to behave in specific ways. Let's take a look at Ryu's attached events:
+
+First off we have Ryu's idle state animation. Ie, this is what Ryu should be doing if the player hasn't keyed in any function.
+
+```js
+	ga.addEventBehavior(ga.gameEvents.Idle, "", ryu, "ryu", null, tc.constants.playInfinite);
+```
+
+Here we are saying - when the Idle event is triggered (which is all the time), animate the sprite "ryu" (passed in as a reference), using the sprite animation named "ryu" (note, the names don't need to coincide, this can be whatever you named your animation, ie it could have been "doingnothing" I just happened to name my idle state the sprite name). Because there is no particular function I want to invoke on idle, the next parameter is blank and I tell the engine to play this animation in a loop infinitely via tc.constants.playInfinite (which = -1).
+
+But what if we want something to happen? Let's look at Ryu punching. Here when the user hits the space bar (or does a double screen touch) we want Ryu to punch his opponent. To do this, we want to animate his attack sequence on the keydown and return him to idle on keyup. Let's look at this:
+
+```js
+ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.SPACEBAR, ryu, "attack", setRyuAttack, 1);
+ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.SPACEBAR, ryu, "ryu", setRyuNormal, tc.constants.playInfinite);
+```
+
+Here we have similar code, but this time we pass in keydown and keyup events. Note, we've also passed a modifier indicating the key in question (spacebar). We then also pass the sprite, but this time use the "attack" animation to indicate that the sprite should switch from the idle animation into the attacking state. Then we also pass a simple behavior function to set the sprite into the attack state (this is part of this particular game, not the engine). Last we pass in the number 1 to indicate that this animation should be played a single time.
+
+The second call essentially tell the engine to set Ryu back to the idle state on keyup.
+
+A more complex example can be viewed in examples/Isometric.html. In this example, you can see we use a class behavior. Behaviors are essentially javascript classes that implement a similar interface and encapsulate the AI or behavior for a given character. In our example we create two behaviors and attach them to our PC and NPC.
+
+```js
+    var spriteSeeker = new SpriteSeeker("walking", "attacking", 100, hero);
+    var originSeeker = new OriginSeeker("walking", "normal", "attacking", 100);
+
+    ga.addEventBehavior(ga.gameEvents.MouseDown, "", hero, "walking", originSeeker, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.NPC, "", zom, "walking", spriteSeeker, playInfinite);
+
+```
+
+We'll talk more about behaviors in subsequent sections of this document. 
+
+In addition to attaching events to sprites, you can simply set global events that you control in your game code. For example in Isometric.html we allow a mousedown to highlight a given sprite (any sprite):
+
+```js
+     ga.addEventBehavior(ga.gameEvents.MouseDown, undefined, undefined, undefined, function (e) {
+
+            var spriteClick = ga.CheckEventPosition(e.offsetX, e.offsetY);
+
+            if (spriteClick != undefined && spriteClick.name != "zombo") {  //if not our hero
+                //highlight the sprite
+                spriteClick.highLight(0, 0, 0, 0, 255, 0, 0, 0);
+                this.lastClick = spriteClick;
+                originSeeker.setTarget(spriteClick);
+            }
+            else {
+
+                originSeeker.setTarget(undefined);
+                if (this.lastClick != undefined) {
+                    this.lastClick.unHighLight();
+                }
+
+            }
+        }, 1);
+```
+
+Here we leave most of the parameters to addEventBehavior as undefined and capture the general event in our function param.
 
 
 ### More to come - Docs Joe still needs to write: 
-### NPC Events and Controlling Input
-Coming soon see: examples/2D or examples/Isometric.html
 ### Custom draw routines
 Coming soon see: examples/CompositeSprite.html
 ### Frame level alerting

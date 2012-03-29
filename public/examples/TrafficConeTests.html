@@ -6,10 +6,11 @@
     <script type="text/javascript" src="../tccore/jquery.min.js"></script>
     <script type="text/javascript" src="../tccore/namespace.js"></script>
     <!--[if IE]><script src="excanvas.compiled.js"></script><![endif]-->
+
     <script type="text/javascript" src="../tccore/LoadShim.js"></script>
+    <script type="text/javascript" src="../tccore/GameEvent.js"></script>
     <script type="text/javascript" src="../tccore/NotConstants.js"></script>
     <script type="text/javascript" src="../tccore/browserdetect.js"></script>
-    <script type="text/javascript" src="../tccore/GameEvent.js"></script>
     <script type="text/javascript" src="../tccore/Frame.js"></script>
     <script type="text/javascript" src="../tccore/GameWorld.js"></script>
     <script type="text/javascript" src="../tccore/Sprite.js"></script>
@@ -136,7 +137,7 @@
 
             var bdImage = [];
             bdImage.push(new Frame(0, 0, 512, 860, 0));
-            backDrop.defineSequence("backdrop", "../assets/londonsubway/londonSubway.png", bdImage, playInfinite);
+            backDrop.defineSequence("backdrop", "../assets/londonsubway/londonSubway.png", bdImage, tc.constants.playInfinite);
             ga.setBackDrop(backDrop);
             checkingId = setInterval(sheetLoaded,100);
 
@@ -1124,7 +1125,7 @@
 
                     // function (eventName, eventData, sprite, animationName, actionClass, actionPlayCount)
                     ga.addEventBehavior(ga.gameEvents.MouseDown, "", zom, "walking", seeker, -1);
-                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, playInfinite);
+                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, tc.constants.playInfinite);
                     ga.addEventBehavior(ga.gameEvents.MouseDown, "", undefined, "walking", function (event, engine, sprite) {
                         console.log("click: (" + event.offsetX + "," + event.offsetY + ")");
                         var cell = gameWorldModel.getWorldCellFromScreenCoord(event.offsetX, event.offsetY);
@@ -1268,19 +1269,19 @@
                     //to
                     //-inf
 
-                    ga.addEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, undefined, undefined, function (event, engine, sprite) {
+                    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.RIGHTARROW, undefined, undefined, function (event, engine, sprite) {
                         ids[0] = setInterval(moveOrigin("x", 5, 0), 100);
                     }, 1);
 
-                    ga.addEventBehavior(ga.gameEvents.KeyDown, LEFTARROW, undefined, undefined, function (event, engine, sprite) {
+                    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.LEFTARROW, undefined, undefined, function (event, engine, sprite) {
                         ids[1] = setInterval(moveOrigin("x", -5, 1), 100);
                     }, 1);
 
-                    ga.addEventBehavior(ga.gameEvents.KeyDown, UPARROW, undefined, undefined, function (event, engine, sprite) {
+                    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.UPARROW, undefined, undefined, function (event, engine, sprite) {
                         ids[2] = setInterval(moveOrigin("y", 5, 2), 100);
                     }, 1);
 
-                    ga.addEventBehavior(ga.gameEvents.KeyDown, DOWNARROW, undefined, undefined, function (event, engine, sprite) {
+                    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.DOWNARROW, undefined, undefined, function (event, engine, sprite) {
                         ids[3] = setInterval(moveOrigin("y", -5, 3), 100);
                     }, 1);
 
@@ -1524,8 +1525,8 @@
                     var mouseStillDown = 0;
 
 
-                    ga.addEventBehavior(ga.gameEvents.MouseDown, "", zom, "walking", seeker, playInfinite);
-                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, playInfinite);
+                    ga.addEventBehavior(ga.gameEvents.MouseDown, "", zom, "walking", seeker, tc.constants.playInfinite);
+                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, tc.constants.playInfinite);
                 }
 
             }, 100);
@@ -1558,14 +1559,14 @@
                     gameWorldModel.placeSpriteInCenterOfWorldCell(128, 128, zom2);
 
 
-                    ga.addEventBehavior(ga.gameEvents.MouseDown, "", zom, "walking", seeker, playInfinite);
+                    ga.addEventBehavior(ga.gameEvents.MouseDown, "", zom, "walking", seeker, tc.constants.playInfinite);
                     ga.addEventBehavior(ga.gameEvents.MouseDown, "", undefined, undefined, function (event) {
                         //highlight the cell,
                         highlightCell(event);
-                    }, playInfinite);
+                    }, tc.constants.playInfinite);
 
 
-                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, playInfinite);
+                    ga.addEventBehavior(ga.gameEvents.NPC, "", zom2, "walking", spseeker, tc.constants.playInfinite);
                     ga.setCollisionHandler(function (sprite1, sprite2) {
 
                         if (sprite1.getSpriteState() == "attacking") {

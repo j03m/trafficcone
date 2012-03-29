@@ -5,8 +5,6 @@ var checkingId;
 var ga;
 var backDrop;
 var alex;
-var tc.constants.LIGHT_ACTION = 100;
-var tc.constants.FAST_ACTION = 50;
 function sheetLoaded()
 {
 
@@ -37,7 +35,7 @@ function ready()
 
     var bdImage = [];
     bdImage.push(new Frame(0, 0, 512, 860, 0));
-    backDrop.defineSequence("backdrop", "../../assets/londonsubway/londonSubway.png", bdImage, playInfinite);
+    backDrop.defineSequence("backdrop", "../../assets/londonsubway/londonSubway.png", bdImage, tc.constants.playInfinite);
     ga.setBackDrop(backDrop);
 
 
@@ -48,30 +46,30 @@ function ready()
 
     ga.defineSprite(ryu);
 
-    ga.addEventBehavior(ga.gameEvents.Idle, "", ryu, "ryu", null, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkForward", moveRight, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyDown, LEFTARROW, ryu, "walkBack", moveLeft, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyUp, RIGHTARROW, ryu, "ryu", null, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyUp, LEFTARROW, ryu, "ryu", null, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.Idle, "", ryu, "ryu", null, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.RIGHTARROW, ryu, "walkForward", moveRight, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.LEFTARROW, ryu, "walkBack", moveLeft, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.RIGHTARROW, ryu, "ryu", null, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.LEFTARROW, ryu, "ryu", null, tc.constants.playInfinite);
 
-    ga.addEventBehavior(ga.gameEvents.TouchStart, "", ryu, "walkForward", handleTouch, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.TouchEnd, "", ryu, "ryu", null, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.TouchStart, "", ryu, "walkForward", handleTouch, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.TouchEnd, "", ryu, "ryu", null, tc.constants.playInfinite);
     ga.addEventBehavior(ga.gameEvents.TouchMove, "", ryu, "walkForward", handleTouch, 1);
  
-    ga.addEventBehavior(ga.gameEvents.MouseDown, "", ryu, "walkForward", moveToMouse, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.MouseUp, "", ryu, "ryu", resetMove, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.MouseDown, "", ryu, "walkForward", moveToMouse, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.MouseUp, "", ryu, "ryu", resetMove, tc.constants.playInfinite);
    
-    ga.addEventBehavior(ga.gameEvents.KeyDown, UPARROW, ryu, "walkForward", ryu.moveUp, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyDown, DOWNARROW, ryu, "walkBack", ryu.moveDown, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyUp, UPARROW, ryu, "ryu", null, playInfinite);
-    ga.addEventBehavior(ga.gameEvents.KeyUp, DOWNARROW, ryu, "ryu", null, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.UPARROW, ryu, "walkForward", ryu.moveUp, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.DOWNARROW, ryu, "walkBack", ryu.moveDown, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.UPARROW, ryu, "ryu", null, tc.constants.playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.DOWNARROW, ryu, "ryu", null, tc.constants.playInfinite);
 
-    ga.addEventBehavior(ga.gameEvents.KeyDown, SPACEBAR, ryu, "attack", setRyuAttack, 1);
-    ga.addEventBehavior(ga.gameEvents.KeyUp, SPACEBAR, ryu, "ryu", setRyuNormal, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.KeyDown, tc.constants.SPACEBAR, ryu, "attack", setRyuAttack, 1);
+    ga.addEventBehavior(ga.gameEvents.KeyUp, tc.constants.SPACEBAR, ryu, "ryu", setRyuNormal, tc.constants.playInfinite);
 
     defineAlexSprite();
     ga.defineSprite(alex);
-    ga.addEventBehavior(ga.gameEvents.NPC, "", alex, "alex", npcAlexThink, playInfinite);
+    ga.addEventBehavior(ga.gameEvents.NPC, "", alex, "alex", npcAlexThink, tc.constants.playInfinite);
 
     //todo: implement PC health?
     checkingId = setInterval(sheetLoaded, 100);
@@ -282,7 +280,7 @@ function defineAlexSprite()
     alex = new Sprite("alex");
     alex.setup(ga);
        
-    alex.easyDefineSequence("alex", "../../assets/alex/ALEX_STANCE.png", 3, 4, 112, 113, tc.constants.FAST_ACTION, playInfinite);
+    alex.easyDefineSequence("alex", "../../assets/alex/ALEX_STANCE.png", 3, 4, 112, 113, tc.constants.FAST_ACTION, tc.constants.playInfinite);
 
     
     var sequence = [];
@@ -300,7 +298,7 @@ function defineAlexSprite()
     sequence.push(new Frame(2, 3, 122, 120, tc.constants.LIGHT_ACTION));
     sequence.push(new Frame(3, 0, 122, 120, tc.constants.LIGHT_ACTION));
     sequence.push(new Frame(3, 1, 122, 120, tc.constants.LIGHT_ACTION));
-    alex.defineSequence("walkForward", "../../assets/alex/ALEX_WALK_FORWARD.png", sequence, playInfinite);
+    alex.defineSequence("walkForward", "../../assets/alex/ALEX_WALK_FORWARD.png", sequence, tc.constants.playInfinite);
 
     sequence = [];
     sequence.push(new Frame(0, 0, 120, 172, tc.constants.FAST_ACTION));
@@ -421,9 +419,9 @@ function defineRyuSprite() {
 
     ryu.easyDefineSequence("fall", "../../assets/ryu/RYU_FALL.png", 5, 5, 120, 178, tc.constants.FAST_ACTION, 1);
     ryu.defineSequence("attack", "../../assets/ryu/RYU_PUNCH1.png", attack, 1);
-    ryu.defineSequence("ryu", "../../assets/ryu/RYU_STANCE.png", sequence, playInfinite);
-    ryu.defineSequence("walkForward", "../../assets/ryu/RYU_WALKING.png", walkingForward, playInfinite);
-    ryu.defineSequence("walkBack", "../../assets/ryu/RYU_WALKING2.png", walkingForward, playInfinite);
+    ryu.defineSequence("ryu", "../../assets/ryu/RYU_STANCE.png", sequence, tc.constants.playInfinite);
+    ryu.defineSequence("walkForward", "../../assets/ryu/RYU_WALKING.png", walkingForward, tc.constants.playInfinite);
+    ryu.defineSequence("walkBack", "../../assets/ryu/RYU_WALKING2.png", walkingForward, tc.constants.playInfinite);
     
 
 
@@ -495,7 +493,7 @@ function moveToMouse(tehEvent) {
 
     
         if (flag == 0) {
-            ga.addEventBehavior(ga.gameEvents.MouseMove, "", ryu, "walkForward", moveToMouse, playInfinite);
+            ga.addEventBehavior(ga.gameEvents.MouseMove, "", ryu, "walkForward", moveToMouse, tc.constants.playInfinite);
             flag = 1;
         }
         
@@ -540,8 +538,8 @@ function moveRight()
             ryu.setSpriteXDirection(tc.constants.SPRITE_NORMAL);
 
             //change the walk back animation to walk left animation to walk forward
-            ga.modEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkForward", moveRight, playInfinite);
-            ga.modEventBehavior(ga.gameEvents.KeyDown, LEFTARROW, ryu, "walkBack", moveLeft, playInfinite);
+            ga.modEventBehavior(ga.gameEvents.KeyDown, tc.constants.RIGHTARROW, ryu, "walkForward", moveRight, tc.constants.playInfinite);
+            ga.modEventBehavior(ga.gameEvents.KeyDown, tc.constants.LEFTARROW, ryu, "walkBack", moveLeft, tc.constants.playInfinite);
             forwardSteps = 0;
         }
     }
@@ -570,8 +568,8 @@ var backSteps = 0;
             ryu.setSpriteXDirection(tc.constants.SPRITE_INVERTED);
 
             //change the walk back animation to walk left animation to walk forward
-            ga.modEventBehavior(ga.gameEvents.KeyDown, RIGHTARROW, ryu, "walkBack", moveRight, playInfinite);
-            ga.modEventBehavior(ga.gameEvents.KeyDown, LEFTARROW, ryu, "walkForward", moveLeft, playInfinite);
+            ga.modEventBehavior(ga.gameEvents.KeyDown, tc.constants.RIGHTARROW, ryu, "walkBack", moveRight, tc.constants.playInfinite);
+            ga.modEventBehavior(ga.gameEvents.KeyDown, tc.constants.LEFTARROW, ryu, "walkForward", moveLeft, tc.constants.playInfinite);
             forwardSteps = 0;
         }
     }

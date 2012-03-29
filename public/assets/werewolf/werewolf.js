@@ -145,8 +145,8 @@ function werewolf_Sprite(ga, name, loadCallBack){
 	sprite.defineSequence("werewolfTear", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfTear.png", werewolfTear(), 1);
 	sprite.defineSequence("werewolfSnap", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfSnap.png", werewolfSnap(), 1);
 	sprite.defineSequence("werewolfPowerUp", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfPowerUp.png", werewolfPowerUp(), 1);
-	sprite.defineSequence("werewolfNeutral", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfNeutral.png", werewolfNeutral(), playInfinite, tc.constants.SPRITE_MOVEMENT_DIRECTION_BACK);
-	sprite.defineSequence("werewolfCentered", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfNeutral.png", werewolfNeutral(), playInfinite, tc.constants.SPRITE_MOVEMENT_DIRECTION_CENTERED);
+	sprite.defineSequence("werewolfNeutral", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfNeutral.png", werewolfNeutral(), tc.constants.playInfinite, tc.constants.SPRITE_MOVEMENT_DIRECTION_BACK);
+	sprite.defineSequence("werewolfCentered", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfNeutral.png", werewolfNeutral(), tc.constants.playInfinite, tc.constants.SPRITE_MOVEMENT_DIRECTION_CENTERED);
 	sprite.defineSequence("werewolfLunge", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfLunge.png", werewolfLunge(), 1);
 	sprite.defineSequence("werewolfHit", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfHit.png", werewolfHit(), 1);
 	sprite.defineSequence("werewolfDead", tc.constants.DOMAIN_PREFIX + "assets/werewolf/werewolfDead.png", werewolfDead(), 1);

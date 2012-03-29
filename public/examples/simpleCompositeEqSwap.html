@@ -5,9 +5,9 @@
     
     <script type="text/javascript" src="../tccore/jquery.min.js"></script>
     <script type="text/javascript" src="../tccore/namespace.js"></script>
+    <script type="text/javascript" src="../tccore/GameEvent.js"></script>
     <script type="text/javascript" src="../tccore/NotConstants.js"></script>
     <script type="text/javascript" src="../tccore/browserdetect.js"></script>
-    <script type="text/javascript" src="../tccore/GameEvent.js"></script>
     <script type="text/javascript" src="../tccore/GameWorld.js"></script>
     <script type="text/javascript" src="../tccore/Frame.js"></script>
     <script type="text/javascript" src="../tccore/Sprite.js"></script>
@@ -46,7 +46,7 @@
    			
 			var worldSize = 50;
 			ga = MakeIsoMetricGameWorld(worldSize);
-			var imagePath = DOMAIN_PREFIX + "assets/hero/";
+			var imagePath = tc.constants.DOMAIN_PREFIX + "assets/hero/";
             var hero = hero_Sprite(ga, "hero");
             hero.setSpeed(2);
             gameWorldModel.placeSpriteInCenterOfWorldCell(worldSize/2, (worldSize/2)+2, hero);
@@ -100,7 +100,7 @@
 						shieldOn = 1;
 					}
 				}
-			}, playInfinite);
+			}, tc.constants.playInfinite);
 
 
             var intervalid = setInterval(function () {

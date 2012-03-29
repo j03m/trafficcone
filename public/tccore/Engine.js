@@ -10,28 +10,12 @@ window.requestAnimFrame = (function(){
               };
     })();
 
-var LEFTARROW = 37 ;
-var UPARROW = 38;
-var RIGHTARROW = 39;
-var DOWNARROW = 40;
-var SPACEBAR = 32;
-var playInfinite = -1;
-var noPlay = -1;
-var lastPlayed = 1;
-var playNormal = 0;
-var gameEvents = new GameEventTypes();
-var RAD = Math.PI / 180;
-var startTime = null;
-var endTime;
-var frameCount=0;   
-var frameDebug = true;
-var frameMessage = "";
 
 var Engine =
     function (mainCanvas, backgroundCanvas) {
         isapplemobile = DetectAppleMobile();
 		self = this;
-        canvas = mainCanvas;
+		canvas = mainCanvas;
         context = canvas.getContext("2d");
         backCanvas = backgroundCanvas;
         backContext = backCanvas.getContext("2d");
@@ -100,6 +84,12 @@ var Engine =
     microx =0,
     microy =0,
 	gameLoopHook,
+	startTime = null,
+	endTime,
+	frameCount=0,   
+	frameDebug = true,
+	frameMessage = "",
+	
     eventHandler = function (event) {
 
         if (isapplemobile) {
@@ -208,26 +198,26 @@ var Engine =
         var borderColision;
 
         if (mySprite.absoluteTop() <= 0) {
-            borderCollision = new GameEvent(gameEvents.BorderCollisionTop, mySprite.name);
+            borderCollision = new GameEvent(tc.constants.gameEvents.BorderCollisionTop, mySprite.name);
             eventQ.push(borderCollision);
 
         }
 
         //check if our sprites left <= 0  (left border)
         if (mySprite.absoluteLeft() <= 0) {
-            borderCollision = new GameEvent(gameEvents.BorderCollisionLeft, mySprite.name);
+            borderCollision = new GameEvent(tc.constants.gameEvents.BorderCollisionLeft, mySprite.name);
             eventQ.push(borderCollision);
         }
 
         //check if our sprite's left + width >= right border
         if (mySprite.absoluteRight() >= canvas.width) {
-            borderCollision = new GameEvent(gameEvents.BorderCollisionRight, mySprite.name);
+            borderCollision = new GameEvent(tc.constants.gameEvents.BorderCollisionRight, mySprite.name);
             eventQ.push(borderCollision);
 
         }
 
         if (mySprite.absoluteBottom() >= canvas.height) {
-            borderCollision = new GameEvent(gameEvents.BorderCollisionBottom, mySprite.name);
+            borderCollision = new GameEvent(tc.constants.gameEvents.BorderCollisionBottom, mySprite.name);
             eventQ.push(borderCollision);
         }
 
@@ -253,7 +243,7 @@ var Engine =
                         behavior.actionClass(innerEvent, behavior.sprite, engineRef);
                     }
 
-                    if (behavior.sprite.getPlayCount() != playInfinite) {
+                    if (behavior.sprite.getPlayCount() != tc.constants.playInfinite) {
                         behavior.sprite.actionPlayed++;
                     }
                 }
@@ -310,7 +300,7 @@ var Engine =
         }
     },
     HandleNpcActions = function () {
-        var eventBehaviors = getBehaviorsForEvent(gameEvents.NPC);
+        var eventBehaviors = getBehaviorsForEvent(tc.constants.gameEvents.NPC);
         if (eventBehaviors == null) return; //no npcs
         for (var i = 0; i < eventBehaviors.length; i++) {
             //get a specific behavior from the list of behaviors
@@ -345,7 +335,7 @@ var Engine =
                     foundSequenceForEvent = true;
                     if (behavior.sprite != null && behavior.sprite != undefined) {
                         //check if this behavior matches the current behavior - and another behavior is not being interupted by Idle
-                        if (behavior.sprite.getSpriteState() != behavior.animation && currentEvent.type != this.gameEvents.Idle) {
+                        if (behavior.sprite.getSpriteState() != behavior.animation && currentEvent.type != this.tc.constants.gameEvents.Idle) {
                             //reset the play action count                            
                             behavior.sprite.setSpriteState(behavior.animation); //changing the state causes the sprite's animation to change.
                         }
@@ -810,8 +800,8 @@ var Engine =
     };
 
     Engine.prototype = {
-
-        setCamera: function (x, y) {
+		gameEvents:tc.constants.gameEvents,
+		setCamera: function (x, y) {
             sceneBackDropDrawn = false;
             
             cameraXCell = Math.floor(x);
@@ -1127,7 +1117,6 @@ var Engine =
         getCanvasHeight: function () {
             return canvas.height;
         },
-        gameEvents: gameEvents,
         removeSprite: function (inName, callBack) {
 
             //mark the sprite for removal
@@ -1241,7 +1230,7 @@ var Engine =
             clearInterval(intervalId);
         },                       
         play: function () {
-            idleEvent = new GameEvent(gameEvents.Idle, "");
+            idleEvent = new GameEvent(tc.constants.gameEvents.Idle, "");
             eventHandler(TranslateUIEventToGameEvent(idleEvent));
             //intervalId = setInterval(this.gameLoop, 15);
 
@@ -1299,7 +1288,7 @@ var Engine =
 	    
 	    var self = this;
 	    //KeyDown
-	    this.addEventBehavior(gameEvents.KeyDown, UPARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyDown, UPARROW, undefined, undefined, function (e) {
 		self.scanMovement["up"].start();
 		self.scanMovement["down"].stop();
 		self.scanMovement["left"].stop();
@@ -1307,7 +1296,7 @@ var Engine =
 		modCallback();
 	    });
 
-	    this.addEventBehavior(gameEvents.KeyDown, RIGHTARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyDown, RIGHTARROW, undefined, undefined, function (e) {
 		self.scanMovement["up"].stop();
 		self.scanMovement["down"].stop();
 		self.scanMovement["left"].stop();
@@ -1315,7 +1304,7 @@ var Engine =
 		modCallback();
 	    });
 
-	    this.addEventBehavior(gameEvents.KeyDown, DOWNARROW, undefined, undefined, function (e) {		
+	    this.addEventBehavior(tc.constants.gameEvents.KeyDown, DOWNARROW, undefined, undefined, function (e) {		
 		self.scanMovement["up"].stop();
 		self.scanMovement["down"].start();
 		self.scanMovement["left"].stop();
@@ -1324,7 +1313,7 @@ var Engine =
 	    });
 
 
-	    this.addEventBehavior(gameEvents.KeyDown, LEFTARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyDown, LEFTARROW, undefined, undefined, function (e) {
 		self.scanMovement["up"].stop();
 		self.scanMovement["down"].stop();
 		self.scanMovement["left"].start();
@@ -1334,20 +1323,20 @@ var Engine =
 
 	    
 	    //KeyUp
-	    this.addEventBehavior(gameEvents.KeyUp, UPARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyUp, UPARROW, undefined, undefined, function (e) {
 		self.scanMovement["up"].stop();	    
 		modCallback();
 	    });
-	    this.addEventBehavior(gameEvents.KeyUp, RIGHTARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyUp, RIGHTARROW, undefined, undefined, function (e) {
 		self.scanMovement["right"].stop();	    
 		modCallback();
 	    });
-	    this.addEventBehavior(gameEvents.KeyUp, DOWNARROW, undefined, undefined, function (e) {		
+	    this.addEventBehavior(tc.constants.gameEvents.KeyUp, DOWNARROW, undefined, undefined, function (e) {		
 		self.scanMovement["down"].stop();	    
 		modCallback();
 	    });
 	   
-	    this.addEventBehavior(gameEvents.KeyUp, LEFTARROW, undefined, undefined, function (e) {
+	    this.addEventBehavior(tc.constants.gameEvents.KeyUp, LEFTARROW, undefined, undefined, function (e) {
 		self.scanMovement["left"].stop();	    
 		modCallback();
 	    });
@@ -1458,7 +1447,7 @@ var Engine =
         handleChanges: function (changes) {
             //we get an array of changes from the server
             //spin through them and adjust the world accordingly
-            for (var i = 0; i < changes.length; i++) {
+            for (var i = 0; i < chantc.constants.gameEvents.length; i++) {
                 //depending on the type of change we can only handle certain actions
                 var change = changes[i];
                 if (change.eventType == CELL_CHANGE) {
@@ -1546,7 +1535,7 @@ var Engine =
 				    //after load, invoke the class
 				    var ai = eval("new " + behavior.constructor);
 				    //attach the class to the sprite for npc pulse
-				    engine.addEventBehavior(behavior.eventType, "", sprite, behavior.startState, ai, playInfinite);
+				    engine.addEventBehavior(behavior.eventType, "", sprite, behavior.startState, ai, tc.constants.playInfinite);
 				}
 			);
         }
