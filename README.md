@@ -11,6 +11,7 @@ Features:
 * Basic Isometric pathfinding, AI and collision detection
 * Custom draw routines on sprites supported.
 * Granular control of sprite sequencing supported for more dramatic animations
+* Intelligent draw logic only draws modified parts of your canvas for better frame rates.
 
 ===
 Examples:
@@ -679,20 +680,68 @@ In addition to attaching events to sprites, you can simply set global events tha
 
 Here we leave most of the parameters to addEventBehavior as undefined and capture the general event in our function param.
 
-
 ### More to come - Docs Joe still needs to write: 
-### Custom draw routines
-Coming soon see: examples/CompositeSprite.html
 ### Frame level alerting
-Coming soon see: examples/TrafficConeTests.html
+Sample: examples/TrafficConeTests.html
+
+There may be times when you need granular control of given sprites animation sequence. For example, let's say you want to chain some animations or you want a certain event to happen on frame 6 out of 10 frames in an animation. To accomplish this in TC you can attach an animation watcher. For example, looking at the "watcherTests" function of TrafficConeTests.html you can see: 
+
+```js
+ 	var ng = ninjaGirl_Sprite(ga);
+    ng.setTop(50);
+    ng.setLeft(50);
+
+
+    //anchor defaults bottom/left
+    //apply hook to frame change
+    ng.setWatcher("ninjaGirlNeutral", watcherTests, tc.constants.WATCH_TYPE_ALL_FRAME);
+    ga.defineSprite( ng);
+```
+Here we create a sprite, set it's position and then set a watcher on the "ninjaGirlNeutral" animation. The second parameters passes a callback (which will receive a reference to the sprite) and instructions to use WATCH_TYPE_ALL_FRAME, which indicates to call the function on all frames. To watch a specific frame, pass in a numeric value representing the frame. It unfortunately doesn't support ranges right now. You can also supply WATCH_TYPE_LAST_FRAME to know when the animation is complete so that another can be chained.
+
 ### Collision detection
-Coming soon see: examples/2D or examples/Isometric.html
+See examples/2D or examples/Isometric.html
+
+The engine class supports a method setCollisionHandler. This method receives a call back function which should receive two sprites (sprite1, and sprite2). Each animation frame the engine will check if any of your frames are colliding. If they are, this method will be fired in the order that the collisions are detected (not necessarily the order they occur). From there, you can add any game specific collision logic. In Isometric.html when we detect a collision we attach watchers to the end of a given animation and then augment the game logic accordingly. For example:
+
+```js
+ ga.setCollisionHandler(function (sprite1, sprite2) {
+
+[REMOVED FOR BREVITY]
+
+     if (sprite1.getSpriteState() == "attacking") {
+         sprite1.setWatcher("attacking", function () {
+             sprite2Health -= 5;
+             if (sprite2Health <= 0) {
+                 sprite2.setWatcher("headsplode", function () {
+                     ga.removeSprite("zombo1");
+                 }, tc.constants.WATCH_TYPE_LAST_FRAME);                            
+                 sprite2.setSpriteState("headsplode", undefined, true);
+             }
+             else {
+                 sprite2.setSpriteState("hit");
+             }
+             sprite1.clearWatcher("attacking");
+         }, tc.constants.WATCH_TYPE_LAST_FRAME);
+     }
+
+
+```
+
+Here we check the state of the first sprite, if it is attacking we then attach a watcher to the sprite's last frame. As a result, when the attack animation is completed, the second sprite's health will be reduced. If the second sprite's health has reduced to 0, we attach a second watcher to it whereby when the death animation (headsplode) is complete, we remove the sprite from the game. We then set the 2nd sprites animation to headsplode. If the second sprite isn't dead, we set it's state to "gethit". In either case we clear the attackers watcher.  
+
+### Background Textures (Ie, slimming things down for mobile)
+See: examples/IOSTextureExperiments.html 
+
+In various examples we have set one or more sprites as cells for a background in an isometric game. However, each of these cells ends up being a draw operation. Traffic Cone is optimized to only draw the changes in your game, so in most cases you can still get a superior framerate for game using this method. However, if you intend to "scroll" or "pan" the background, traffic cone will be forced to redraw each cell of your background which on various mobile devices can cause a significant slow down. Luckily, html5 gives us the ability to set up a single texture as our background. Traffic cone takes advantage of this by allowing you to set a texture and then also set background cells the way your normally would. The result is much better draw performance. For example, if you were going to draw an outdoor sequence, you could set the texture to something grass like, and then use background sprites for trees, houses etc. 
+
+Our IOSTextureExperiements.html sample causes MkeIsoMetricGameWorld helper to invoke the engine's setUnderlayTexture method. This method sets a single given image as texture and instructs the engine to call the canvas' createPattern method under the hood. From there, your overlay and underlay background sprites are drawn on top of the texture.
+
 ### AI, Path Finding and Behaviors
 Coming soon see: examples/Isometric.html
-### Special sprite generators
-Coming soon see: examples/CompositeSprite.html
-### Slimming things down for mobile
-Coming soon see: examples/IOSTextureExperiments.html - swaps out bg tiles for one textured background. Speeds up animations when moving the entire background is an issue.
+
+### Custom draw routines
+Supporting code is in: examples/TrafficConeTests.html
 
 ===
 

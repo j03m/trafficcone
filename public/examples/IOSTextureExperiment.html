@@ -108,14 +108,14 @@
                         if (sprite2Health <= 0) {
                             sprite2.setWatcher("headsplode", function () {
                                 ga.removeSprite("zombo1");
-                            }, WATCH_TYPE_LAST_FRAME);                            
+                            }, tc.constants.WATCH_TYPE_LAST_FRAME);                            
                             sprite2.setSpriteState("headsplode", undefined, true);
                         }
                         else {
                             sprite2.setSpriteState("hit");
                         }
                         sprite1.clearWatcher("attacking");
-                    }, WATCH_TYPE_LAST_FRAME);
+                    }, tc.constants.WATCH_TYPE_LAST_FRAME);
                 }
 
                 if (sprite2.getSpriteState() == "attacking") {
@@ -125,7 +125,7 @@
                         if (sprite1Health <= 0) {
                             sprite1.setWatcher("headsplode", function () {
                                 ga.removeSprite("zombo");
-                            }, WATCH_TYPE_LAST_FRAME);
+                            }, tc.constants.WATCH_TYPE_LAST_FRAME);
                             sprite1.setSpriteState("headsplode");
 
                         }
@@ -134,7 +134,7 @@
                         }
                         sprite2.clearWatcher("attacking");
 
-                    }, WATCH_TYPE_LAST_FRAME);
+                    }, tc.constants.WATCH_TYPE_LAST_FRAME);
                 }
 
             });

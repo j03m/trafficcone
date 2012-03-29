@@ -1071,7 +1071,7 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
                         watchData[spriteState].callBack(this);
                     }
                 }
-                else if (watchData[spriteState].type == tc.constants.WATCH_TYPE_ALL_FRAME) {
+                else if (watchData[spriteState].type == tc.constants.tc.constants.WATCH_TYPE_ALL_FRAME) {
                     watchData[spriteState].callBack(this);
                 }
                 else //watch value indicates frame to watch

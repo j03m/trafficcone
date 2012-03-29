@@ -169,8 +169,8 @@
 
             //anchor defaults bottom/left
             //apply hook to frame change
-            wolf.setWatcher("werewolfNeutral", testValue, WATCH_TYPE_ALL_FRAME);
-            wolf.setWatcher("werewolfLunge", testValue, WATCH_TYPE_ALL_FRAME);
+            wolf.setWatcher("werewolfNeutral", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
+            wolf.setWatcher("werewolfLunge", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
 
             ga.defineSprite(wolf);
 
@@ -178,18 +178,18 @@
         }
 
         function CreateNinjaGirlSprite() {
-            var ng = ninjaGirl_Sprite(ga); wolf.setWatcher("werewolfNeutral", testValue, WATCH_TYPE_ALL_FRAME);
-            wolf.setWatcher("werewolfLunge", testValue, WATCH_TYPE_ALL_FRAME);
+            var ng = ninjaGirl_Sprite(ga); wolf.setWatcher("werewolfNeutral", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
+            wolf.setWatcher("werewolfLunge", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
             ng.setTop(50);
             ng.setLeft(50);
 
 
             //anchor defaults bottom/left
             //apply hook to frame change
-            ng.setWatcher("ninjaGirlNeutral", testValue, WATCH_TYPE_ALL_FRAME);
-            ng.setWatcher("ninjaGirlLightning", testValue, WATCH_TYPE_ALL_FRAME);
-            ng.setWatcher("ninjaGirlGenerateMana", testValue, WATCH_TYPE_ALL_FRAME);
-            ng.setWatcher("ninjaGirlDead", testValue, WATCH_TYPE_ALL_FRAME);
+            ng.setWatcher("ninjaGirlNeutral", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
+            ng.setWatcher("ninjaGirlLightning", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
+            ng.setWatcher("ninjaGirlGenerateMana", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
+            ng.setWatcher("ninjaGirlDead", testValue, tc.constants.WATCH_TYPE_ALL_FRAME);
 
             ga.defineSprite(ng);
 
@@ -339,7 +339,7 @@
 
                 //anchor defaults bottom/left
                 //apply hook to frame change
-                ng.setWatcher("ninjaGirlNeutral", watcherTests, WATCH_TYPE_ALL_FRAME);
+                ng.setWatcher("ninjaGirlNeutral", watcherTests, tc.constants.WATCH_TYPE_ALL_FRAME);
                 ga.defineSprite( ng);
             }
             else {
@@ -379,7 +379,7 @@
 
                 //anchor defaults bottom/left
                 //apply hook to frame change
-                ng.setWatcher("ninjaGirlNeutral", lastFrameWatcherTests, WATCH_TYPE_LAST_FRAME);
+                ng.setWatcher("ninjaGirlNeutral", lastFrameWatcherTests, tc.constants.WATCH_TYPE_LAST_FRAME);
                 ga.defineSprite(ng);
             }
             else {
