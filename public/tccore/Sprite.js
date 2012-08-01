@@ -120,9 +120,8 @@ var Sprite = function (inName, inNormalState, inInitialState, callBack, engine) 
             throw "Direction may not be undefined.";
         }
 
-        if (isNaN(direction)) {
-            throw "Direction must be numeric!";
-        }
+	//direction must be numeric
+        if (isNaN(direction)) { throw "Direction must be numeric!"; }
 
         spriteIsoDirection = direction;
     },
