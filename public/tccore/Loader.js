@@ -16,6 +16,7 @@ mainLoader = function () {
 		}
 	}
 
+	//right thing to do here?
 	clearInterval(intervalId);
 	for (var ii = 0; ii < loadingSprites.length; ii++) {
 		if (loadingSprites[ii].getSpriteType() != "backdrop") {
