@@ -1,3 +1,6 @@
+Oh hi - I haven't worked on this in a long time. It is also some of the worst js anyone, anywhere has ever seen. Ping me if you have questions.
+
+
 Traffic Cone is a 2d and 2.5d (isometric) tile based game engine written for html5. It makes complex animations of sprites and tiles based worlds fairly simple. 
 ===
 
